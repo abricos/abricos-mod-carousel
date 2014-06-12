@@ -38,7 +38,7 @@ if ($updateManager->isInstall()) {
             `slideid` int(10) unsigned NOT NULL auto_increment,
 		    `title` varchar(250) NOT NULL DEFAULT '' COMMENT 'Заголовок',
 		    `url` varchar(250) NOT NULL DEFAULT '' COMMENT 'URL',
-		    `ord` int(4) NOT NULL DEFAULT '' COMMENT 'Сортировка',
+		    `ord` int(4) NOT NULL DEFAULT 0 COMMENT 'Сортировка',
 			`filehash` varchar(8) NOT NULL DEFAULT '' COMMENT 'Идентификатор картинки',
 		    PRIMARY KEY  (`slideid`)
 		)".$charset

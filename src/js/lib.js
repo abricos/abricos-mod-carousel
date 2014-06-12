@@ -8,7 +8,8 @@ Component.requires = {
     yui: ['base'],
     mod: [
         {name: 'sys', files: ['application.js']},
-        {name: '{C#MODNAME}', files: ['structure.js']}
+        {name: 'widget', files: ['notice.js']},
+        {name: '{C#MODNAME}', files: ['roles.js', 'structure.js']}
     ]
 };
 Component.entryPoint = function(NS){

@@ -17,6 +17,8 @@ class CouruselModule extends Ab_Module {
 
         // Версия модуля
         $this->version = "0.1.0";
+
+        $this->permission = new CouruselPermission($this);
     }
 
     /**
