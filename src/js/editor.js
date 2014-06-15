@@ -26,11 +26,18 @@ Component.entryPoint = function(NS){
 
             var fields = this.get('fields'),
                 instance = this;
-/*
-            NS.appInstance.couruselSave(fields, function(err, result){
 
+            NS.appInstance.couruselSave(fields, function(err, result){
+                instance.set('waiting', false);
+                if (err){
+                    var errorText = this.template.replace('error', {
+                        msg: err.msg
+                    });
+                    Brick.mod.widget.notice.show(errorText);
+                }else{
+                    Brick.Page.reload(NS.URL.manager.view());
+                }
             });
-/**/
         },
 
         onClick: function(e){
