@@ -23,7 +23,7 @@ Component.entryPoint = function(NS){
             value: 0
         },
         name: {
-            value: ''
+            value: 'test'
         },
         width: {
             value: 0

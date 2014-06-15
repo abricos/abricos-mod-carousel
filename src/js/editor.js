@@ -17,20 +17,27 @@ Component.entryPoint = function(NS){
 
         SYS = Brick.mod.sys;
 
-    NS.ManagerWidget = Y.Base.create('managerWidget', NS.AppWidget, [
+    NS.EditorWidget = Y.Base.create('editorWidget', NS.AppWidget, [
+        SYS.Form
     ], {
-        buildTData: function(){
-            return {
-                'urlcreate': NS.URL.editor.create()
-            };
+        /*
+        onInitAppWidget: function(){
+            var s = this.get('fields');
+
+            console.log(arguments);
+            console.log(s);
+
         },
+        /**/
         onClick: function(e){
+/*
+            var s = this.get('fields');
+            console.log(s.toJSON());
+/**/
             switch (e.dataClick){
-                /*
-                case 'create':
+                case 'save':
 
                     return true;
-                /**/
             }
         }
     }, {
@@ -40,6 +47,9 @@ Component.entryPoint = function(NS){
             },
             templateBlockName: {
                 value: 'widget'
+            },
+            fieldsClass: {
+                value: NS.Courusel
             }
         }
     });

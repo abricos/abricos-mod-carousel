@@ -89,9 +89,13 @@ Component.entryPoint = function(NS){
 
             this.elSetHTML('board', "");
 
-            this.widget = new NS[wName](
-                {
-                    'boundingBox': this.gel('board')
+            var elBoard = Y.one('#'+this.gel('board').id),
+                elDiv = Y.Node.create('<div></div>');
+
+            elBoard.appendChild(elDiv);
+
+            this.widget = new NS[wName]({
+                    'boundingBox': elDiv
                 },
                 p['p1'], p['p2'], p['p3'], p['p4']
             );

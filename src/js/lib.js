@@ -7,7 +7,7 @@ var Component = new Brick.Component();
 Component.requires = {
     yui: ['base'],
     mod: [
-        {name: 'sys', files: ['application.js', 'widget.js']},
+        {name: 'sys', files: ['application.js', 'widget.js', 'form.js']},
         {name: 'widget', files: ['notice.js']},
         {name: '{C#MODNAME}', files: ['roles.js', 'structure.js']}
     ]
@@ -45,7 +45,7 @@ Component.entryPoint = function(NS){
             var bBox = this.get(BOUNDING_BOX),
                 defTName = this.template.cfg.defTName;
 
-            bBox.setHTML(this.template.replace(defTName), tData);
+            bBox.setHTML(this.template.replace(defTName, tData));
 
             this.set(WAITING, true);
 
@@ -73,42 +73,7 @@ Component.entryPoint = function(NS){
     var AppBase = function(){
     };
     AppBase.prototype = {
-        /*
-         login: function(login, callback, context){
-         var instance = this;
-         instance.ajax({
-         'do': 'login',
-         'savedata': login.toJSON()
-         }, instance._onLogin, {
-         context: instance,
-         arguments: {callback: callback, context: context }
-         });
-         },
-         _onLogin: function(err, res, details){
-         var callback = details.callback,
-         context = details.context;
 
-         if (!err){
-         var errorCode = res.data.err || 0;
-         if (errorCode > 0){
-         var phId = 'ajax.login.error.' + errorCode;
-
-         err = {
-         code: errorCode,
-         msg: this.language.get(phId)
-         };
-         }
-         }
-
-         if (callback){
-         if (err){
-         callback.apply(context, [err]);
-         } else {
-         callback.apply(context, [null, res.data]);
-         }
-         }
-         }
-         /**/
     };
     NS.AppBase = AppBase;
 
@@ -131,6 +96,11 @@ Component.entryPoint = function(NS){
         manager: {
             view: function(){
                 return NS.URL.ws + 'manager/ManagerWidget/'
+            }
+        },
+        editor: {
+            create: function(){
+                return NS.URL.ws + 'editor/EditorWidget/'
             }
         }
     };
