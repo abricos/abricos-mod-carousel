@@ -18,25 +18,25 @@ Component.entryPoint = function(NS){
         SYS = Brick.mod.sys;
 
     NS.EditorWidget = Y.Base.create('editorWidget', NS.AppWidget, [
-        SYS.Form
+        SYS.Form,
+        SYS.FormAction
     ], {
-        /*
-        onInitAppWidget: function(){
-            var s = this.get('fields');
+        onSubmitFormAction: function(){
+            this.set('waiting', true);
 
-            console.log(arguments);
-            console.log(s);
-
-        },
-        /**/
-        onClick: function(e){
+            var fields = this.get('fields'),
+                instance = this;
 /*
-            var s = this.get('fields');
-            console.log(s.toJSON());
-/**/
-            switch (e.dataClick){
-                case 'save':
+            NS.appInstance.couruselSave(fields, function(err, result){
 
+            });
+/**/
+        },
+
+        onClick: function(e){
+            switch (e.dataClick) {
+                case 'cancel':
+                    console.log('click Cancel button');
                     return true;
             }
         }
