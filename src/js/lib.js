@@ -72,14 +72,55 @@ Component.entryPoint = function(NS){
 
     var AppBase = function(){
     };
+    AppBase.ATTRS = {
+        couruselListClass: {
+            value: NS.CouruselList
+        },
+        couruselList: {
+            value: null
+        }
+    };
     AppBase.prototype = {
+        initializer: function(){
+            this.couruselListLoad(function(err, result){
+                console.log(arguments);
+            }, this);
+        },
+        onAJAXError: function(err){
+            Brick.mod.widget.notice.show(err.msg);
+        },
+        _treatAJAXResult: function(data){
+            data = data || {};
+            var ret = {};
+            if (data.courusels){
+                var CouruselList = this.get('couruselListClass');
+                ret.couruselList = new CouruselList({
+                    items: data.courusels.list
+                });
+            }
+            return ret;
+        },
+        couruselListLoad: function(callback, context){
+            this.ajax({
+                'do': 'courusellist'
+            }, this._onCouruselListLoad, {
+                arguments: {callback: callback, context: context}
+            });
+        },
+        _onCouruselListLoad: function(err, res, details){
+            var tRes = this._treatAJAXResult(res.data);
+
+            if (tRes.couruselList){
+                this.set('couruselList', tRes.couruselList);
+            }
+
+            details.callback.apply(details.context, [err, tRes.couruselList]);
+        },
         couruselSave: function(courusel, callback, context){
-            var instance = this;
-            instance.ajax({
+            this.ajax({
                 'do': 'couruselsave',
                 'savedata': courusel.toJSON()
-            }, instance._ouCouruselSave, {
-                context: instance,
+            }, this._ouCouruselSave, {
                 arguments: {callback: callback, context: context }
             });
         },
@@ -119,6 +160,9 @@ Component.entryPoint = function(NS){
         ATTRS: {
             component: {
                 value: COMPONENT
+            },
+            callback: {
+                value: null
             }
         }
     });
@@ -144,7 +188,7 @@ Component.entryPoint = function(NS){
         });
 
         if (NS.appInstance){
-            return callback(null, NS.appInstance);
+            return callback.call(null, NS.appInstance);
         }
         NS.appInstance = new NS.App({
             moduleName: '{C#MODNAME}'

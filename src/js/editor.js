@@ -1,6 +1,6 @@
-/*
- @package Abricos
- @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+/*!
+ * Copyright 2008-2014 Alexander Kuzmin <roosit@abricos.org>
+ * Licensed under the MIT license
  */
 
 var Component = new Brick.Component();
@@ -21,6 +21,14 @@ Component.entryPoint = function(NS){
         SYS.Form,
         SYS.FormAction
     ], {
+        initializer: function(){
+            this.publish('editorCancel', {
+                defaultFn: this._defEditorCancel
+            });
+            this.publish('editorSaved', {
+                defaultFn: this._defEditorSaved
+            });
+        },
         onSubmitFormAction: function(){
             this.set('waiting', true);
 
@@ -29,23 +37,23 @@ Component.entryPoint = function(NS){
 
             NS.appInstance.couruselSave(fields, function(err, result){
                 instance.set('waiting', false);
-                if (err){
-                    var errorText = this.template.replace('error', {
-                        msg: err.msg
-                    });
-                    Brick.mod.widget.notice.show(errorText);
-                }else{
-                    Brick.Page.reload(NS.URL.manager.view());
+                if (!err){
+                    instance.fire('editorSaved');
                 }
             });
         },
-
         onClick: function(e){
             switch (e.dataClick) {
                 case 'cancel':
-                    console.log('click Cancel button');
+                    this.fire('editorCancel');
                     return true;
             }
+        },
+        _defEditorSaved: function(err, result){
+            Brick.Page.reload(NS.URL.manager.view());
+        },
+        _defEditorCancel: function(){
+            Brick.Page.reload(NS.URL.manager.view());
         }
     }, {
         ATTRS: {

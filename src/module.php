@@ -27,7 +27,7 @@ class CouruselModule extends Ab_Module {
     public function GetManager(){
         if (empty($this->_manager)){
             require_once 'includes/manager.php';
-            $this->_manager = new CouruselManager($this);
+            $this->_manager = new CouruselModuleManager($this);
         }
 
         return $this->_manager;

@@ -5,36 +5,39 @@
 
 var Component = new Brick.Component();
 Component.requires = {
+    yui: ['model', 'model-list']
+    /*,
+
     mod: [
         {name: 'sys', files: ['structure.js']}
     ]
+    /**/
 };
 Component.entryPoint = function(NS){
 
     var Y = Brick.YUI,
         SYS = Brick.mod.sys;
 
-    var Courusel = function(){
-        Courusel.superclass.constructor.apply(this, arguments);
-    };
-    Courusel.NAME = 'courusel';
-    Courusel.ATTRS = {
-        id: {
-            value: 0
-        },
-        name: {
-            value: ''
-        },
-        width: {
-            value: 0
-        },
-        height: {
-            value: 0
+    NS.Courusel = Y.Base.create('courusel', Y.Model, [ ], {
+    }, {
+        ATTRS: {
+            name: {
+                value: ''
+            },
+            width: {
+                value: 0
+            },
+            height: {
+                value: 0
+            }
         }
-    };
-    Y.extend(Courusel, SYS.Structure);
-    NS.Courusel = Courusel;
+    });
 
+    NS.CouruselList = Y.Base.create('couruselList', Y.ModelList, [], {
+        model: NS.Courusel
+    });
+
+    /*
     var Slide = function(){
         Slide.superclass.constructor.apply(this, arguments);
     };
@@ -58,5 +61,6 @@ Component.entryPoint = function(NS){
     };
     Y.extend(Slide, SYS.Structure);
     NS.Slide = Slide;
+    /**/
 
 };
