@@ -24,13 +24,29 @@ Component.entryPoint = function(NS){
                 'urlcreate': NS.URL.editor.create()
             };
         },
-        onClick: function(e){
-            switch (e.dataClick){
-                /*
-                case 'create':
+        onInitAppWidget: function(err, appInstance, options){
+            this.renderCouruselList();
+        },
+        renderCouruselList: function(){
+            var couruselList = this.get('appInstance').get('couruselList');
 
-                    return true;
-                /**/
+            var tp = this.template, lst = "";
+
+            couruselList.each(function(courusel){
+                lst += tp.replace('row', courusel.toJSON());
+            }, this);
+
+            tp.gel('list').innerHTML = tp.replace('list', {
+                'rows': lst
+            });
+        },
+        onClick: function(e){
+            switch (e.dataClick) {
+                /*
+                 case 'create':
+
+                 return true;
+                 /**/
             }
         }
     }, {
@@ -39,7 +55,7 @@ Component.entryPoint = function(NS){
                 value: COMPONENT
             },
             templateBlockName: {
-                value: 'widget'
+                value: 'widget,list,row'
             }
         }
     });

@@ -9,7 +9,7 @@ Component.requires = {
     mod: [
         {name: 'sys', files: ['application.js', 'widget.js', 'form.js']},
         {name: 'widget', files: ['notice.js']},
-        {name: '{C#MODNAME}', files: ['roles.js', 'structure.js']}
+        {name: '{C#MODNAME}', files: ['roles.js', 'model.js']}
     ]
 };
 Component.entryPoint = function(NS){
@@ -50,22 +50,29 @@ Component.entryPoint = function(NS){
             this.set(WAITING, true);
 
             var instance = this;
-            NS.initApp(function(){
-                instance._initAppWidget();
+            NS.initApp({
+                initCallback: function(err, appInstance){
+                    instance._initAppWidget(err, appInstance);
+                }
             });
         },
-        _initAppWidget: function(){
+        _initAppWidget: function(err, appInstance){
+            this.set('appInstance', appInstance);
             this.set(WAITING, false);
-
             var args = this._appWidgetArguments
-            if (Y.Lang.isFunction(this.onInitAppWidget)){
-                this.onInitAppWidget.apply(this, args);
-            }
+            this.onInitAppWidget.apply(this, [err, appInstance, {
+                arguments: args
+            }]);
+        },
+        onInitAppWidget: function(){
         }
     }, {
         ATTRS: {
             render: {
                 value: true
+            },
+            appInstance: {
+                values: null
             }
         }
     });
@@ -78,12 +85,16 @@ Component.entryPoint = function(NS){
         },
         couruselList: {
             value: null
+        },
+        initCallback: {
+            value: function(){
+            }
         }
     };
     AppBase.prototype = {
         initializer: function(){
-            this.couruselListLoad(function(err, result){
-                console.log(arguments);
+            this.couruselListLoad(function(err){
+                this.get('initCallback')(err, this);
             }, this);
         },
         onAJAXError: function(err){
@@ -161,8 +172,11 @@ Component.entryPoint = function(NS){
             component: {
                 value: COMPONENT
             },
-            callback: {
+            initCallback: {
                 value: null
+            },
+            moduleName: {
+                value: '{C#MODNAME}'
             }
         }
     });
@@ -183,17 +197,17 @@ Component.entryPoint = function(NS){
     };
 
     NS.appInstance = null;
-    NS.initApp = function(callback){
-        callback || (callback = function(){
-        });
+    NS.initApp = function(options){
+        options = Y.merge({
+            initCallback: function(){
+            }
+        }, options || {});
 
         if (NS.appInstance){
-            return callback.call(null, NS.appInstance);
+            return options.initCallback(null, NS.appInstance);
         }
-        NS.appInstance = new NS.App({
-            moduleName: '{C#MODNAME}'
-        });
-        callback(null, NS.appInstance);
+        new NS.App(options);
     };
 
-};
+}
+;

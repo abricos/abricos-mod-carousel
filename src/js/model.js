@@ -6,12 +6,6 @@
 var Component = new Brick.Component();
 Component.requires = {
     yui: ['model', 'model-list']
-    /*,
-
-    mod: [
-        {name: 'sys', files: ['structure.js']}
-    ]
-    /**/
 };
 Component.entryPoint = function(NS){
 

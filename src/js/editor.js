@@ -29,6 +29,9 @@ Component.entryPoint = function(NS){
                 defaultFn: this._defEditorSaved
             });
         },
+        onInitAppWidget: function(){
+            console.log(arguments);
+        },
         onSubmitFormAction: function(){
             this.set('waiting', true);
 
