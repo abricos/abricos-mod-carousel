@@ -23,6 +23,23 @@ Component.entryPoint = function(NS){
 
         SYS = Brick.mod.sys;
 
+    NS.URL = {
+        ws: "#app={C#MODNAMEURI}/wspace/ws/",
+        manager: {
+            view: function(){
+                return NS.URL.ws + 'manager/ManagerWidget/'
+            }
+        },
+        editor: {
+            create: function(){
+                return NS.URL.ws + 'editor/EditorWidget/'
+            },
+            edit: function(couruselId){
+                return NS.URL.ws + 'editor/EditorWidget/'+couruselId+'/'
+            }
+        }
+    };
+
     NS.AppWidget = Y.Base.create('appWidget', Y.Widget, [
         SYS.Language,
         SYS.Template,
@@ -181,20 +198,6 @@ Component.entryPoint = function(NS){
         }
     });
     NS.App = App;
-
-    NS.URL = {
-        ws: "#app={C#MODNAMEURI}/wspace/ws/",
-        manager: {
-            view: function(){
-                return NS.URL.ws + 'manager/ManagerWidget/'
-            }
-        },
-        editor: {
-            create: function(){
-                return NS.URL.ws + 'editor/EditorWidget/'
-            }
-        }
-    };
 
     NS.appInstance = null;
     NS.initApp = function(options){

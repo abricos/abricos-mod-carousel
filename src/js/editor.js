@@ -30,7 +30,17 @@ Component.entryPoint = function(NS){
             });
         },
         onInitAppWidget: function(){
-            console.log(arguments);
+            this.renderCourusel();
+        },
+        renderCourusel: function(){
+            var couruselList = this.get('appInstance').get('couruselList');
+
+            var couruselId = this.get('couruselId');
+
+            var courusel = couruselList.getById(couruselId);
+
+            this.set('fields', courusel);
+            this.updateUIFromFields();
         },
         onSubmitFormAction: function(){
             this.set('waiting', true);
@@ -52,7 +62,7 @@ Component.entryPoint = function(NS){
                     return true;
             }
         },
-        _defEditorSaved: function(err, result){
+        _defEditorSaved: function(){
             Brick.Page.reload(NS.URL.manager.view());
         },
         _defEditorCancel: function(){
@@ -68,8 +78,20 @@ Component.entryPoint = function(NS){
             },
             fieldsClass: {
                 value: NS.Courusel
+            },
+            couruselId: {
+                value: 0
             }
         }
     });
 
+    NS.EditorWidget.parseURLParam = function(args){
+        args = Y.merge({
+            p1: 0
+        }, args || {});
+
+        return {
+            couruselId: args.p1
+        };
+    };
 };

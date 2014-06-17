@@ -89,15 +89,18 @@ Component.entryPoint = function(NS){
 
             this.elSetHTML('board', "");
 
-            var elBoard = Y.one('#'+this.gel('board').id),
+            var elBoard = Y.one('#' + this.gel('board').id),
                 elDiv = Y.Node.create('<div></div>');
 
             elBoard.appendChild(elDiv);
 
-            this.widget = new NS[wName]({
-                    'boundingBox': elDiv
-                },
-                p['p1'], p['p2'], p['p3'], p['p4']
+            var args = {};
+            if (Y.Lang.isFunction(NS[wName].parseURLParam)){
+                args = NS[wName].parseURLParam(p);
+            }
+
+            this.widget = new NS[wName](
+                Y.mix({'boundingBox': elDiv}, args)
             );
 
             var isUpdate = {};

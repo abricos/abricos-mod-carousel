@@ -19,10 +19,13 @@ Component.entryPoint = function(NS){
 
     NS.ManagerWidget = Y.Base.create('managerWidget', NS.AppWidget, [
     ], {
-        buildTData: function(){
-            return {
-                'urlcreate': NS.URL.editor.create()
-            };
+        initializer: function(){
+            this.publish('couruselCreate', {
+                defaultFn: this._defCouruselCreate
+            });
+            this.publish('couruselEdit', {
+                defaultFn: this._defCouruselEdit
+            });
         },
         onInitAppWidget: function(err, appInstance, options){
             this.renderCouruselList();
@@ -42,12 +45,21 @@ Component.entryPoint = function(NS){
         },
         onClick: function(e){
             switch (e.dataClick) {
-                /*
-                 case 'create':
+                case 'courusel-create':
+                    this.fire('couruselCreate');
+                    return true;
+                case 'courusel-edit':
+                    var couruselId = e.target.getData('id');
+                    this.fire('couruselEdit', couruselId);
+                    return true;
 
-                 return true;
-                 /**/
             }
+        },
+        _defCouruselCreate: function(){
+            Brick.Page.reload(NS.URL.editor.create());
+        },
+        _defCouruselEdit: function(e, couruselId){
+            Brick.Page.reload(NS.URL.editor.edit(couruselId));
         }
     }, {
         ATTRS: {
