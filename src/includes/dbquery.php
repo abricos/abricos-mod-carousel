@@ -34,6 +34,18 @@ class CouruselQuery {
         return $db->insert_id();
     }
 
+    public static function CouruselUpdate(Ab_Database $db, $d){
+        $sql = "
+            UPDATE ".$db->prefix."courusel
+            SET name='".bkstr($d->name)."',
+                width=".bkstr($d->width).",
+                height=".bkstr($d->height)."
+            WHERE couruselid=".bkint($d->id)."
+            LIMIT 1
+        ";
+        $db->query_write($sql);
+    }
+
 }
 
 ?>

@@ -71,7 +71,7 @@ class CouruselManager {
         if ($d->id === 0) {
             $d->id = CouruselQuery::CouruselAppend($this->db, $d);
         } else {
-
+            CouruselQuery::CouruselUpdate($this->db, $d);
         }
 
         $ret = new stdClass();

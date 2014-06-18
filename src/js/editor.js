@@ -33,14 +33,11 @@ Component.entryPoint = function(NS){
             this.renderCourusel();
         },
         renderCourusel: function(){
-            var couruselList = this.get('appInstance').get('couruselList');
-
-            var couruselId = this.get('couruselId');
-
-            var courusel = couruselList.getById(couruselId);
+            var couruselList = this.get('appInstance').get('couruselList'),
+                couruselId = this.get('couruselId'),
+                courusel = couruselList.getById(couruselId);
 
             this.set('fields', courusel);
-            this.updateUIFromFields();
         },
         onSubmitFormAction: function(){
             this.set('waiting', true);
@@ -48,7 +45,7 @@ Component.entryPoint = function(NS){
             var fields = this.get('fields'),
                 instance = this;
 
-            NS.appInstance.couruselSave(fields, function(err, result){
+            this.get('appInstance').couruselSave(fields, function(err, result){
                 instance.set('waiting', false);
                 if (!err){
                     instance.fire('editorSaved');
