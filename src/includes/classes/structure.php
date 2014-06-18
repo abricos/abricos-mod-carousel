@@ -5,6 +5,7 @@ class Courusel extends AbricosItem {
     public $name;
     public $width;
     public $height;
+    public $off;
 
     public function __construct($d) {
         parent::__construct($d);
@@ -12,6 +13,7 @@ class Courusel extends AbricosItem {
         $this->name = strval($d['name']);
         $this->width = intval($d['width']);
         $this->height = intval($d['height']);
+        $this->off = $d['off'] === 1;
     }
 
     public function ToAJAX() {
@@ -19,6 +21,7 @@ class Courusel extends AbricosItem {
         $ret->name = $this->name;
         $ret->width = $this->width;
         $ret->height = $this->height;
+        $ret->off = $this->off;
         return $ret;
     }
 }

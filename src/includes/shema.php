@@ -25,6 +25,8 @@ if ($updateManager->isInstall()) {
 			`width` int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'Ширина',
 			`height` int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'Высота',
 
+			`off` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'Отключено',
+
 			`dateline` int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'Дата создания',
 			`deldate` int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'Дата удаления',
 

@@ -36,7 +36,14 @@ Component.entryPoint = function(NS){
             var tp = this.template, lst = "";
 
             couruselList.each(function(courusel){
-                lst += tp.replace('row', courusel.toJSON());
+                var attrs = courusel.toJSON();
+                lst += tp.replace('row', [
+                    {
+                        onoffbutton: attrs.off ?
+                            tp.replace('btnon') : tp.replace('btnoff')
+                    },
+                    attrs
+                ]);
             }, this);
 
             tp.gel('list').innerHTML = tp.replace('list', {
@@ -67,7 +74,7 @@ Component.entryPoint = function(NS){
                 value: COMPONENT
             },
             templateBlockName: {
-                value: 'widget,list,row'
+                value: 'widget,list,row,btnon,btnoff'
             }
         }
     });

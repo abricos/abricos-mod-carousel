@@ -23,6 +23,9 @@ Component.entryPoint = function(NS){
             },
             height: {
                 value: 0
+            },
+            off: {
+                value: false
             }
         }
     });
