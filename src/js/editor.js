@@ -30,22 +30,25 @@ Component.entryPoint = function(NS){
             });
         },
         onInitAppWidget: function(){
-            this.renderCourusel();
-        },
-        renderCourusel: function(){
             var couruselList = this.get('appInstance').get('couruselList'),
-                couruselId = this.get('couruselId'),
-                courusel = couruselList.getById(couruselId);
+                couruselId = this.get('couruselId')|0,
+                courusel;
 
-            this.set('fields', courusel);
+            if (couruselId === 0){
+                courusel = new (couruselList.model)();
+            } else {
+                courusel = couruselList.getById(couruselId);
+            }
+
+            this.set('model', courusel);
         },
         onSubmitFormAction: function(){
             this.set('waiting', true);
 
-            var fields = this.get('fields'),
+            var model = this.get('model'),
                 instance = this;
 
-            this.get('appInstance').couruselSave(fields, function(err, result){
+            this.get('appInstance').couruselSave(model, function(err, result){
                 instance.set('waiting', false);
                 if (!err){
                     instance.fire('editorSaved');
@@ -72,9 +75,6 @@ Component.entryPoint = function(NS){
             },
             templateBlockName: {
                 value: 'widget'
-            },
-            fieldsClass: {
-                value: NS.Courusel
             },
             couruselId: {
                 value: 0
