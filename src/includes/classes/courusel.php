@@ -25,6 +25,8 @@ class CouruselManager {
                 return $this->CouruselSaveToAJAX($d->savedata);
             case "slidelist":
                 return $this->SlideListToAJAX($d->couruselid);
+            case "slidesave":
+                return $this->SlideSaveToAJAX($d->couruselid, $d->savedata);
         }
         return null;
     }
@@ -87,11 +89,7 @@ class CouruselManager {
         $ret->err = 0;
 
         $result = $this->CouruselList();
-        if (is_integer($result)) {
-            $ret->err = $result;
-        } else {
-            $ret->courusels = $result->ToAJAX();
-        }
+        $ret->courusels = $result->ToAJAX();
 
         return $ret;
     }
@@ -101,7 +99,7 @@ class CouruselManager {
      */
     public function CouruselList() {
         if (!$this->manager->IsViewRole()) {
-            return 403;
+            return null;
         }
 
         $list = new CouruselList();
@@ -111,6 +109,19 @@ class CouruselManager {
             $list->Add(new Courusel($d));
         }
         return $list;
+    }
+
+    public function Courusel($couruselId) {
+        if (!$this->manager->IsViewRole()) {
+            return null;
+        }
+
+        $row = CouruselQuery::Courusel($this->db, $couruselId);
+        if (empty($row)) {
+            return null;
+        }
+
+        return new Courusel($row);
     }
 
     public function SlideListToAJAX($couruselId, $overResult = null) {
@@ -139,6 +150,60 @@ class CouruselManager {
             $list->Add(new CouruselSlide($d));
         }
         return $list;
+    }
+
+    public function SlideSaveToAJAX($couruselId, $sd) {
+        $res = $this->SlideSave($couruselId, $sd);
+        $ret = $this->manager->TreatResult($res);
+
+        if ($ret->err === 0) {
+            $ret = $this->SlideList($couruselId, $ret);
+        }
+        return $ret;
+    }
+
+    /**
+     * Slide Save
+     *
+     * Error Code:
+     *  403 - Forbidden
+     *  1 - courusel not found
+     *
+     * @param $couruselId
+     * @param $d Array|Object
+     *
+     * @return Object
+     */
+    public function SlideSave($couruselId, $d) {
+        if (!$this->manager->IsWriteRole()) {
+            return 403;
+        }
+
+        $courusel = $this->Courusel($couruselId);
+
+        if (empty($courusel)) {
+            return 1;
+        }
+
+        $utmf = Abricos::TextParser(true);
+
+        $d->id = intval($d->id);
+        $d->title = $utmf->Parser($d->title);
+        $d->url = strval($d->url);
+        $d->filehash = strval($d->filehash);
+        $d->ord = intval($d->ord);
+
+        if ($d->id === 0) {
+            $d->id = CouruselQuery::SlideAppend($this->db, $couruselId, $d);
+        } else {
+
+        }
+
+        $ret = new stdClass();
+        $ret->couruselid = $couruselId;
+        $ret->slideid = $d->id;
+
+        return $ret;
     }
 }
 

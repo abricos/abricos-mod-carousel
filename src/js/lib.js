@@ -212,6 +212,15 @@ Component.entryPoint = function(NS){
         _onSlideListLoad: function(err, res, details){
             var tRes = this._treatAJAXResult(res.data);
             details.callback.apply(details.context, [err, tRes.slideList]);
+        },
+        slideSave: function(couruselId, slide, callback, context){
+            this.ajax({
+                'do': 'slidesave',
+                'couruselid': couruselId,
+                'savedata': slide.toJSON()
+            }, this._onCouruselListLoad, {
+                arguments: {callback: callback, context: context }
+            });
         }
     };
     NS.AppBase = AppBase;

@@ -21,6 +21,14 @@ Component.entryPoint = function(NS){
         SYS.Form,
         SYS.FormAction
     ], {
+        initializer: function(){
+            this.publish('editorCancel', {
+                defaultFn: this._defEditorCancel
+            });
+            this.publish('editorSaved', {
+                defaultFn: this._defEditorSaved
+            });
+        },
         buildTData: function(){
             var slideId = this.get('slideId') | 0
             return {
@@ -68,7 +76,7 @@ Component.entryPoint = function(NS){
             var model = this.get('model'),
                 instance = this;
 
-            this.get('appInstance').couruselSave(model, function(err, result){
+            this.get('appInstance').slideSave(this.get('couruselId'), model, function(err, result){
                 instance.set('waiting', false);
                 if (!err){
                     instance.fire('editorSaved');
@@ -81,6 +89,10 @@ Component.entryPoint = function(NS){
                     this.fire('editorCancel');
                     return true;
             }
+        },
+        _defEditorSaved: function(){
+        },
+        _defEditorCancel: function(){
         }
     }, {
         ATTRS: {

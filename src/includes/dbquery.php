@@ -7,8 +7,21 @@
  */
 class CouruselQuery {
 
-    public static function CouruselList(Ab_Database $db) {
+    public static function Courusel(Ab_Database $db, $couruselId) {
+        $sql = "
+            SELECT
+                couruselid as id,
+                name,
+                width,
+                height
+            FROM ".$db->prefix."courusel
+            WHERE couruselid=".bkint($couruselId)."
+            LIMIT 1
+        ";
+        return $db->query_first($sql);
+    }
 
+    public static function CouruselList(Ab_Database $db) {
         $sql = "
             SELECT
                 couruselid as id,
@@ -20,13 +33,13 @@ class CouruselQuery {
         return $db->query_read($sql);
     }
 
-    public static function CouruselAppend(Ab_Database $db, $d){
+    public static function CouruselAppend(Ab_Database $db, $d) {
         $sql = "
             INSERT INTO ".$db->prefix."courusel
             (name, width, height, dateline) VALUES (
                 '".bkstr($d->name)."',
-                ".bkstr($d->width).",
-                ".bkstr($d->height).",
+                ".bkint($d->width).",
+                ".bkint($d->height).",
                 ".TIMENOW."
             )
         ";
@@ -34,19 +47,19 @@ class CouruselQuery {
         return $db->insert_id();
     }
 
-    public static function CouruselUpdate(Ab_Database $db, $d){
+    public static function CouruselUpdate(Ab_Database $db, $d) {
         $sql = "
             UPDATE ".$db->prefix."courusel
             SET name='".bkstr($d->name)."',
-                width=".bkstr($d->width).",
-                height=".bkstr($d->height)."
+                width=".bkint($d->width).",
+                height=".bkint($d->height)."
             WHERE couruselid=".bkint($d->id)."
             LIMIT 1
         ";
         $db->query_write($sql);
     }
 
-    public static function SlideList(Ab_Database $db, $couruselId){
+    public static function SlideList(Ab_Database $db, $couruselId) {
         $sql = "
             SELECT
                 slideid as id,
@@ -55,6 +68,20 @@ class CouruselQuery {
             WHERE couruselid=".bkint($couruselId)."
         ";
         return $db->query_read($sql);
+    }
+
+    public static function SlideAppend(Ab_Database $db, $couruselId, $d) {
+        $sql = "
+            INSERT INTO ".$db->prefix."courusel_slide
+            (title, url, filehash, ord) VALUES (
+                '".bkstr($d->title)."',
+                '".bkstr($d->url)."',
+                '".bkstr($d->filehash)."',
+                ".bkint($d->ord)."
+            )
+        ";
+        $db->query_write($sql);
+        return $db->insert_id();
     }
 
 }
