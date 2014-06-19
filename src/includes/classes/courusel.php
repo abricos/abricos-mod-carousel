@@ -116,13 +116,13 @@ class CouruselManager {
     public function SlideListToAJAX($couruselId, $overResult = null) {
         $ret = !empty($overResult) ? $overResult : (new stdClass());
         $ret->err = 0;
-        $ret->couruselid = $couruselId;
 
         $result = $this->SlideList($couruselId);
         if (is_integer($result)) {
             $ret->err = $result;
         } else {
             $ret->slides = $result->ToAJAX();
+            $ret->slides->couruselid = $couruselId;
         }
 
         return $ret;

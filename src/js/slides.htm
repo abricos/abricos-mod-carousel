@@ -5,8 +5,7 @@
 
             <div class="row">
                 <div class="col-md-7">
-                    <h3 class="panel-title">Слайды </h3>
-
+                    <h3 class="panel-title">Слайды <span id="{i#name}"></span></h3>
                 </div>
                 <div class="col-md-5">
                     <div class="btn-toolbar text-right">
@@ -14,7 +13,7 @@
                             <img src="/images/loading.gif"/> Загрузка...
                         </span>
 
-                        <button type="button" class="btn btn-default" data-click="courusel-create" data-wait="disable">
+                        <button type="button" class="btn btn-default" data-click="slide-create" data-wait="disable">
                             Добавить слайд
                         </button>
                     </div>
@@ -25,6 +24,7 @@
         </div>
         <div class="panel-body">
             <div id="{i#list}"></div>
+            <div id="{i#editor}"></div>
         </div>
     </div>
 </div>

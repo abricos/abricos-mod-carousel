@@ -6,7 +6,7 @@
 var Component = new Brick.Component();
 Component.requires = {
     mod: [
-        {name: '{C#MODNAME}', files: ['lib.js']}
+        {name: '{C#MODNAME}', files: ['slideeditor.js']}
     ]
 };
 Component.entryPoint = function(NS){
@@ -17,21 +17,13 @@ Component.entryPoint = function(NS){
 
     NS.SlidesWidget = Y.Base.create('slidesWidget', NS.AppWidget, [
     ], {
-        initializer: function(){
-            this.publish('editorCancel', {
-                defaultFn: this._defEditorCancel
-            });
-            this.publish('editorSaved', {
-                defaultFn: this._defEditorSaved
-            });
-        },
         buildTData: function(){
             var couruselId = this.get('couruselId') | 0
             return {
 
             };
         },
-        onInitAppWidget: function(err, appInstance, options){
+        onInitAppWidget: function(err, appInstance){
             var couruselList = appInstance.get('couruselList'),
                 couruselId = this.get('couruselId') | 0,
                 courusel = couruselList.getById(couruselId);
@@ -40,34 +32,28 @@ Component.entryPoint = function(NS){
                 return; // TODO: necessary to implement error
             }
 
+            var tp = this.template;
+
+            tp.gel('name').innerHTML = courusel.get('name');
+
             this.set('waiting', true);
 
             appInstance.slideListLoad(couruselId, function(err, slideList){
                 this.set('waiting', false);
             }, this);
-
-
-/*
-            var tp = this.template, lst = "";
-
-            couruselList.each(function(courusel){
-                var attrs = courusel.toJSON();
-
-                lst += tp.replace('row', [
-                    attrs
-                ]);
-            }, this);
-
-            tp.gel('list').innerHTML = tp.replace('list', {
-                'rows': lst
+        },
+        onClick: function(e){
+            switch (e.dataClick) {
+                case 'slide-create':
+                    this._createSlide();
+                    return true;
+            }
+        },
+        _createSlide: function(){
+            new NS.SlideEditorWidget({
+                boundingBox: this.template.gel('editor'),
+                couruselId: this.get('couruselId')
             });
-            /**/
-        },
-        _defEditorSaved: function(){
-            Brick.Page.reload(NS.URL.manager.view());
-        },
-        _defEditorCancel: function(){
-            Brick.Page.reload(NS.URL.manager.view());
         }
     }, {
         ATTRS: {

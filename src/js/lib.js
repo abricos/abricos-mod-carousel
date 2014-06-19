@@ -116,9 +116,13 @@ Component.entryPoint = function(NS){
     };
     AppBase.prototype = {
         initializer: function(){
+            this.cacheClear();
             this.couruselListLoad(function(err){
                 this.get('initCallback')(err, this);
             }, this);
+        },
+        cacheClear: function(){
+            this._cacheSlideList = {};
         },
         onAJAXError: function(err){
             Brick.mod.widget.notice.show(err.msg);
@@ -138,6 +142,7 @@ Component.entryPoint = function(NS){
                     couruselId: data.slides.couruselid,
                     items: data.slides.list
                 });
+                this._cacheSlideList[data.slides.couruselid] = ret.slideList;
             }
             return ret;
         },
@@ -190,6 +195,13 @@ Component.entryPoint = function(NS){
             }
         },
         slideListLoad: function(couruselId, callback, context){
+            var cacheSlideList = this._cacheSlideList[couruselId];
+
+            if (cacheSlideList){
+                callback.apply(context, [null, cacheSlideList]);
+                return;
+            }
+
             this.ajax({
                 'do': 'slidelist',
                 'couruselid': couruselId
@@ -209,6 +221,9 @@ Component.entryPoint = function(NS){
         SYS.Language,
         NS.AppBase
     ], {
+        initializer: function(){
+            NS.appInstance = this;
+        }
     }, {
         ATTRS: {
             component: {
