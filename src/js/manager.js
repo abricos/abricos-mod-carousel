@@ -26,6 +26,9 @@ Component.entryPoint = function(NS){
             this.publish('couruselEdit', {
                 defaultFn: this._defCouruselEdit
             });
+            this.publish('couruselSlides', {
+                defaultFn: this._defCouruselSlides
+            });
         },
         onInitAppWidget: function(err, appInstance, options){
             this.renderCouruselList();
@@ -37,6 +40,7 @@ Component.entryPoint = function(NS){
 
             couruselList.each(function(courusel){
                 var attrs = courusel.toJSON();
+
                 lst += tp.replace('row', [
                     {
                         onoffbutton: attrs.off ?
@@ -59,7 +63,10 @@ Component.entryPoint = function(NS){
                     var couruselId = e.target.getData('id');
                     this.fire('couruselEdit', couruselId);
                     return true;
-
+                case 'courusel-slides':
+                    var couruselId = e.target.getData('id');
+                    this.fire('couruselSlides', couruselId);
+                    return true;
             }
         },
         _defCouruselCreate: function(){
@@ -67,6 +74,9 @@ Component.entryPoint = function(NS){
         },
         _defCouruselEdit: function(e, couruselId){
             Brick.Page.reload(NS.URL.editor.edit(couruselId));
+        },
+        _defCouruselSlides: function(e, couruselId){
+            Brick.Page.reload(NS.URL.editor.slides(couruselId));
         }
     }, {
         ATTRS: {

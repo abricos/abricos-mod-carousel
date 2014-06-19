@@ -15,6 +15,8 @@ class CouruselModule extends Ab_Module {
         // Название модуля
         $this->name = "courusel";
 
+        $this->takelink = "courusel";
+
         // Версия модуля
         $this->version = "0.1.0";
 

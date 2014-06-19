@@ -38,6 +38,7 @@ if ($updateManager->isInstall()) {
     $db->query_write("
 		CREATE TABLE IF NOT EXISTS ".$pfx."courusel_slide (
             `slideid` int(10) unsigned NOT NULL auto_increment,
+            `couruselid` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '',
 		    `title` varchar(250) NOT NULL DEFAULT '' COMMENT 'Заголовок',
 		    `url` varchar(250) NOT NULL DEFAULT '' COMMENT 'URL',
 		    `ord` int(4) NOT NULL DEFAULT 0 COMMENT 'Сортировка',

@@ -1,11 +1,11 @@
 <!--{widget}-->
-<div id="{i#id}" class="manager">
+<div id="{i#id}" class="slides">
     <div class="panel panel-default">
         <div class="panel-heading">
 
             <div class="row">
                 <div class="col-md-7">
-                    <h3 class="panel-title">Слайды</h3>
+                    <h3 class="panel-title">Слайды </h3>
 
                 </div>
                 <div class="col-md-5">
@@ -15,7 +15,7 @@
                         </span>
 
                         <button type="button" class="btn btn-default" data-click="courusel-create" data-wait="disable">
-                            Добавить блок картинок
+                            Добавить слайд
                         </button>
                     </div>
                 </div>
@@ -72,3 +72,12 @@
         </button>
     </td>
 </tr>
+
+<!--{btnon}--><button type="button" class="btn btn-default btn-xs" data-click="courusel-disable" data-id="{v#id}">
+    Включить
+</button>
+
+<!--{btnoff}-->
+<button type="button" class="btn btn-default btn-xs" data-click="courusel-disable" data-id="{v#id}">
+    Отключить
+</button>

@@ -23,6 +23,8 @@ class CouruselManager {
                 return $this->CouruselListToAJAX();
             case "couruselsave":
                 return $this->CouruselSaveToAJAX($d->savedata);
+            case "slidelist":
+                return $this->SlideListToAJAX($d->couruselid);
         }
         return null;
     }
@@ -51,7 +53,7 @@ class CouruselManager {
      * @return Object
      */
     public function CouruselSave($d) {
-        if (!$this->manager->IsWriteRole()) {
+        if (!$this->manager->IsAdminRole()) {
             return 403;
         }
 
@@ -81,11 +83,7 @@ class CouruselManager {
     }
 
     public function CouruselListToAJAX($overResult = null) {
-        if (!empty($overResult)) {
-            $ret = $overResult;
-        } else {
-            $ret = new stdClass();
-        }
+        $ret = !empty($overResult) ? $overResult : (new stdClass());
         $ret->err = 0;
 
         $result = $this->CouruselList();
@@ -111,6 +109,34 @@ class CouruselManager {
 
         while (($d = $this->db->fetch_array($rows))) {
             $list->Add(new Courusel($d));
+        }
+        return $list;
+    }
+
+    public function SlideListToAJAX($couruselId, $overResult = null) {
+        $ret = !empty($overResult) ? $overResult : (new stdClass());
+        $ret->err = 0;
+        $ret->couruselid = $couruselId;
+
+        $result = $this->SlideList($couruselId);
+        if (is_integer($result)) {
+            $ret->err = $result;
+        } else {
+            $ret->slides = $result->ToAJAX();
+        }
+
+        return $ret;
+    }
+
+    public function SlideList($couruselId) {
+        if (!$this->manager->IsViewRole()) {
+            return 403;
+        }
+
+        $list = new CouruselSlideList();
+        $rows = CouruselQuery::SlideList($this->db, $couruselId);
+        while (($d = $this->db->fetch_array($rows))) {
+            $list->Add(new CouruselSlide($d));
         }
         return $list;
     }

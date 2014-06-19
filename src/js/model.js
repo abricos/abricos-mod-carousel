@@ -34,30 +34,29 @@ Component.entryPoint = function(NS){
         model: NS.Courusel
     });
 
-    /*
-    var Slide = function(){
-        Slide.superclass.constructor.apply(this, arguments);
-    };
-    Slide.NAME = 'slide';
-    Slide.ATTRS = {
-        id: {
-            value: 0
-        },
-        title: {
-            value: ''
-        },
-        url: {
-            value: ''
-        },
-        ord: {
-            value: 0
-        },
-        filehash: {
-            value: ''
+    NS.Slide = Y.Base.create('slide', Y.Model, [ ], {
+    }, {
+        ATTRS: {
+            id: {
+                value: 0
+            },
+            title: {
+                value: ''
+            },
+            url: {
+                value: ''
+            },
+            ord: {
+                value: 0
+            },
+            filehash: {
+                value: ''
+            }
         }
-    };
-    Y.extend(Slide, SYS.Structure);
-    NS.Slide = Slide;
-    /**/
+    });
+
+    NS.SlideList = Y.Base.create('slideList', Y.ModelList, [], {
+        model: NS.Slide
+    });
 
 };

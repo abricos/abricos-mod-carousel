@@ -35,7 +35,10 @@ Component.entryPoint = function(NS){
                 return NS.URL.ws + 'editor/EditorWidget/'
             },
             edit: function(couruselId){
-                return NS.URL.ws + 'editor/EditorWidget/'+couruselId+'/'
+                return NS.URL.ws + 'editor/EditorWidget/' + couruselId + '/'
+            },
+            slides: function(couruselId){
+                return NS.URL.ws + 'slides/SlidesWidget/' + couruselId + '/'
             }
         }
     };
@@ -103,6 +106,9 @@ Component.entryPoint = function(NS){
         couruselList: {
             value: null
         },
+        slideListClass: {
+            value: NS.SlideList
+        },
         initCallback: {
             value: function(){
             }
@@ -121,9 +127,16 @@ Component.entryPoint = function(NS){
             data = data || {};
             var ret = {};
             if (data.courusels){
-                var CouruselList = this.get('couruselListClass');
-                ret.couruselList = new CouruselList({
+                var couruselListClass = this.get('couruselListClass');
+                ret.couruselList = new couruselListClass({
                     items: data.courusels.list
+                });
+            }
+            if (data.slides){
+                var slideListClass = this.get('slideListClass');
+                ret.slideList = new slideListClass({
+                    couruselId: data.slides.couruselid,
+                    items: data.slides.list
                 });
             }
             return ret;
@@ -175,6 +188,18 @@ Component.entryPoint = function(NS){
                     callback.apply(context, [null, res.data]);
                 }
             }
+        },
+        slideListLoad: function(couruselId, callback, context){
+            this.ajax({
+                'do': 'slidelist',
+                'couruselid': couruselId
+            }, this._onSlideListLoad, {
+                arguments: {callback: callback, context: context}
+            });
+        },
+        _onSlideListLoad: function(err, res, details){
+            var tRes = this._treatAJAXResult(res.data);
+            details.callback.apply(details.context, [err, tRes.slideList]);
         }
     };
     NS.AppBase = AppBase;

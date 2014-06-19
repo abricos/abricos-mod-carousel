@@ -29,4 +29,31 @@ class Courusel extends AbricosItem {
 class CouruselList extends AbricosList {
 }
 
+class CouruselSlide extends AbricosItem {
+    public $title;
+    public $url;
+    public $ord;
+    public $filehash;
+
+    public function __construct($d) {
+        parent::__construct($d);
+        $this->title = strval($d->title);
+        $this->url = strval($d->url);
+        $this->filehash = strval($d->filehash);
+        $this->ord = intval($d->ord);
+    }
+
+    public function ToAJAX() {
+        $ret = parent::ToAJAX();
+        $ret->title = $this->title;
+        $ret->url = $this->url;
+        $ret->ord = $this->ord;
+        $this->filehash = $this->filehash;
+        return $ret;
+    }
+}
+
+class CouruselSlideList extends AbricosList {
+}
+
 ?>

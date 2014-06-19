@@ -46,6 +46,17 @@ class CouruselQuery {
         $db->query_write($sql);
     }
 
+    public static function SlideList(Ab_Database $db, $couruselId){
+        $sql = "
+            SELECT
+                slideid as id,
+                title, url, ord, filehash
+            FROM ".$db->prefix."courusel_slide
+            WHERE couruselid=".bkint($couruselId)."
+        ";
+        return $db->query_read($sql);
+    }
+
 }
 
 ?>

@@ -29,6 +29,12 @@ Component.entryPoint = function(NS){
                 defaultFn: this._defEditorSaved
             });
         },
+        buildTData: function(){
+            var couruselId = this.get('couruselId')|0
+            return {
+                'status': couruselId >0 ? 'edit-isedit' : 'edit-isnew'
+            };
+        },
         onInitAppWidget: function(){
             var couruselList = this.get('appInstance').get('couruselList'),
                 couruselId = this.get('couruselId')|0,
