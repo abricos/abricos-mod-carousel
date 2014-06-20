@@ -157,7 +157,7 @@ class CouruselManager {
         $ret = $this->manager->TreatResult($res);
 
         if ($ret->err === 0) {
-            $ret = $this->SlideList($couruselId, $ret);
+            $ret = $this->SlideListToAJAX($couruselId, $ret);
         }
         return $ret;
     }
@@ -196,7 +196,7 @@ class CouruselManager {
         if ($d->id === 0) {
             $d->id = CouruselQuery::SlideAppend($this->db, $couruselId, $d);
         } else {
-
+            CouruselQuery::SlideUpdate($this->db, $couruselId, $d);
         }
 
         $ret = new stdClass();

@@ -73,7 +73,8 @@ class CouruselQuery {
     public static function SlideAppend(Ab_Database $db, $couruselId, $d) {
         $sql = "
             INSERT INTO ".$db->prefix."courusel_slide
-            (title, url, filehash, ord) VALUES (
+            (couruselid, title, url, filehash, ord) VALUES (
+                ".bkint($couruselId).",
                 '".bkstr($d->title)."',
                 '".bkstr($d->url)."',
                 '".bkstr($d->filehash)."',
@@ -82,6 +83,18 @@ class CouruselQuery {
         ";
         $db->query_write($sql);
         return $db->insert_id();
+    }
+
+    public static function SlideUpdate(Ab_Database $db, $couruselId, $d) {
+        $sql = "
+            UPDATE ".$db->prefix."courusel_slide
+            SET title='".bkstr($d->title)."',
+                url='".bkstr($d->url)."',
+                filehash='".bkstr($d->filehash)."',
+                ord=".bkint($d->ord)."
+            WHERE couruselid=".bkint($couruselId)." AND slideid=".bkint($d->id)."
+        ";
+        $db->query_write($sql);
     }
 
 }
