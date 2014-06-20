@@ -62,7 +62,13 @@ Component.entryPoint = function(NS){
 
             slideList.each(function(slide){
                 var attrs = slide.toJSON();
-                lst += tp.replace('row', attrs);
+                lst += tp.replace('row', [
+                    {
+                        tpurl: attrs.url ? tp.replace('url', attrs) : '',
+                        tpimage: attrs.filehash ? tp.replace('image', attrs) : ''
+                    },
+                    attrs
+                ]);
             }, this);
 
             tp.gel('list').innerHTML = tp.replace('list', {
@@ -125,7 +131,7 @@ Component.entryPoint = function(NS){
                 value: COMPONENT
             },
             templateBlockName: {
-                value: 'widget,list,row'
+                value: 'widget,list,row,image,url'
             },
             couruselId: {
                 value: 0

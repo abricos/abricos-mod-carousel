@@ -88,7 +88,30 @@ Component.entryPoint = function(NS){
                 case 'cancel':
                     this.fire('editorCancel');
                     return true;
+                case 'image-upload':
+                    this.imageUploadShow();
+                    return true;
             }
+        },
+        imageUploadShow: function(){
+            NS.uploadActiveImage = this;
+
+            if (Y.Lang.isValue(this._uploadWindow) && !this._uploadWindow.closed){
+                this._uploadWindow.focus();
+                return;
+            }
+
+            var url = '/courusel/uploadimg/';
+            this._uploadWindow = window.open(
+                url, 'couruselimage',
+                'statusbar=no,menubar=no,toolbar=no,scrollbars=yes,resizable=yes,width=550,height=500'
+            );
+            NS.uploadActiveImage = this;
+        },
+        imageSet: function(images){
+            var slide = this.get('model');
+            slide.set('filehash', images[0]);
+            console.log(images);
         },
         _defEditorSaved: function(){
         },

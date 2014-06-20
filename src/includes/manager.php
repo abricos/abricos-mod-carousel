@@ -16,7 +16,7 @@ require_once 'dbquery.php';
 class CouruselModuleManager extends Ab_ModuleManager {
 
     /**
-     * @var CouruselManager
+     * @var CouruselModuleManager
      */
     public static $instance = null;
 

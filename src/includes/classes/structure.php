@@ -37,6 +37,7 @@ class CouruselSlide extends AbricosItem {
 
     public function __construct($d) {
         parent::__construct($d);
+
         $this->title = strval($d['title']);
         $this->url = strval($d['url']);
         $this->filehash = strval($d['filehash']);
@@ -48,7 +49,7 @@ class CouruselSlide extends AbricosItem {
         $ret->title = $this->title;
         $ret->url = $this->url;
         $ret->ord = $this->ord;
-        $this->filehash = $this->filehash;
+        $ret->filehash = $this->filehash;
         return $ret;
     }
 }

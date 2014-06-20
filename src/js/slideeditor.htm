@@ -4,8 +4,9 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title edit-isnew">
-                    Создание нового слайда для <span id="{i#couruselname}" />
+                    Создание нового слайда для <span id="{i#couruselname}"/>
                 </h3>
+
                 <h3 class="panel-title edit-isedit">
                     Редактирование слайда
                 </h3>
@@ -14,6 +15,25 @@
                 <div class="form-group">
                     <label for="{i#title}">Заголовок</label>
                     <input id="{i#title}" name="title" type="text" class="form-control" data-wait="disable">
+                </div>
+                <div class="form-group">
+                    <label for="{i#url}">Ссылка</label>
+                    <input id="{i#url}" name="url" type="text" class="form-control" data-wait="disable">
+                </div>
+                <div class="form-group">
+                    <label for="{i#ord}">Сортировка</label>
+                    <input id="{i#ord}" name="ord" type="text" class="form-control" data-wait="disable">
+                    <p class="help-block">Чем больше значение, тем выше</p>
+                </div>
+                <div class="form-group">
+
+                    <label>Картинка</label>
+                    <div class="text-center">
+                        <a href="#" class="thumbnail" data-click="image-upload" data-wait="disable">
+                            Загрузить новую картинку
+                        </a>
+                    </div>
+
                 </div>
                 <div class="btn-toolbar text-right">
                     <span data-wait="show">

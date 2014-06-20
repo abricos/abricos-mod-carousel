@@ -50,7 +50,7 @@ Component.entryPoint = function(NS){
                 value: 0
             },
             filehash: {
-                value: ''
+                value: null
             }
         }
     });

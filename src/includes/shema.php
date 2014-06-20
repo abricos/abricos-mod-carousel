@@ -47,6 +47,19 @@ if ($updateManager->isInstall()) {
 		)".$charset
     );
 
+    // картинки
+    $db->query_write("
+		CREATE TABLE IF NOT EXISTS `".$pfx."courusel_foto` (
+			`fotoid` int(10) UNSIGNED NOT NULL auto_increment,
+			`slideid` int(10) UNSIGNED NOT NULL COMMENT 'Идентификатор слайда',
+			`fileid` varchar(8) NOT NULL,
+			`ord` int(4) UNSIGNED NOT NULL default '0' COMMENT 'Сортировка',
+			`dateline` int(10) UNSIGNED NOT NULL default '0' COMMENT 'дата добавления',
+			PRIMARY KEY (`fotoid`),
+			KEY `slideid` (`slideid`)
+		)".$charset
+    );
+
 }
 
 ?>

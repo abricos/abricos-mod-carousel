@@ -34,6 +34,17 @@ class CouruselModule extends Ab_Module {
 
         return $this->_manager;
     }
+
+    public function GetContentName(){
+        $adress = $this->registry->adress;
+        $dir = Abricos::$adress->dir;
+
+        switch($dir[1]){
+            case 'uploadimg':
+                return $dir[1];
+        }
+        return '';
+    }
 }
 
 class CouruselAction {

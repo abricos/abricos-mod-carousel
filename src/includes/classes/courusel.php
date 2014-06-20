@@ -203,7 +203,37 @@ class CouruselManager {
         $ret->couruselid = $couruselId;
         $ret->slideid = $d->id;
 
+        CouruselQuery::FotoRemoveFromBuffer($this->db, $d->filehash);
+
         return $ret;
+    }
+
+    public function FotoAddToBuffer($fhash) {
+        if (!$this->manager->IsWriteRole()) {
+            return false;
+        }
+
+        CouruselQuery::FotoAddToBuffer($this->db, $fhash);
+
+        $this->FotoBufferClear();
+    }
+
+    public function FotoBufferClear() {
+        $mod = Abricos::GetModule('filemanager');
+        if (empty($mod)) {
+            return;
+        }
+        $mod->GetManager();
+        $fm = FileManager::$instance;
+        $fm->RolesDisable();
+
+        $rows = CouruselQuery::FotoFreeFromBufferList($this->db);
+        while (($row = $this->db->fetch_array($rows))) {
+            $fm->FileRemove($row['fh']);
+        }
+        $fm->RolesEnable();
+
+        CouruselQuery::FotoFreeListClear($this->db);
     }
 }
 

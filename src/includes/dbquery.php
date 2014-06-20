@@ -7,6 +7,8 @@
  */
 class CouruselQuery {
 
+    const FILECLEARTIME = 86400;
+
     public static function Courusel(Ab_Database $db, $couruselId) {
         $sql = "
             SELECT
@@ -66,6 +68,7 @@ class CouruselQuery {
                 title, url, ord, filehash
             FROM ".$db->prefix."courusel_slide
             WHERE couruselid=".bkint($couruselId)."
+            ORDER BY ord DESC
         ";
         return $db->query_read($sql);
     }
@@ -96,6 +99,44 @@ class CouruselQuery {
         ";
         $db->query_write($sql);
     }
+
+    public static function FotoAddToBuffer(Ab_Database $db, $fhash) {
+        $sql = "
+			INSERT INTO ".$db->prefix."courusel_foto (fileid, dateline) VALUES (
+				'".bkstr($fhash)."',
+				".TIMENOW."
+			)
+		";
+        $db->query_write($sql);
+    }
+
+    public static function FotoFreeFromBufferList(Ab_Database $db) {
+        $sql = "
+			SELECT
+				fotoid as id,
+				fileid as fh
+			FROM ".$db->prefix."courusel_foto
+			WHERE slideid=0 AND dateline<".(TIMENOW - CouruselQuery::FILECLEARTIME)."
+		";
+        return $db->query_read($sql);
+    }
+
+    public static function FotoFreeListClear(Ab_Database $db) {
+        $sql = "
+			DELETE FROM ".$db->prefix."courusel_foto
+			WHERE slideid=0 AND dateline<".(TIMENOW - CouruselQuery::FILECLEARTIME)."
+		";
+        return $db->query_read($sql);
+    }
+
+    public static function FotoRemoveFromBuffer(Ab_Database $db, $foto){
+        $sql = "
+			DELETE FROM ".$db->prefix."courusel_foto WHERE fileid='".$foto."'
+		";
+        $db->query_write($sql);
+    }
+
+
 
 }
 
