@@ -108,7 +108,7 @@
         }
 
         try {
-            aiList.imageSet(imgs);
+            aiList.imageSet(imgs.length > 0 ? imgs[0] : null);
         } catch (e) {
         }
 

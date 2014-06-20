@@ -70,6 +70,18 @@ Component.entryPoint = function(NS){
             }
             this.set('model', slide);
         },
+        onUpdateUIFromModel: function(slide){
+
+            var attrs = slide.toJSON(),
+                tp = this.template,
+                el = Y.one(tp.gel('image'));
+
+            if (attrs.filehash){
+                el.setHTML(tp.replace('image', attrs));
+            } else {
+                el.setHTML(tp.replace('imagebutton', attrs));
+            }
+        },
         onSubmitFormAction: function(){
             this.set('waiting', true);
 
@@ -91,6 +103,9 @@ Component.entryPoint = function(NS){
                 case 'image-upload':
                     this.imageUploadShow();
                     return true;
+                case 'image-remove':
+                    this.imageRemove();
+                    return true;
             }
         },
         imageUploadShow: function(){
@@ -108,10 +123,13 @@ Component.entryPoint = function(NS){
             );
             NS.uploadActiveImage = this;
         },
-        imageSet: function(images){
+        imageSet: function(image){
+            this.updateModelFromUI();
             var slide = this.get('model');
-            slide.set('filehash', images[0]);
-            console.log(images);
+            slide.set('filehash', image);
+        },
+        imageRemove: function(){
+            this.imageSet(null);
         },
         _defEditorSaved: function(){
         },
@@ -123,7 +141,7 @@ Component.entryPoint = function(NS){
                 value: COMPONENT
             },
             templateBlockName: {
-                value: 'widget'
+                value: 'widget,imagebutton,image'
             },
             couruselId: {
                 value: 0
