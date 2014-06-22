@@ -34,11 +34,11 @@ Component.entryPoint = function(NS){
             create: function(){
                 return NS.URL.ws + 'editor/EditorWidget/'
             },
-            edit: function(couruselId){
-                return NS.URL.ws + 'editor/EditorWidget/' + couruselId + '/'
+            edit: function(carouselId){
+                return NS.URL.ws + 'editor/EditorWidget/' + carouselId + '/'
             },
-            slides: function(couruselId){
-                return NS.URL.ws + 'slides/SlidesWidget/' + couruselId + '/'
+            slides: function(carouselId){
+                return NS.URL.ws + 'slides/SlidesWidget/' + carouselId + '/'
             }
         }
     };
@@ -100,10 +100,10 @@ Component.entryPoint = function(NS){
     var AppBase = function(){
     };
     AppBase.ATTRS = {
-        couruselListClass: {
-            value: NS.CouruselList
+        carouselListClass: {
+            value: NS.CarouselList
         },
-        couruselList: {
+        carouselList: {
             value: null
         },
         slideListClass: {
@@ -117,7 +117,7 @@ Component.entryPoint = function(NS){
     AppBase.prototype = {
         initializer: function(){
             this.cacheClear();
-            this.couruselListLoad(function(err){
+            this.carouselListLoad(function(err){
                 this.get('initCallback')(err, this);
             }, this);
         },
@@ -130,48 +130,48 @@ Component.entryPoint = function(NS){
         _treatAJAXResult: function(data){
             data = data || {};
             var ret = {};
-            if (data.courusels){
-                var couruselListClass = this.get('couruselListClass');
-                ret.couruselList = new couruselListClass({
-                    items: data.courusels.list
+            if (data.carousels){
+                var carouselListClass = this.get('carouselListClass');
+                ret.carouselList = new carouselListClass({
+                    items: data.carousels.list
                 });
             }
             if (data.slides){
                 var slideListClass = this.get('slideListClass');
                 ret.slideList = new slideListClass({
-                    couruselId: data.slides.couruselid,
+                    carouselId: data.slides.carouselid,
                     items: data.slides.list
                 });
-                this._cacheSlideList[data.slides.couruselid] = ret.slideList;
+                this._cacheSlideList[data.slides.carouselid] = ret.slideList;
             }
             return ret;
         },
-        couruselListLoad: function(callback, context){
+        carouselListLoad: function(callback, context){
             this.ajax({
-                'do': 'courusellist'
-            }, this._onCouruselListLoad, {
+                'do': 'carousellist'
+            }, this._onCarouselListLoad, {
                 arguments: {callback: callback, context: context}
             });
         },
-        _onCouruselListLoad: function(err, res, details){
+        _onCarouselListLoad: function(err, res, details){
             var tRes = this._treatAJAXResult(res.data);
 
-            if (tRes.couruselList){
-                this.set('couruselList', tRes.couruselList);
+            if (tRes.carouselList){
+                this.set('carouselList', tRes.carouselList);
             }
 
-            details.callback.apply(details.context, [err, tRes.couruselList]);
+            details.callback.apply(details.context, [err, tRes.carouselList]);
         },
-        couruselSave: function(courusel, callback, context){
+        carouselSave: function(carousel, callback, context){
             this.ajax({
-                'do': 'couruselsave',
-                'savedata': courusel.toJSON()
-            }, this._onCouruselListLoad, {
+                'do': 'carouselsave',
+                'savedata': carousel.toJSON()
+            }, this._onCarouselListLoad, {
                 arguments: {callback: callback, context: context }
             });
         },
-        slideListLoad: function(couruselId, callback, context){
-            var cacheSlideList = this._cacheSlideList[couruselId];
+        slideListLoad: function(carouselId, callback, context){
+            var cacheSlideList = this._cacheSlideList[carouselId];
 
             if (cacheSlideList){
                 callback.apply(context, [null, cacheSlideList]);
@@ -180,7 +180,7 @@ Component.entryPoint = function(NS){
 
             this.ajax({
                 'do': 'slidelist',
-                'couruselid': couruselId
+                'carouselid': carouselId
             }, this._onSlideListLoad, {
                 arguments: {callback: callback, context: context}
             });
@@ -189,19 +189,19 @@ Component.entryPoint = function(NS){
             var tRes = this._treatAJAXResult(res.data);
             details.callback.apply(details.context, [err, tRes.slideList]);
         },
-        slideSave: function(couruselId, slide, callback, context){
+        slideSave: function(carouselId, slide, callback, context){
             this.ajax({
                 'do': 'slidesave',
-                'couruselid': couruselId,
+                'carouselid': carouselId,
                 'savedata': slide.toJSON()
-            }, this._onCouruselListLoad, {
+            }, this._onCarouselListLoad, {
                 arguments: {callback: callback, context: context }
             });
         }
     };
     NS.AppBase = AppBase;
 
-    var App = Y.Base.create('couruselApp', Y.Base, [
+    var App = Y.Base.create('carouselApp', Y.Base, [
         SYS.AJAX,
         SYS.Language,
         NS.AppBase

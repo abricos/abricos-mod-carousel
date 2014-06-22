@@ -1,6 +1,6 @@
 <?php
 
-class Courusel extends AbricosItem {
+class Carousel extends AbricosItem {
 
     public $name;
     public $width;
@@ -26,10 +26,10 @@ class Courusel extends AbricosItem {
     }
 }
 
-class CouruselList extends AbricosList {
+class CarouselList extends AbricosList {
 }
 
-class CouruselSlide extends AbricosItem {
+class CarouselSlide extends AbricosItem {
     public $title;
     public $url;
     public $ord;
@@ -54,7 +54,7 @@ class CouruselSlide extends AbricosItem {
     }
 }
 
-class CouruselSlideList extends AbricosList {
+class CarouselSlideList extends AbricosList {
 }
 
 ?>

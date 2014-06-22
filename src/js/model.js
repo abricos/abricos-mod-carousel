@@ -12,7 +12,7 @@ Component.entryPoint = function(NS){
     var Y = Brick.YUI,
         SYS = Brick.mod.sys;
 
-    NS.Courusel = Y.Base.create('courusel', Y.Model, [ ], {
+    NS.Carousel = Y.Base.create('carousel', Y.Model, [ ], {
     }, {
         ATTRS: {
             name: {
@@ -30,8 +30,8 @@ Component.entryPoint = function(NS){
         }
     });
 
-    NS.CouruselList = Y.Base.create('couruselList', Y.ModelList, [], {
-        model: NS.Courusel
+    NS.CarouselList = Y.Base.create('carouselList', Y.ModelList, [], {
+        model: NS.Carousel
     });
 
     NS.Slide = Y.Base.create('slide', Y.Model, [ ], {

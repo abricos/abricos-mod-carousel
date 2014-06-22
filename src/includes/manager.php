@@ -11,46 +11,46 @@ require_once 'classes/structure.php';
 require_once 'dbquery.php';
 
 /**
- * Class CouruselModuleManager
+ * Class CarouselModuleManager
  */
-class CouruselModuleManager extends Ab_ModuleManager {
+class CarouselModuleManager extends Ab_ModuleManager {
 
     /**
-     * @var CouruselModuleManager
+     * @var CarouselModuleManager
      */
     public static $instance = null;
 
-    private $_couruselManager = null;
+    private $_carouselManager = null;
 
-    public function __construct(CouruselModule $module) {
+    public function __construct(CarouselModule $module) {
         parent::__construct($module);
 
-        CouruselModuleManager::$instance = $this;
+        CarouselModuleManager::$instance = $this;
     }
 
     public function IsAdminRole(){
-        return $this->IsRoleEnable(CouruselAction::ADMIN);
+        return $this->IsRoleEnable(CarouselAction::ADMIN);
     }
 
     public function IsWriteRole(){
         if ($this->IsAdminRole()){ return true; }
-        return $this->IsRoleEnable(CouruselAction::WRITE);
+        return $this->IsRoleEnable(CarouselAction::WRITE);
     }
 
     public function IsViewRole(){
         if ($this->IsWriteRole()){ return true; }
-        return $this->IsRoleEnable(CouruselAction::VIEW);
+        return $this->IsRoleEnable(CarouselAction::VIEW);
     }
 
     /**
-     * @return CouruselManager
+     * @return CarouselManager
      */
-    public function GetCouruselManager(){
-        if (empty($this->_couruselManager)){
-            require_once 'classes/courusel.php';
-            $this->_couruselManager = new CouruselManager($this);
+    public function GetCarouselManager(){
+        if (empty($this->_carouselManager)){
+            require_once 'classes/carousel.php';
+            $this->_carouselManager = new CarouselManager($this);
         }
-        return $this->_couruselManager;
+        return $this->_carouselManager;
     }
 
     public function TreatResult($res){
@@ -71,7 +71,7 @@ class CouruselModuleManager extends Ab_ModuleManager {
         switch($d->do){
 
         }
-        $ret = $this->GetCouruselManager()->AJAX($d);
+        $ret = $this->GetCarouselManager()->AJAX($d);
 
         if (empty($ret)){
             $ret = new stdClass();

@@ -1,4 +1,4 @@
-abricos-mod-courusel
+abricos-mod-carousel
 ====================
 
-Courusel Module for Abricos Platform
+Carousel Module for Abricos Platform

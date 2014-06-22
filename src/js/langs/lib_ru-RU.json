@@ -1,6 +1,6 @@
 {
     "ajax": {
-        "courusellist": {
+        "carousellist": {
             "title": "Загрузка блоков",
             "error": {
                 "title": "Ошибка загрузки блоков"

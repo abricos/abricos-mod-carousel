@@ -21,30 +21,30 @@ Component.entryPoint = function(NS){
             this._currentSlideEditor = null;
         },
         buildTData: function(){
-            var couruselId = this.get('couruselId') | 0
+            var carouselId = this.get('carouselId') | 0
             return {
-                couruselid : couruselId
+                carouselid : carouselId
             };
         },
         onInitAppWidget: function(err, appInstance){
-            var couruselList = appInstance.get('couruselList'),
-                couruselId = this.get('couruselId') | 0,
-                courusel = couruselList.getById(couruselId);
+            var carouselList = appInstance.get('carouselList'),
+                carouselId = this.get('carouselId') | 0,
+                carousel = carouselList.getById(carouselId);
 
-            if (!courusel){
+            if (!carousel){
                 return; // TODO: necessary to implement error
             }
 
             var tp = this.template;
 
-            tp.gel('name').innerHTML = courusel.get('name');
+            tp.gel('name').innerHTML = carousel.get('name');
             this.reloadSlideList();
         },
         reloadSlideList: function(){
-            var couruselId = this.get('couruselId') | 0;
+            var carouselId = this.get('carouselId') | 0;
             this.set('waiting', true);
 
-            this.get('appInstance').slideListLoad(couruselId, function(err, slideList){
+            this.get('appInstance').slideListLoad(carouselId, function(err, slideList){
                 this.set('waiting', false);
                 if (!err){
                     this.set('slideList', slideList);
@@ -98,7 +98,7 @@ Component.entryPoint = function(NS){
 
             var widget = new NS.SlideEditorWidget({
                 boundingBox: boundingBox,
-                couruselId: this.get('couruselId'),
+                carouselId: this.get('carouselId'),
                 slideId: slideId
             });
             var instance = this;
@@ -133,7 +133,7 @@ Component.entryPoint = function(NS){
             templateBlockName: {
                 value: 'widget,list,row,image,url'
             },
-            couruselId: {
+            carouselId: {
                 value: 0
             },
             slideList: {
@@ -148,7 +148,7 @@ Component.entryPoint = function(NS){
         }, args || {});
 
         return {
-            couruselId: args.p1
+            carouselId: args.p1
         };
     };
 

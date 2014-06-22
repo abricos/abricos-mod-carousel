@@ -20,26 +20,26 @@ Component.entryPoint = function(NS){
     NS.ManagerWidget = Y.Base.create('managerWidget', NS.AppWidget, [
     ], {
         initializer: function(){
-            this.publish('couruselCreate', {
-                defaultFn: this._defCouruselCreate
+            this.publish('carouselCreate', {
+                defaultFn: this._defCarouselCreate
             });
-            this.publish('couruselEdit', {
-                defaultFn: this._defCouruselEdit
+            this.publish('carouselEdit', {
+                defaultFn: this._defCarouselEdit
             });
-            this.publish('couruselSlides', {
-                defaultFn: this._defCouruselSlides
+            this.publish('carouselSlides', {
+                defaultFn: this._defCarouselSlides
             });
         },
         onInitAppWidget: function(err, appInstance, options){
-            this.renderCouruselList();
+            this.renderCarouselList();
         },
-        renderCouruselList: function(){
-            var couruselList = this.get('appInstance').get('couruselList');
+        renderCarouselList: function(){
+            var carouselList = this.get('appInstance').get('carouselList');
 
             var tp = this.template, lst = "";
 
-            couruselList.each(function(courusel){
-                var attrs = courusel.toJSON();
+            carouselList.each(function(carousel){
+                var attrs = carousel.toJSON();
 
                 lst += tp.replace('row', [
                     {
@@ -56,27 +56,27 @@ Component.entryPoint = function(NS){
         },
         onClick: function(e){
             switch (e.dataClick) {
-                case 'courusel-create':
-                    this.fire('couruselCreate');
+                case 'carousel-create':
+                    this.fire('carouselCreate');
                     return true;
-                case 'courusel-edit':
-                    var couruselId = e.target.getData('id');
-                    this.fire('couruselEdit', couruselId);
+                case 'carousel-edit':
+                    var carouselId = e.target.getData('id');
+                    this.fire('carouselEdit', carouselId);
                     return true;
-                case 'courusel-slides':
-                    var couruselId = e.target.getData('id');
-                    this.fire('couruselSlides', couruselId);
+                case 'carousel-slides':
+                    var carouselId = e.target.getData('id');
+                    this.fire('carouselSlides', carouselId);
                     return true;
             }
         },
-        _defCouruselCreate: function(){
+        _defCarouselCreate: function(){
             Brick.Page.reload(NS.URL.editor.create());
         },
-        _defCouruselEdit: function(e, couruselId){
-            Brick.Page.reload(NS.URL.editor.edit(couruselId));
+        _defCarouselEdit: function(e, carouselId){
+            Brick.Page.reload(NS.URL.editor.edit(carouselId));
         },
-        _defCouruselSlides: function(e, couruselId){
-            Brick.Page.reload(NS.URL.editor.slides(couruselId));
+        _defCarouselSlides: function(e, carouselId){
+            Brick.Page.reload(NS.URL.editor.slides(carouselId));
         }
     }, {
         ATTRS: {

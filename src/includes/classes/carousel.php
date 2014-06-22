@@ -1,9 +1,9 @@
 <?php
 
-class CouruselManager {
+class CarouselManager {
 
     /**
-     * @var CouruselModuleManager
+     * @var CarouselModuleManager
      */
     public $manager;
 
@@ -12,38 +12,38 @@ class CouruselManager {
      */
     public $db;
 
-    public function __construct(CouruselModuleManager $manager) {
+    public function __construct(CarouselModuleManager $manager) {
         $this->manager = $manager;
         $this->db = $manager->db;
     }
 
     public function AJAX($d) {
         switch ($d->do) {
-            case "courusellist":
-                return $this->CouruselListToAJAX();
-            case "couruselsave":
-                return $this->CouruselSaveToAJAX($d->savedata);
+            case "carousellist":
+                return $this->CarouselListToAJAX();
+            case "carouselsave":
+                return $this->CarouselSaveToAJAX($d->savedata);
             case "slidelist":
-                return $this->SlideListToAJAX($d->couruselid);
+                return $this->SlideListToAJAX($d->carouselid);
             case "slidesave":
-                return $this->SlideSaveToAJAX($d->couruselid, $d->savedata);
+                return $this->SlideSaveToAJAX($d->carouselid, $d->savedata);
         }
         return null;
     }
 
-    public function CouruselSaveToAJAX($sd) {
-        $res = $this->CouruselSave($sd);
+    public function CarouselSaveToAJAX($sd) {
+        $res = $this->CarouselSave($sd);
         $ret = $this->manager->TreatResult($res);
 
         if ($ret->err === 0) {
-            $ret = $this->CouruselListToAJAX($ret);
+            $ret = $this->CarouselListToAJAX($ret);
         }
 
         return $ret;
     }
 
     /**
-     * Courusel Image Block Save
+     * Carousel Image Block Save
      *
      * Error Code:
      *  403 - Forbidden
@@ -54,7 +54,7 @@ class CouruselManager {
      *
      * @return Object
      */
-    public function CouruselSave($d) {
+    public function CarouselSave($d) {
         if (!$this->manager->IsAdminRole()) {
             return 403;
         }
@@ -73,91 +73,91 @@ class CouruselManager {
         //TODO: Check duplicates
 
         if ($d->id === 0) {
-            $d->id = CouruselQuery::CouruselAppend($this->db, $d);
+            $d->id = CarouselQuery::CarouselAppend($this->db, $d);
         } else {
-            CouruselQuery::CouruselUpdate($this->db, $d);
+            CarouselQuery::CarouselUpdate($this->db, $d);
         }
 
         $ret = new stdClass();
-        $ret->couruselid = $d->id;
+        $ret->carouselid = $d->id;
 
         return $ret;
     }
 
-    public function CouruselListToAJAX($overResult = null) {
+    public function CarouselListToAJAX($overResult = null) {
         $ret = !empty($overResult) ? $overResult : (new stdClass());
         $ret->err = 0;
 
-        $result = $this->CouruselList();
-        $ret->courusels = $result->ToAJAX();
+        $result = $this->CarouselList();
+        $ret->carousels = $result->ToAJAX();
 
         return $ret;
     }
 
     /**
-     * @return CouruselList|null
+     * @return CarouselList|null
      */
-    public function CouruselList() {
+    public function CarouselList() {
         if (!$this->manager->IsViewRole()) {
             return null;
         }
 
-        $list = new CouruselList();
-        $rows = CouruselQuery::CouruselList($this->db);
+        $list = new CarouselList();
+        $rows = CarouselQuery::CarouselList($this->db);
 
         while (($d = $this->db->fetch_array($rows))) {
-            $list->Add(new Courusel($d));
+            $list->Add(new Carousel($d));
         }
         return $list;
     }
 
-    public function Courusel($couruselId) {
+    public function Carousel($carouselId) {
         if (!$this->manager->IsViewRole()) {
             return null;
         }
 
-        $row = CouruselQuery::Courusel($this->db, $couruselId);
+        $row = CarouselQuery::Carousel($this->db, $carouselId);
         if (empty($row)) {
             return null;
         }
 
-        return new Courusel($row);
+        return new Carousel($row);
     }
 
-    public function SlideListToAJAX($couruselId, $overResult = null) {
+    public function SlideListToAJAX($carouselId, $overResult = null) {
         $ret = !empty($overResult) ? $overResult : (new stdClass());
         $ret->err = 0;
 
-        $result = $this->SlideList($couruselId);
+        $result = $this->SlideList($carouselId);
         if (is_integer($result)) {
             $ret->err = $result;
         } else {
             $ret->slides = $result->ToAJAX();
-            $ret->slides->couruselid = $couruselId;
+            $ret->slides->carouselid = $carouselId;
         }
 
         return $ret;
     }
 
-    public function SlideList($couruselId) {
+    public function SlideList($carouselId) {
         if (!$this->manager->IsViewRole()) {
             return 403;
         }
 
-        $list = new CouruselSlideList();
-        $rows = CouruselQuery::SlideList($this->db, $couruselId);
+        $list = new CarouselSlideList();
+        $rows = CarouselQuery::SlideList($this->db, $carouselId);
         while (($d = $this->db->fetch_array($rows))) {
-            $list->Add(new CouruselSlide($d));
+            $list->Add(new CarouselSlide($d));
         }
         return $list;
     }
 
-    public function SlideSaveToAJAX($couruselId, $sd) {
-        $res = $this->SlideSave($couruselId, $sd);
+    public function SlideSaveToAJAX($carouselId, $sd) {
+        $res = $this->SlideSave($carouselId, $sd);
         $ret = $this->manager->TreatResult($res);
 
         if ($ret->err === 0) {
-            $ret = $this->SlideListToAJAX($couruselId, $ret);
+            $ret = $this->SlideListToAJAX($carouselId, $ret);
         }
         return $ret;
     }
@@ -167,21 +167,21 @@ class CouruselManager {
      *
      * Error Code:
      *  403 - Forbidden
-     *  1 - courusel not found
+     *  1 - carousel not found
      *
-     * @param $couruselId
+     * @param $carouselId
      * @param $d Array|Object
      *
      * @return Object
      */
-    public function SlideSave($couruselId, $d) {
+    public function SlideSave($carouselId, $d) {
         if (!$this->manager->IsWriteRole()) {
             return 403;
         }
 
-        $courusel = $this->Courusel($couruselId);
+        $carousel = $this->Carousel($carouselId);
 
-        if (empty($courusel)) {
+        if (empty($carousel)) {
             return 1;
         }
 
@@ -194,16 +194,16 @@ class CouruselManager {
         $d->ord = intval($d->ord);
 
         if ($d->id === 0) {
-            $d->id = CouruselQuery::SlideAppend($this->db, $couruselId, $d);
+            $d->id = CarouselQuery::SlideAppend($this->db, $carouselId, $d);
         } else {
-            CouruselQuery::SlideUpdate($this->db, $couruselId, $d);
+            CarouselQuery::SlideUpdate($this->db, $carouselId, $d);
         }
 
         $ret = new stdClass();
-        $ret->couruselid = $couruselId;
+        $ret->carouselid = $carouselId;
         $ret->slideid = $d->id;
 
-        CouruselQuery::FotoRemoveFromBuffer($this->db, $d->filehash);
+        CarouselQuery::FotoRemoveFromBuffer($this->db, $d->filehash);
 
         return $ret;
     }
@@ -213,7 +213,7 @@ class CouruselManager {
             return false;
         }
 
-        CouruselQuery::FotoAddToBuffer($this->db, $fhash);
+        CarouselQuery::FotoAddToBuffer($this->db, $fhash);
 
         $this->FotoBufferClear();
     }
@@ -227,13 +227,13 @@ class CouruselManager {
         $fm = FileManager::$instance;
         $fm->RolesDisable();
 
-        $rows = CouruselQuery::FotoFreeFromBufferList($this->db);
+        $rows = CarouselQuery::FotoFreeFromBufferList($this->db);
         while (($row = $this->db->fetch_array($rows))) {
             $fm->FileRemove($row['fh']);
         }
         $fm->RolesEnable();
 
-        CouruselQuery::FotoFreeListClear($this->db);
+        CarouselQuery::FotoFreeListClear($this->db);
     }
 }
 

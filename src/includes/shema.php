@@ -3,8 +3,8 @@
  * Схема таблиц данного модуля.
  *
  * @package Abricos
- * @subpackage Courusel
- * @license MIT license (https://github.com/abricos/abricos-mod-courusel/blob/master/LICENSE)
+ * @subpackage Carousel
+ * @license MIT license (https://github.com/abricos/abricos-mod-carousel/blob/master/LICENSE)
  * @author Alexander Kuzmin <roosit@abricos.org>
  */
 
@@ -15,11 +15,11 @@ $pfx = $db->prefix;
 
 if ($updateManager->isInstall()) {
 
-    Abricos::GetModule('courusel')->permission->Install();
+    Abricos::GetModule('carousel')->permission->Install();
 
     $db->query_write("
-		CREATE TABLE IF NOT EXISTS ".$pfx."courusel (
-            `couruselid` int(10) unsigned NOT NULL auto_increment,
+		CREATE TABLE IF NOT EXISTS ".$pfx."carousel (
+            `carouselid` int(10) unsigned NOT NULL auto_increment,
 		    `name` varchar(50) NOT NULL DEFAULT '' COMMENT 'Имя',
 
 			`width` int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'Ширина',
@@ -30,15 +30,15 @@ if ($updateManager->isInstall()) {
 			`dateline` int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'Дата создания',
 			`deldate` int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'Дата удаления',
 
-		    PRIMARY KEY  (`couruselid`),
+		    PRIMARY KEY  (`carouselid`),
 		    UNIQUE `name` (`name`)
 		)".$charset
     );
 
     $db->query_write("
-		CREATE TABLE IF NOT EXISTS ".$pfx."courusel_slide (
+		CREATE TABLE IF NOT EXISTS ".$pfx."carousel_slide (
             `slideid` int(10) unsigned NOT NULL auto_increment,
-            `couruselid` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '',
+            `carouselid` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '',
 		    `title` varchar(250) NOT NULL DEFAULT '' COMMENT 'Заголовок',
 		    `url` varchar(250) NOT NULL DEFAULT '' COMMENT 'URL',
 		    `ord` int(4) NOT NULL DEFAULT 0 COMMENT 'Сортировка',
@@ -49,7 +49,7 @@ if ($updateManager->isInstall()) {
 
     // картинки
     $db->query_write("
-		CREATE TABLE IF NOT EXISTS `".$pfx."courusel_foto` (
+		CREATE TABLE IF NOT EXISTS `".$pfx."carousel_foto` (
 			`fotoid` int(10) UNSIGNED NOT NULL auto_increment,
 			`slideid` int(10) UNSIGNED NOT NULL COMMENT 'Идентификатор слайда',
 			`fileid` varchar(8) NOT NULL,

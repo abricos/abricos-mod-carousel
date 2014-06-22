@@ -36,22 +36,22 @@ Component.entryPoint = function(NS){
             };
         },
         onInitAppWidget: function(err, appInstance){
-            var couruselList = appInstance.get('couruselList'),
-                couruselId = this.get('couruselId') | 0,
+            var carouselList = appInstance.get('carouselList'),
+                carouselId = this.get('carouselId') | 0,
                 slideId = this.get('slideId') | 0,
-                courusel = couruselList.getById(couruselId);
+                carousel = carouselList.getById(carouselId);
 
-            if (!courusel){
+            if (!carousel){
                 return; // TODO: necessary to implement error
             }
 
             var tp = this.template;
 
-            tp.gel('couruselname').innerHTML = courusel.get('name');
+            tp.gel('carouselname').innerHTML = carousel.get('name');
 
             this.set('waiting', true);
 
-            appInstance.slideListLoad(couruselId, this.onSlideListLoad, this);
+            appInstance.slideListLoad(carouselId, this.onSlideListLoad, this);
         },
         onSlideListLoad: function(err, slideList){
             if (err){
@@ -88,7 +88,7 @@ Component.entryPoint = function(NS){
             var model = this.get('model'),
                 instance = this;
 
-            this.get('appInstance').slideSave(this.get('couruselId'), model, function(err, result){
+            this.get('appInstance').slideSave(this.get('carouselId'), model, function(err, result){
                 instance.set('waiting', false);
                 if (!err){
                     instance.fire('editorSaved');
@@ -116,9 +116,9 @@ Component.entryPoint = function(NS){
                 return;
             }
 
-            var url = '/courusel/uploadimg/';
+            var url = '/carousel/uploadimg/';
             this._uploadWindow = window.open(
-                url, 'couruselimage',
+                url, 'carouselimage',
                 'statusbar=no,menubar=no,toolbar=no,scrollbars=yes,resizable=yes,width=550,height=500'
             );
             NS.uploadActiveImage = this;
@@ -143,7 +143,7 @@ Component.entryPoint = function(NS){
             templateBlockName: {
                 value: 'widget,imagebutton,image'
             },
-            couruselId: {
+            carouselId: {
                 value: 0
             },
             slideId: {

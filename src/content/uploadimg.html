@@ -7,34 +7,34 @@
 [*]-->
 
 <style type="text/css">
-    .mod-courusel .upload h2 {
+    .mod-carousel .upload h2 {
         font-size: 18px;
     }
 
-    .mod-courusel .upload #inputs {
+    .mod-carousel .upload #inputs {
         min-height: 300px;
     }
 
-    .mod-courusel .upload .errortext {
+    .mod-carousel .upload .errortext {
         color: red;
     }
 
-    .mod-courusel .upload input.image {
+    .mod-carousel .upload input.image {
         margin-bottom: 10px;
     }
 
-    .mod-courusel .upload .btns {
+    .mod-carousel .upload .btns {
         text-align: right;
         margin-top: 10px;
     }
 
-    .mod-courusel .upload .bmore {
+    .mod-carousel .upload .bmore {
         text-align: right;
     }
 </style>
 
-<div class="mod-courusel">
-    <form class="upload" enctype="multipart/form-data" action="/courusel/uploadimg/go/" method="POST"
+<div class="mod-carousel">
+    <form class="upload" enctype="multipart/form-data" action="/carousel/uploadimg/go/" method="POST"
           onsubmit="return beginUpload();">
         <input type="hidden" name="MAX_FILE_SIZE" value="15728640"/>
 
@@ -94,7 +94,7 @@
         if (resa.length == 0){
             return;
         }
-        var aiList = window.opener.Brick.mod.courusel.uploadActiveImage;
+        var aiList = window.opener.Brick.mod.carousel.uploadActiveImage;
         console.log(aiList);
         var iserr = false;
 

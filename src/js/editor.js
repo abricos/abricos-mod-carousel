@@ -30,23 +30,23 @@ Component.entryPoint = function(NS){
             });
         },
         buildTData: function(){
-            var couruselId = this.get('couruselId')|0
+            var carouselId = this.get('carouselId')|0
             return {
-                'status': couruselId >0 ? 'edit-isedit' : 'edit-isnew'
+                'status': carouselId >0 ? 'edit-isedit' : 'edit-isnew'
             };
         },
         onInitAppWidget: function(){
-            var couruselList = this.get('appInstance').get('couruselList'),
-                couruselId = this.get('couruselId')|0,
-                courusel;
+            var carouselList = this.get('appInstance').get('carouselList'),
+                carouselId = this.get('carouselId')|0,
+                carousel;
 
-            if (couruselId === 0){
-                courusel = new (couruselList.model)();
+            if (carouselId === 0){
+                carousel = new (carouselList.model)();
             } else {
-                courusel = couruselList.getById(couruselId);
+                carousel = carouselList.getById(carouselId);
             }
 
-            this.set('model', courusel);
+            this.set('model', carousel);
         },
         onSubmitFormAction: function(){
             this.set('waiting', true);
@@ -54,7 +54,7 @@ Component.entryPoint = function(NS){
             var model = this.get('model'),
                 instance = this;
 
-            this.get('appInstance').couruselSave(model, function(err, result){
+            this.get('appInstance').carouselSave(model, function(err, result){
                 instance.set('waiting', false);
                 if (!err){
                     instance.fire('editorSaved');
@@ -82,7 +82,7 @@ Component.entryPoint = function(NS){
             templateBlockName: {
                 value: 'widget'
             },
-            couruselId: {
+            carouselId: {
                 value: 0
             }
         }
@@ -94,7 +94,7 @@ Component.entryPoint = function(NS){
         }, args || {});
 
         return {
-            couruselId: args.p1
+            carouselId: args.p1
         };
     };
 };

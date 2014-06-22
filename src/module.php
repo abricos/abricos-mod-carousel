@@ -2,34 +2,34 @@
 
 /**
  * @package Abricos
- * @subpackage Courusel
- * @license MIT license (https://github.com/abricos/abricos-mod-courusel/blob/master/LICENSE)
+ * @subpackage Carousel
+ * @license MIT license (https://github.com/abricos/abricos-mod-carousel/blob/master/LICENSE)
  * @author Alexander Kuzmin <roosit@abricos.org>
  */
-class CouruselModule extends Ab_Module {
+class CarouselModule extends Ab_Module {
 
     private $_manager = null;
 
     public function __construct() {
 
         // Название модуля
-        $this->name = "courusel";
+        $this->name = "carousel";
 
-        $this->takelink = "courusel";
+        $this->takelink = "carousel";
 
         // Версия модуля
         $this->version = "0.1.0";
 
-        $this->permission = new CouruselPermission($this);
+        $this->permission = new CarouselPermission($this);
     }
 
     /**
-     * @return CouruselManager
+     * @return CarouselManager
      */
     public function GetManager(){
         if (empty($this->_manager)){
             require_once 'includes/manager.php';
-            $this->_manager = new CouruselModuleManager($this);
+            $this->_manager = new CarouselModuleManager($this);
         }
 
         return $this->_manager;
@@ -48,36 +48,36 @@ class CouruselModule extends Ab_Module {
     }
 }
 
-class CouruselAction {
+class CarouselAction {
     const VIEW = 10;
     const WRITE = 30;
     const ADMIN = 50;
 }
 
-class CouruselPermission extends Ab_UserPermission {
+class CarouselPermission extends Ab_UserPermission {
 
-    public function CouruselPermission(CouruselModule $module) {
+    public function CarouselPermission(CarouselModule $module) {
         $defRoles = array(
-            new Ab_UserRole(CouruselAction::VIEW, Ab_UserGroup::GUEST),
-            new Ab_UserRole(CouruselAction::VIEW, Ab_UserGroup::REGISTERED),
-            new Ab_UserRole(CouruselAction::VIEW, Ab_UserGroup::ADMIN),
+            new Ab_UserRole(CarouselAction::VIEW, Ab_UserGroup::GUEST),
+            new Ab_UserRole(CarouselAction::VIEW, Ab_UserGroup::REGISTERED),
+            new Ab_UserRole(CarouselAction::VIEW, Ab_UserGroup::ADMIN),
 
-            new Ab_UserRole(CouruselAction::WRITE, Ab_UserGroup::ADMIN),
+            new Ab_UserRole(CarouselAction::WRITE, Ab_UserGroup::ADMIN),
 
-            new Ab_UserRole(CouruselAction::ADMIN, Ab_UserGroup::ADMIN),
+            new Ab_UserRole(CarouselAction::ADMIN, Ab_UserGroup::ADMIN),
         );
         parent::__construct($module, $defRoles);
     }
 
     public function GetRoles() {
         return array(
-            CouruselAction::VIEW => $this->CheckAction(CouruselAction::VIEW),
-            CouruselAction::WRITE => $this->CheckAction(CouruselAction::WRITE),
-            CouruselAction::ADMIN => $this->CheckAction(CouruselAction::ADMIN)
+            CarouselAction::VIEW => $this->CheckAction(CarouselAction::VIEW),
+            CarouselAction::WRITE => $this->CheckAction(CarouselAction::WRITE),
+            CarouselAction::ADMIN => $this->CheckAction(CarouselAction::ADMIN)
         );
     }
 }
 
-Abricos::ModuleRegister(new CouruselModule());
+Abricos::ModuleRegister(new CarouselModule());
 
 ?>
