@@ -27,6 +27,8 @@ class CarouselManager {
                 return $this->CarouselDisableToAJAX($d->carouselid);
             case "carouselenable":
                 return $this->CarouselEnableToAJAX($d->carouselid);
+            case "carouseldelete":
+                return $this->CarouselDeleteToAJAX($d->carouselid);
             case "slidelist":
                 return $this->SlideListToAJAX($d->carouselid);
             case "slidesave":
@@ -146,6 +148,29 @@ class CarouselManager {
         return $ret;
     }
 
+    public function CarouselDeleteToAJAX($carouselId) {
+        $res = $this->CarouselDelete($carouselId);
+
+        $ret = $this->manager->TreatResult($res);
+
+        if ($ret->err === 0) {
+            $ret = $this->CarouselListToAJAX($ret);
+        }
+
+        return $ret;
+    }
+
+    public function CarouselDelete($carouselId) {
+        if (!$this->manager->IsAdminRole()) {
+            return 403;
+        }
+        CarouselQuery::CarouselDelete($this->db, $carouselId);
+
+        $ret = new stdClass();
+        $ret->carouselid = $carouselId;
+
+        return $ret;
+    }
     /**
      * @return CarouselList|null
      */

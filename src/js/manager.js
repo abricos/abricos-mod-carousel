@@ -14,6 +14,7 @@ Component.entryPoint = function(NS){
     var Y = Brick.YUI,
 
         COMPONENT = this,
+        BOUNDING_BOX = 'boundingBox',
 
         SYS = Brick.mod.sys;
 
@@ -68,26 +69,56 @@ Component.entryPoint = function(NS){
                 this.renderCarouselList();
             }, this);
         },
+        carouselDeleteShow: function(carouselId, hide){
+            var tp = this.template,
+                elDShow = Y.one(document.getElementById(tp.gelid('row.delete') + '-' + carouselId)),
+                elDelete = Y.one(document.getElementById(tp.gelid('row.deletegroup') + '-' + carouselId));
+            if (hide){
+                elDShow.show();
+                elDelete.hide();
+            }else{
+                elDShow.hide();
+                elDelete.show();
+            }
+        },
+        carouselDelete: function(carouselId){
+            this.set('waiting', true);
+            this.get('appInstance').carouselDelete(carouselId, function(err, result){
+                this.set('waiting', false);
+                this.renderCarouselList();
+            }, this);
+        },
         onClick: function(e){
+            if (e.dataClick === 'carousel-create'){
+                this.fire('carouselCreate');
+                return true;
+            }
+            var carouselId = e.target.getData('id') | 0;
+            if (carouselId === 0){
+                return;
+            }
+
             switch (e.dataClick) {
-                case 'carousel-create':
-                    this.fire('carouselCreate');
-                    return true;
                 case 'carousel-edit':
-                    var carouselId = e.target.getData('id');
                     this.fire('carouselEdit', carouselId);
                     return true;
                 case 'carousel-slides':
-                    var carouselId = e.target.getData('id');
                     this.fire('carouselSlides', carouselId);
                     return true;
                 case 'carousel-enable':
-                    var carouselId = e.target.getData('id');
                     this.carouselEnable(carouselId);
                     return true;
                 case 'carousel-disable':
-                    var carouselId = e.target.getData('id');
                     this.carouselDisable(carouselId);
+                    return true;
+                case 'carousel-delete-show':
+                    this.carouselDeleteShow(carouselId);
+                    return true;
+                case 'carousel-delete-cancel':
+                    this.carouselDeleteShow(carouselId, true);
+                    return true;
+                case 'carousel-delete':
+                    this.carouselDelete(carouselId);
                     return true;
             }
         },

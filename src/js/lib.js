@@ -186,6 +186,14 @@ Component.entryPoint = function(NS){
                 arguments: {callback: callback, context: context}
             });
         },
+        carouselDelete: function(carouselId, callback, context){
+            this.ajax({
+                'do': 'carouseldelete',
+                'carouselid': carouselId
+            }, this._onCarouselListLoad, {
+                arguments: {callback: callback, context: context}
+            });
+        },
         slideListLoad: function(carouselId, callback, context){
             var cacheSlideList = this._cacheSlideList[carouselId];
 

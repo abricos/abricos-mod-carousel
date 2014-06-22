@@ -33,6 +33,7 @@ class CarouselQuery {
                 height,
                 off
             FROM ".$db->prefix."carousel
+            WHERE deldate=0
         ";
         return $db->query_read($sql);
     }
@@ -77,6 +78,16 @@ class CarouselQuery {
         $sql = "
             UPDATE ".$db->prefix."carousel
             SET off=".bkint(0)."
+            WHERE carouselid=".bkint($carouselId)."
+            LIMIT 1
+        ";
+        $db->query_write($sql);
+    }
+
+    public static function CarouselDelete(Ab_Database $db, $carouselId) {
+        $sql = "
+            UPDATE ".$db->prefix."carousel
+            SET deldate=".TIMENOW."
             WHERE carouselid=".bkint($carouselId)."
             LIMIT 1
         ";

@@ -74,9 +74,17 @@
         {v#onoffbutton}
     </td>
     <td>
-        <button type="button" class="btn btn-default btn-xs" data-click="carousel-delete" data-id="{v#id}">
+        <button id="{i#delete}-{v#id}" type="button" class="btn btn-default btn-xs" data-click="carousel-delete-show" data-id="{v#id}">
             Удалить
         </button>
+        <div id="{i#deletegroup}-{v#id}" style="display: none" class="btn-group">
+            <button type="button" class="btn btn-danger btn-xs" data-click="carousel-delete" data-id="{v#id}">
+                Удалить?
+            </button>
+            <button type="button" class="btn btn-default btn-xs" data-click="carousel-delete-cancel" data-id="{v#id}">
+                Отмена
+            </button>
+        </div>
     </td>
 </tr>
 
