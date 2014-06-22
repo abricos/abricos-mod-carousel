@@ -166,33 +166,9 @@ Component.entryPoint = function(NS){
             this.ajax({
                 'do': 'couruselsave',
                 'savedata': courusel.toJSON()
-            }, this._ouCouruselSave, {
+            }, this._onCouruselListLoad, {
                 arguments: {callback: callback, context: context }
             });
-        },
-        _ouCouruselSave: function(err, res, details){
-            var callback = details.callback,
-                context = details.context;
-
-            if (!err){
-                var errorCode = res.data.err || 0;
-                if (errorCode > 0){
-                    var phId = 'ajax.courusel.error.' + errorCode;
-
-                    err = {
-                        code: errorCode,
-                        msg: this.language.get(phId)
-                    };
-                }
-            }
-
-            if (callback){
-                if (err){
-                    callback.apply(context, [err]);
-                } else {
-                    callback.apply(context, [null, res.data]);
-                }
-            }
         },
         slideListLoad: function(couruselId, callback, context){
             var cacheSlideList = this._cacheSlideList[couruselId];

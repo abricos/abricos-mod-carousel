@@ -23,7 +23,7 @@ Component.entryPoint = function(NS){
         buildTData: function(){
             var couruselId = this.get('couruselId') | 0
             return {
-
+                couruselid : couruselId
             };
         },
         onInitAppWidget: function(err, appInstance){

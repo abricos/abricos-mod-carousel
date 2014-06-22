@@ -41,6 +41,7 @@ class CouruselModule extends Ab_Module {
 
         switch($dir[1]){
             case 'uploadimg':
+            case 'view':
                 return $dir[1];
         }
         return '';
