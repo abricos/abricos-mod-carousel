@@ -33,6 +33,8 @@ class CarouselManager {
                 return $this->SlideListToAJAX($d->carouselid);
             case "slidesave":
                 return $this->SlideSaveToAJAX($d->carouselid, $d->savedata);
+            case "slidedelete":
+                return $this->SlideDeleteToAJAX($d->carouselid, $d->slideid);
         }
         return null;
     }
@@ -289,6 +291,30 @@ class CarouselManager {
         $ret->slideid = $d->id;
 
         CarouselQuery::FotoRemoveFromBuffer($this->db, $d->filehash);
+
+        return $ret;
+    }
+
+    public function SlideDeleteToAJAX($carouselId, $slideId) {
+        $res = $this->SlideDelete($carouselId, $slideId);
+        $ret = $this->manager->TreatResult($res);
+
+        if ($ret->err === 0) {
+            $ret = $this->SlideListToAJAX($carouselId, $ret);
+        }
+        return $ret;
+    }
+
+    public function SlideDelete($carouselId, $slideId){
+        if (!$this->manager->IsWriteRole()) {
+            return 403;
+        }
+
+        CarouselQuery::SlideDelete($this->db, $carouselId, $slideId);
+
+        $ret = new stdClass();
+        $ret->carouselid = $carouselId;
+        $ret->slideid = $slideId;
 
         return $ret;
     }

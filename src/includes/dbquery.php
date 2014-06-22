@@ -133,6 +133,17 @@ class CarouselQuery {
         $db->query_write($sql);
     }
 
+    public static function SlideDelete(Ab_Database $db, $carouselId, $slideId) {
+        $sql = "
+            DELETE FROM ".$db->prefix."carousel_slide
+            WHERE carouselid=".bkint($carouselId)." AND  slideid=".bkint($slideId)."
+            LIMIT 1
+        ";
+
+        $db->query_write($sql);
+    }
+
+
     public static function FotoAddToBuffer(Ab_Database $db, $fhash) {
         $sql = "
 			INSERT INTO ".$db->prefix."carousel_foto (fileid, dateline) VALUES (

@@ -26,7 +26,7 @@ Component.entryPoint = function(NS){
         buildTData: function(){
             var carouselId = this.get('carouselId') | 0
             return {
-                carouselid : carouselId
+                carouselid: carouselId
             };
         },
         onInitAppWidget: function(err, appInstance){
@@ -78,17 +78,54 @@ Component.entryPoint = function(NS){
                 'rows': lst
             });
         },
+        slideDeleteShow: function(slideId, hide){
+            var tp = this.template,
+                elDShow = Y.one(document.getElementById(tp.gelid('row.delete') + '-' + slideId)),
+                elDelete = Y.one(document.getElementById(tp.gelid('row.deletegroup') + '-' + slideId));
+            if (hide){
+                elDShow.show();
+                elDelete.hide();
+            }else{
+                elDShow.hide();
+                elDelete.show();
+            }
+        },
+        slideDelete: function(slideId){
+            var carouselId = this.get('carouselId') | 0;
+
+            this.set('waiting', true);
+            this.get('appInstance').slideDelete(carouselId, slideId, function(err, result){
+                this.set('waiting', false);
+                this.reloadSlideList();
+            }, this);
+        },
         onClick: function(e){
             switch (e.dataClick) {
                 case 'slide-create':
                     this.showSlideEditor(0);
                     return true;
-                case 'slide-edit':
-                    var slideId = e.target.getData('id');
-                    this.showSlideEditor(slideId);
-                    return true;
                 case 'carousel-list':
                     this.fire('carouselListClick');
+                    return true;
+            }
+
+            var slideId = e.target.getData('id') | 0;
+            if (slideId === 0){
+                return;
+            }
+
+            switch (e.dataClick) {
+                case 'slide-edit':
+                    this.showSlideEditor(slideId);
+                    return true;
+                case 'slide-delete-show':
+                    this.slideDeleteShow(slideId);
+                    return true;
+                case 'slide-delete-cancel':
+                    this.slideDeleteShow(slideId, true);
+                    return true;
+                case 'slide-delete':
+                    this.slideDelete(slideId);
                     return true;
             }
         },

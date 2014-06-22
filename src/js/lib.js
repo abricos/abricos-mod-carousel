@@ -221,6 +221,15 @@ Component.entryPoint = function(NS){
             }, this._onCarouselListLoad, {
                 arguments: {callback: callback, context: context }
             });
+        },
+        slideDelete: function(carouselId, slideId, callback, context){
+            this.ajax({
+                'do': 'slidedelete',
+                'carouselid': carouselId,
+                'slideid': slideId
+            }, this._onCarouselListLoad, {
+                arguments: {callback: callback, context: context }
+            });
         }
     };
     NS.AppBase = AppBase;
