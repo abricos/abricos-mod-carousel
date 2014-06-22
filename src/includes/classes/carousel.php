@@ -111,6 +111,10 @@ class CarouselManager {
         return $list;
     }
 
+    /**
+     * @param $carouselId
+     * @return Carousel|null
+     */
     public function Carousel($carouselId) {
         if (!$this->manager->IsViewRole()) {
             return null;
@@ -139,6 +143,10 @@ class CarouselManager {
         return $ret;
     }
 
+    /**
+     * @param $carouselId
+     * @return CarouselSlideList|int
+     */
     public function SlideList($carouselId) {
         if (!$this->manager->IsViewRole()) {
             return 403;

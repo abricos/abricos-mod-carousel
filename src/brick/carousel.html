@@ -1,9 +1,38 @@
 <!--[*]
 [script]brick_carousel.php[/script]
-[*]-->
-<div id="{v#brickid}" class="carousel slide" data-fide="carousel">
-    <ol class="carousel-indicators">
 
+[p=carouselid][/p]
+[p=name][/p]
+[p=nowrap][/p]
+
+[bkvar=indicator]
+    <li data-target="#{v#brickid}" data-slide-to="{v#index}" class="{v#active}"></li>
+[/bkvar]
+
+[bkvar=slide]
+    <div class="item {v#active}">
+        <img src="/filemanager/i/{v#filehash}/image" title="{v#title}"/>
+    </div>
+[/bkvar]
+
+[bkvar=wrap]
+    <div class="panel panel-default">
+        {v#content}
+    </div>
+[/bkvar]
+
+[*]-->
+<div id="{v#brickid}" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        {v#indicators}
     </ol>
-    {v#result}
+    <div class="carousel-inner">
+        {v#items}
+    </div>
+    <a class="left carousel-control" href="#{v#brickid}" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+    <a class="right carousel-control" href="#{v#brickid}" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
 </div>

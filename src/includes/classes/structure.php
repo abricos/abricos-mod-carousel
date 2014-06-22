@@ -55,6 +55,13 @@ class CarouselSlide extends AbricosItem {
 }
 
 class CarouselSlideList extends AbricosList {
+    /**
+     * @param int $index
+     * @return CarouselSlide
+     */
+    public function GetByIndex($index){
+        return parent::GetByIndex($index);
+    }
 }
 
 ?>
