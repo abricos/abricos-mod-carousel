@@ -23,6 +23,10 @@ class CarouselManager {
                 return $this->CarouselListToAJAX();
             case "carouselsave":
                 return $this->CarouselSaveToAJAX($d->savedata);
+            case "carouseldisable":
+                return $this->CarouselDisableToAJAX($d->carouselid);
+            case "carouselenable":
+                return $this->CarouselEnableToAJAX($d->carouselid);
             case "slidelist":
                 return $this->SlideListToAJAX($d->carouselid);
             case "slidesave":
@@ -90,6 +94,54 @@ class CarouselManager {
 
         $result = $this->CarouselList();
         $ret->carousels = $result->ToAJAX();
+
+        return $ret;
+    }
+
+    public function CarouselDisableToAJAX($carouselId) {
+        $res = $this->CarouselDisable($carouselId);
+
+        $ret = $this->manager->TreatResult($res);
+
+        if ($ret->err === 0) {
+            $ret = $this->CarouselListToAJAX($ret);
+        }
+
+        return $ret;
+    }
+
+    public function CarouselDisable($carouselId) {
+        if (!$this->manager->IsAdminRole()) {
+            return 403;
+        }
+        CarouselQuery::CarouselDisable($this->db, $carouselId);
+
+        $ret = new stdClass();
+        $ret->carouselid = $carouselId;
+
+        return $ret;
+    }
+
+    public function CarouselEnableToAJAX($carouselId) {
+        $res = $this->CarouselEnable($carouselId);
+
+        $ret = $this->manager->TreatResult($res);
+
+        if ($ret->err === 0) {
+            $ret = $this->CarouselListToAJAX($ret);
+        }
+
+        return $ret;
+    }
+
+    public function CarouselEnable($carouselId) {
+        if (!$this->manager->IsAdminRole()) {
+            return 403;
+        }
+        CarouselQuery::CarouselEnable($this->db, $carouselId);
+
+        $ret = new stdClass();
+        $ret->carouselid = $carouselId;
 
         return $ret;
     }

@@ -13,7 +13,7 @@ class Carousel extends AbricosItem {
         $this->name = strval($d['name']);
         $this->width = intval($d['width']);
         $this->height = intval($d['height']);
-        $this->off = $d['off'] === 1;
+        $this->off = intval($d['off']) === 1;
     }
 
     public function ToAJAX() {

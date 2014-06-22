@@ -19,6 +19,9 @@ Component.entryPoint = function(NS){
     ], {
         initializer: function(){
             this._currentSlideEditor = null;
+            this.publish('carouselListClick', {
+                defaultFn: this._defCarouselListClick
+            });
         },
         buildTData: function(){
             var carouselId = this.get('carouselId') | 0
@@ -84,6 +87,9 @@ Component.entryPoint = function(NS){
                     var slideId = e.target.getData('id');
                     this.showSlideEditor(slideId);
                     return true;
+                case 'carousel-list':
+                    this.fire('carouselListClick');
+                    return true;
             }
         },
         showSlideEditor: function(slideId){
@@ -124,6 +130,9 @@ Component.entryPoint = function(NS){
             if (reload){
                 this.reloadSlideList();
             }
+        },
+        _defCarouselListClick: function(){
+            Brick.Page.reload(NS.URL.manager.view());
         }
     }, {
         ATTRS: {

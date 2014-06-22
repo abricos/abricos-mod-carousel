@@ -170,6 +170,22 @@ Component.entryPoint = function(NS){
                 arguments: {callback: callback, context: context }
             });
         },
+        carouselDisable: function(carouselId, callback, context){
+            this.ajax({
+                'do': 'carouseldisable',
+                'carouselid': carouselId
+            }, this._onCarouselListLoad, {
+                arguments: {callback: callback, context: context}
+            });
+        },
+        carouselEnable: function(carouselId, callback, context){
+            this.ajax({
+                'do': 'carouselenable',
+                'carouselid': carouselId
+            }, this._onCarouselListLoad, {
+                arguments: {callback: callback, context: context}
+            });
+        },
         slideListLoad: function(carouselId, callback, context){
             var cacheSlideList = this._cacheSlideList[carouselId];
 

@@ -15,7 +15,8 @@ class CarouselQuery {
                 carouselid as id,
                 name,
                 width,
-                height
+                height,
+                off
             FROM ".$db->prefix."carousel
             WHERE carouselid=".bkint($carouselId)."
             LIMIT 1
@@ -29,7 +30,8 @@ class CarouselQuery {
                 carouselid as id,
                 name,
                 width,
-                height
+                height,
+                off
             FROM ".$db->prefix."carousel
         ";
         return $db->query_read($sql);
@@ -56,6 +58,26 @@ class CarouselQuery {
                 width=".bkint($d->width).",
                 height=".bkint($d->height)."
             WHERE carouselid=".bkint($d->id)."
+            LIMIT 1
+        ";
+        $db->query_write($sql);
+    }
+
+    public static function CarouselDisable(Ab_Database $db, $carouselId) {
+        $sql = "
+            UPDATE ".$db->prefix."carousel
+            SET off=".bkint(1)."
+            WHERE carouselid=".bkint($carouselId)."
+            LIMIT 1
+        ";
+        $db->query_write($sql);
+    }
+
+    public static function CarouselEnable(Ab_Database $db, $carouselId) {
+        $sql = "
+            UPDATE ".$db->prefix."carousel
+            SET off=".bkint(0)."
+            WHERE carouselid=".bkint($carouselId)."
             LIMIT 1
         ";
         $db->query_write($sql);

@@ -41,6 +41,7 @@
         <th></th>
         <th></th>
         <th></th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -54,6 +55,11 @@
     <td>{v#name}</td>
     <td>{v#width}</td>
     <td>{v#height}</td>
+    <td>
+        <a href="/carousel/view/{v#id}/" target="_blank" class="btn btn-default btn-xs">
+            Просмотреть
+        </a>
+    </td>
     <td>
         <button type="button" class="btn btn-default btn-xs" data-click="carousel-slides" data-id="{v#id}">
             Слайды
@@ -73,3 +79,13 @@
         </button>
     </td>
 </tr>
+
+<!--{btnon}-->
+<button type="button" class="btn btn-default btn-xs" data-click="carousel-enable" data-id="{v#id}">
+    Включить
+</button>
+
+<!--{btnoff}-->
+<button type="button" class="btn btn-default btn-xs" data-click="carousel-disable" data-id="{v#id}">
+    Отключить
+</button>

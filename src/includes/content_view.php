@@ -20,7 +20,8 @@ $adr = Abricos::$adress;
 $carouselId = $adr->dir[2];
 
 $carouselBrick = Brick::$builder->LoadBrickS('carousel', 'carousel', $brick, array( "p" => array(
-    "carouselid" => $carouselId
+    "carouselid" => $carouselId,
+    "ignoreoff" => true
 )));
 
 $brick->content = Brick::ReplaceVarByData($brick->content, array(

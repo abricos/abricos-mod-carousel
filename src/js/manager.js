@@ -54,6 +54,20 @@ Component.entryPoint = function(NS){
                 'rows': lst
             });
         },
+        carouselEnable: function(carouselId){
+            this.set('waiting', true);
+            this.get('appInstance').carouselEnable(carouselId, function(err, result){
+                this.set('waiting', false);
+                this.renderCarouselList();
+            }, this);
+        },
+        carouselDisable: function(carouselId){
+            this.set('waiting', true);
+            this.get('appInstance').carouselDisable(carouselId, function(err, result){
+                this.set('waiting', false);
+                this.renderCarouselList();
+            }, this);
+        },
         onClick: function(e){
             switch (e.dataClick) {
                 case 'carousel-create':
@@ -66,6 +80,14 @@ Component.entryPoint = function(NS){
                 case 'carousel-slides':
                     var carouselId = e.target.getData('id');
                     this.fire('carouselSlides', carouselId);
+                    return true;
+                case 'carousel-enable':
+                    var carouselId = e.target.getData('id');
+                    this.carouselEnable(carouselId);
+                    return true;
+                case 'carousel-disable':
+                    var carouselId = e.target.getData('id');
+                    this.carouselDisable(carouselId);
                     return true;
             }
         },

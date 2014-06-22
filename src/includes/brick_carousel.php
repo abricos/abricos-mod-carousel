@@ -21,7 +21,7 @@ if ($carouselId > 0) {
     $carousel = $man->Carousel($carouselId);
 }
 
-if (empty($carousel)) {
+if (empty($carousel) || ($carousel->off && empty($p['ignoreoff']))) {
     $brick->content = "";
     return;
 }
