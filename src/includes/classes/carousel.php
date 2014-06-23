@@ -207,6 +207,19 @@ class CarouselManager {
         return new Carousel($row);
     }
 
+    public function CarouselByName($name){
+        if (!$this->manager->IsViewRole()) {
+            return null;
+        }
+
+        $row = CarouselQuery::CarouselByName($this->db, $name);
+        if (empty($row)) {
+            return null;
+        }
+
+        return new Carousel($row);
+    }
+
     public function SlideListToAJAX($carouselId, $overResult = null) {
         $ret = !empty($overResult) ? $overResult : (new stdClass());
         $ret->err = 0;

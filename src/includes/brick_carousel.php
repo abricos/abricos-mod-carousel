@@ -19,6 +19,8 @@ $name = $p['name'];
 $carousel = null;
 if ($carouselId > 0) {
     $carousel = $man->Carousel($carouselId);
+}else if (!empty($name)){
+    $carousel = $man->CarouselByName($name);
 }
 
 if (empty($carousel) || ($carousel->off && empty($p['ignoreoff']))) {

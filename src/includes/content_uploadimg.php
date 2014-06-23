@@ -34,8 +34,8 @@ for ($i = 0; $i < 10; $i++) {
 
     $uploadFile = FileManagerModule::$instance->GetManager()->CreateUploadByVar('image'.$i);
 
-    $uploadFile->maxImageWidth = 1024;
-    $uploadFile->maxImageHeight = 1024;
+    $uploadFile->maxImageWidth = 1600;
+    $uploadFile->maxImageHeight = 1600;
     $uploadFile->ignoreFileSize = true;
     $uploadFile->isOnlyImage = true;
     $uploadFile->outUserProfile = true;

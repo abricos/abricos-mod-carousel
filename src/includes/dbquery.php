@@ -9,16 +9,31 @@ class CarouselQuery {
 
     const FILECLEARTIME = 86400;
 
+    const CAROUSEL_FIELDS = "
+        carouselid as id,
+        name,
+        width,
+        height,
+        off
+    ";
+
     public static function Carousel(Ab_Database $db, $carouselId) {
         $sql = "
             SELECT
-                carouselid as id,
-                name,
-                width,
-                height,
-                off
+                ".CarouselQuery::CAROUSEL_FIELDS."
             FROM ".$db->prefix."carousel
             WHERE carouselid=".bkint($carouselId)."
+            LIMIT 1
+        ";
+        return $db->query_first($sql);
+    }
+
+    public static function CarouselByName(Ab_Database $db, $name) {
+        $sql = "
+            SELECT
+                ".CarouselQuery::CAROUSEL_FIELDS."
+            FROM ".$db->prefix."carousel
+            WHERE name='".bkstr($name)."'
             LIMIT 1
         ";
         return $db->query_first($sql);
@@ -27,11 +42,7 @@ class CarouselQuery {
     public static function CarouselList(Ab_Database $db) {
         $sql = "
             SELECT
-                carouselid as id,
-                name,
-                width,
-                height,
-                off
+                ".CarouselQuery::CAROUSEL_FIELDS."
             FROM ".$db->prefix."carousel
             WHERE deldate=0
         ";
