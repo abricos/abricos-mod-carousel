@@ -39,7 +39,10 @@ for ($i = 0; $i < $slideList->Count(); $i++) {
     $lstItem .= Brick::ReplaceVarByData($v['slide'], array(
         "active" => $i===0 ? "active" : "",
         "filehash" => $slide->filehash,
-        "title" => $slide->title
+        "title" => $slide->title,
+        "url" => empty($slide->url) ? "#" : $slide->url,
+        "imgwidth" => empty($carousel->width) ? "auto" : $carousel->width."px",
+        "imgheight" => empty($carousel->height) ? "auto" : $carousel->height."px"
     ));
 }
 

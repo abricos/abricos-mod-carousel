@@ -12,7 +12,9 @@
 
 [bkvar=slide]
     <div class="item {v#active}">
-        <img src="/filemanager/i/{v#filehash}/image" title="{v#title}"/>
+        <a href="{v#url}" title="{v#title}">
+            <img src="/filemanager/i/{v#filehash}/image" alt="{v#title}" style="width: {v#imgwidth}; height: {v#imgheight}"/>
+        </a>
     </div>
 [/bkvar]
 
@@ -23,7 +25,8 @@
 [/bkvar]
 
 [*]-->
-<div id="{v#brickid}" class="carousel slide" data-ride="carousel">
+
+<div id="{v#brickid}" class="aw-carousel carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
         {v#indicators}
     </ol>
