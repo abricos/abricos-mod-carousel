@@ -36,7 +36,6 @@ class CarouselModule extends Ab_Module {
     }
 
     public function GetContentName(){
-        $adress = $this->registry->adress;
         $dir = Abricos::$adress->dir;
 
         switch($dir[1]){
@@ -45,6 +44,10 @@ class CarouselModule extends Ab_Module {
                 return $dir[1];
         }
         return '';
+    }
+
+    public function Bos_IsMenu(){
+        return true;
     }
 }
 
