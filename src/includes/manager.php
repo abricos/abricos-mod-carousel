@@ -87,15 +87,15 @@ class CarouselModuleManager extends Ab_ModuleManager {
             return null;
         }
         $lng = $this->module->lang;
-        return [
-            [
+        return array(
+            array(
                 "name" => "carousel",
                 "title" => $lng['bosmenu']['carousel'],
                 "icon" => "/modules/carousel/img/logo-48x48.png",
                 "url" => "carousel/wspace/ws",
                 "parent" => "controlPanel"
-            ]
-        ];
+            )
+        );
     }
 
 }

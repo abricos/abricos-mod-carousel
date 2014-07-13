@@ -1,7 +1,7 @@
 <?php
-return [
-    "bosmenu" => [
+return array(
+    "bosmenu" => array(
         "carousel" => "Карусель"
-    ]
-];
+    )
+);
 ?>
