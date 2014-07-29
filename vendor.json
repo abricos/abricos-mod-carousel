@@ -1,0 +1,11 @@
+{
+    "files": {
+        "slick-carousel": [
+            {
+                "cwd": "slick",
+                "src": "**/*"
+            },
+            "LICENSE", "README.markdown"
+        ]
+    }
+}

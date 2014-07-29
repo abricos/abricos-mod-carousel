@@ -1,0 +1,6 @@
+{
+    "name": "abricos-mod-carousel",
+    "dependencies": {
+        "slick-carousel": "~1.3.6"
+    }
+}
