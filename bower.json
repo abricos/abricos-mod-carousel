@@ -1,6 +1,7 @@
 {
-    "name": "abricos-mod-carousel",
+    "name": "carousel",
     "dependencies": {
-        "slick-carousel": "~1.3.6"
+        "slick-carousel": "~1.3.6",
+        "jcarousel": "~0.3.1"
     }
 }

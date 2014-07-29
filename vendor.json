@@ -6,6 +6,13 @@
                 "src": "**/*"
             },
             "LICENSE", "README.markdown"
+        ],
+        "jcarousel": [
+            {
+                "cwd": "dist",
+                "src": "**/*"
+            },
+            "LICENSE"
         ]
     }
 }
