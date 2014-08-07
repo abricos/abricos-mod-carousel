@@ -46,6 +46,9 @@ Component.entryPoint = function(NS){
             url: {
                 value: ''
             },
+            code: {
+                value: ''
+            },
             ord: {
                 value: 0
             },

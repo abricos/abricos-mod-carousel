@@ -109,7 +109,7 @@ class CarouselQuery {
         $sql = "
             SELECT
                 slideid as id,
-                title, url, ord, filehash
+                title, url, ord, code, filehash
             FROM ".$db->prefix."carousel_slide
             WHERE carouselid=".bkint($carouselId)."
             ORDER BY ord DESC
@@ -120,11 +120,12 @@ class CarouselQuery {
     public static function SlideAppend(Ab_Database $db, $carouselId, $d) {
         $sql = "
             INSERT INTO ".$db->prefix."carousel_slide
-            (carouselid, title, url, filehash, ord) VALUES (
+            (carouselid, title, url, filehash, code, ord) VALUES (
                 ".bkint($carouselId).",
                 '".bkstr($d->title)."',
                 '".bkstr($d->url)."',
                 '".bkstr($d->filehash)."',
+                '".bkstr($d->code)."',
                 ".bkint($d->ord)."
             )
         ";
@@ -138,6 +139,7 @@ class CarouselQuery {
             SET title='".bkstr($d->title)."',
                 url='".bkstr($d->url)."',
                 filehash='".bkstr($d->filehash)."',
+                code='".bkstr($d->code)."',
                 ord=".bkint($d->ord)."
             WHERE carouselid=".bkint($carouselId)." AND slideid=".bkint($d->id)."
         ";

@@ -18,7 +18,7 @@ class CarouselModule extends Ab_Module {
         $this->takelink = "carousel";
 
         // Версия модуля
-        $this->version = "0.1.0";
+        $this->version = "0.1.1";
 
         $this->permission = new CarouselPermission($this);
     }

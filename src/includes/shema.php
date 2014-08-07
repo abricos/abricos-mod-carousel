@@ -22,8 +22,8 @@ if ($updateManager->isInstall()) {
             `carouselid` int(10) unsigned NOT NULL auto_increment,
 		    `name` varchar(50) NOT NULL DEFAULT '' COMMENT 'Имя',
 
-			`width` int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'Ширина',
-			`height` int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'Высота',
+			`width` int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'Width',
+			`height` int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'Height',
 
 			`off` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'Отключено',
 
@@ -41,6 +41,7 @@ if ($updateManager->isInstall()) {
             `carouselid` int(10) unsigned NOT NULL DEFAULT 0 COMMENT '',
 		    `title` varchar(250) NOT NULL DEFAULT '' COMMENT 'Заголовок',
 		    `url` varchar(250) NOT NULL DEFAULT '' COMMENT 'URL',
+		    `code` TEXT NOT NULL  COMMENT 'HTML code',
 		    `ord` int(4) NOT NULL DEFAULT 0 COMMENT 'Сортировка',
 			`filehash` varchar(8) NOT NULL DEFAULT '' COMMENT 'Идентификатор картинки',
 		    PRIMARY KEY  (`slideid`)
@@ -60,6 +61,13 @@ if ($updateManager->isInstall()) {
 		)".$charset
     );
 
+}
+
+if ($updateManager->isUpdate('0.1.1') && !$updateManager->isInstall()){
+    $db->query_write("
+		ALTER TABLE ".$pfx."carousel_slide
+		ADD `code` TEXT NOT NULL  COMMENT 'HTML code'
+	");
 }
 
 ?>

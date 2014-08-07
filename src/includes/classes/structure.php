@@ -33,6 +33,12 @@ class CarouselSlide extends AbricosItem {
     public $title;
     public $url;
     public $ord;
+
+    /**
+     * HTML Code
+     * @var string
+     */
+    public $code;
     public $filehash;
 
     public function __construct($d) {
@@ -40,6 +46,7 @@ class CarouselSlide extends AbricosItem {
 
         $this->title = strval($d['title']);
         $this->url = strval($d['url']);
+        $this->code = strval($d['code']);
         $this->filehash = strval($d['filehash']);
         $this->ord = intval($d['ord']);
     }
@@ -49,6 +56,7 @@ class CarouselSlide extends AbricosItem {
         $ret->title = $this->title;
         $ret->url = $this->url;
         $ret->ord = $this->ord;
+        $ret->code = $this->code;
         $ret->filehash = $this->filehash;
         return $ret;
     }

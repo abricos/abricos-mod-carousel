@@ -39,6 +39,7 @@ for ($i = 0; $i < $slideList->Count(); $i++) {
         "active" => $i===0 ? "active" : ""
     ));
     $lstItem .= Brick::ReplaceVarByData($v['slide'], array(
+        "code" => $slide->code,
         "active" => $i===0 ? "active" : "",
         "filehash" => $slide->filehash,
         "title" => $slide->title,
