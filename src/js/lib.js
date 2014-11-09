@@ -9,10 +9,16 @@ Component.requires = {
     mod: [
         {name: 'sys', files: ['application.js', 'widget.js', 'form.js']},
         {name: 'widget', files: ['notice.js']},
-        {name: '{C#MODNAME}', files: ['roles.js', 'model.js']}
+        {name: '{C#MODNAME}', files: ['model.js']}
     ]
 };
 Component.entryPoint = function(NS){
+
+    NS.roles = new Brick.AppRoles('{C#MODNAME}', {
+        isAdmin: 50,
+        isWrite: 30,
+        isView: 10
+    });
 
     var Y = Brick.YUI,
 
@@ -167,7 +173,7 @@ Component.entryPoint = function(NS){
                 'do': 'carouselsave',
                 'savedata': carousel.toJSON()
             }, this._onCarouselListLoad, {
-                arguments: {callback: callback, context: context }
+                arguments: {callback: callback, context: context}
             });
         },
         carouselDisable: function(carouselId, callback, context){
@@ -219,7 +225,7 @@ Component.entryPoint = function(NS){
                 'carouselid': carouselId,
                 'savedata': slide.toJSON()
             }, this._onCarouselListLoad, {
-                arguments: {callback: callback, context: context }
+                arguments: {callback: callback, context: context}
             });
         },
         slideDelete: function(carouselId, slideId, callback, context){
@@ -228,7 +234,7 @@ Component.entryPoint = function(NS){
                 'carouselid': carouselId,
                 'slideid': slideId
             }, this._onCarouselListLoad, {
-                arguments: {callback: callback, context: context }
+                arguments: {callback: callback, context: context}
             });
         }
     };
