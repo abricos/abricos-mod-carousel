@@ -8,7 +8,7 @@ Component.requires = {
     yui: ['base'],
     mod: [
         {name: 'sys', files: ['application.js', 'widget.js', 'form.js']},
-        {name: 'widget', files: ['notice.js']},
+        {name: 'widget', files: ['notice.js', 'lib.js']},
         {name: '{C#MODNAME}', files: ['model.js']}
     ]
 };
