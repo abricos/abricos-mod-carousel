@@ -10,7 +10,7 @@ class CarouselModule extends Ab_Module {
 
     private $_manager = null;
 
-    public function __construct() {
+    public function __construct(){
 
         // Название модуля
         $this->name = "carousel";
@@ -38,7 +38,7 @@ class CarouselModule extends Ab_Module {
     public function GetContentName(){
         $dir = Abricos::$adress->dir;
 
-        switch($dir[1]){
+        switch ($dir[1]){
             case 'uploadimg':
             case 'view':
                 return $dir[1];
@@ -59,7 +59,7 @@ class CarouselAction {
 
 class CarouselPermission extends Ab_UserPermission {
 
-    public function CarouselPermission(CarouselModule $module) {
+    public function CarouselPermission(CarouselModule $module){
         $defRoles = array(
             new Ab_UserRole(CarouselAction::VIEW, Ab_UserGroup::GUEST),
             new Ab_UserRole(CarouselAction::VIEW, Ab_UserGroup::REGISTERED),
@@ -72,7 +72,7 @@ class CarouselPermission extends Ab_UserPermission {
         parent::__construct($module, $defRoles);
     }
 
-    public function GetRoles() {
+    public function GetRoles(){
         return array(
             CarouselAction::VIEW => $this->CheckAction(CarouselAction::VIEW),
             CarouselAction::WRITE => $this->CheckAction(CarouselAction::WRITE),

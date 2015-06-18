@@ -17,7 +17,7 @@ class CarouselQuery {
         off
     ";
 
-    public static function Carousel(Ab_Database $db, $carouselId) {
+    public static function Carousel(Ab_Database $db, $carouselId){
         $sql = "
             SELECT
                 ".CarouselQuery::CAROUSEL_FIELDS."
@@ -28,7 +28,7 @@ class CarouselQuery {
         return $db->query_first($sql);
     }
 
-    public static function CarouselByName(Ab_Database $db, $name) {
+    public static function CarouselByName(Ab_Database $db, $name){
         $sql = "
             SELECT
                 ".CarouselQuery::CAROUSEL_FIELDS."
@@ -39,7 +39,7 @@ class CarouselQuery {
         return $db->query_first($sql);
     }
 
-    public static function CarouselList(Ab_Database $db) {
+    public static function CarouselList(Ab_Database $db){
         $sql = "
             SELECT
                 ".CarouselQuery::CAROUSEL_FIELDS."
@@ -49,7 +49,7 @@ class CarouselQuery {
         return $db->query_read($sql);
     }
 
-    public static function CarouselAppend(Ab_Database $db, $d) {
+    public static function CarouselAppend(Ab_Database $db, $d){
         $sql = "
             INSERT INTO ".$db->prefix."carousel
             (name, width, height, dateline) VALUES (
@@ -63,7 +63,7 @@ class CarouselQuery {
         return $db->insert_id();
     }
 
-    public static function CarouselUpdate(Ab_Database $db, $d) {
+    public static function CarouselUpdate(Ab_Database $db, $d){
         $sql = "
             UPDATE ".$db->prefix."carousel
             SET name='".bkstr($d->name)."',
@@ -75,7 +75,7 @@ class CarouselQuery {
         $db->query_write($sql);
     }
 
-    public static function CarouselDisable(Ab_Database $db, $carouselId) {
+    public static function CarouselDisable(Ab_Database $db, $carouselId){
         $sql = "
             UPDATE ".$db->prefix."carousel
             SET off=".bkint(1)."
@@ -85,7 +85,7 @@ class CarouselQuery {
         $db->query_write($sql);
     }
 
-    public static function CarouselEnable(Ab_Database $db, $carouselId) {
+    public static function CarouselEnable(Ab_Database $db, $carouselId){
         $sql = "
             UPDATE ".$db->prefix."carousel
             SET off=".bkint(0)."
@@ -95,7 +95,7 @@ class CarouselQuery {
         $db->query_write($sql);
     }
 
-    public static function CarouselDelete(Ab_Database $db, $carouselId) {
+    public static function CarouselDelete(Ab_Database $db, $carouselId){
         $sql = "
             UPDATE ".$db->prefix."carousel
             SET deldate=".TIMENOW."
@@ -105,7 +105,7 @@ class CarouselQuery {
         $db->query_write($sql);
     }
 
-    public static function SlideList(Ab_Database $db, $carouselId) {
+    public static function SlideList(Ab_Database $db, $carouselId){
         $sql = "
             SELECT
                 slideid as id,
@@ -117,7 +117,7 @@ class CarouselQuery {
         return $db->query_read($sql);
     }
 
-    public static function SlideAppend(Ab_Database $db, $carouselId, $d) {
+    public static function SlideAppend(Ab_Database $db, $carouselId, $d){
         $sql = "
             INSERT INTO ".$db->prefix."carousel_slide
             (carouselid, title, url, filehash, code, ord) VALUES (
@@ -133,7 +133,7 @@ class CarouselQuery {
         return $db->insert_id();
     }
 
-    public static function SlideUpdate(Ab_Database $db, $carouselId, $d) {
+    public static function SlideUpdate(Ab_Database $db, $carouselId, $d){
         $sql = "
             UPDATE ".$db->prefix."carousel_slide
             SET title='".bkstr($d->title)."',
@@ -146,7 +146,7 @@ class CarouselQuery {
         $db->query_write($sql);
     }
 
-    public static function SlideDelete(Ab_Database $db, $carouselId, $slideId) {
+    public static function SlideDelete(Ab_Database $db, $carouselId, $slideId){
         $sql = "
             DELETE FROM ".$db->prefix."carousel_slide
             WHERE carouselid=".bkint($carouselId)." AND  slideid=".bkint($slideId)."
@@ -157,7 +157,7 @@ class CarouselQuery {
     }
 
 
-    public static function FotoAddToBuffer(Ab_Database $db, $fhash) {
+    public static function FotoAddToBuffer(Ab_Database $db, $fhash){
         $sql = "
 			INSERT INTO ".$db->prefix."carousel_foto (fileid, dateline) VALUES (
 				'".bkstr($fhash)."',
@@ -167,7 +167,7 @@ class CarouselQuery {
         $db->query_write($sql);
     }
 
-    public static function FotoFreeFromBufferList(Ab_Database $db) {
+    public static function FotoFreeFromBufferList(Ab_Database $db){
         $sql = "
 			SELECT
 				fotoid as id,
@@ -178,7 +178,7 @@ class CarouselQuery {
         return $db->query_read($sql);
     }
 
-    public static function FotoFreeListClear(Ab_Database $db) {
+    public static function FotoFreeListClear(Ab_Database $db){
         $sql = "
 			DELETE FROM ".$db->prefix."carousel_foto
 			WHERE slideid=0 AND dateline<".(TIMENOW - CarouselQuery::FILECLEARTIME)."
@@ -192,7 +192,6 @@ class CarouselQuery {
 		";
         $db->query_write($sql);
     }
-
 
 
 }

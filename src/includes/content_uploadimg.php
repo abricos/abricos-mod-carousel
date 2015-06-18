@@ -10,27 +10,27 @@ Abricos::GetModule('carousel')->GetManager();
 
 $modManager = CarouselModuleManager::$instance;
 
-if (!$modManager->IsWriteRole()) {
+if (!$modManager->IsWriteRole()){
     return;
 }
 // print_r('ok'); exit;
 
 
 $modFM = Abricos::GetModule('filemanager');
-if (empty($modFM)) {
+if (empty($modFM)){
     return;
 }
 
 $brick = Brick::$builder->brick;
-$var = & $brick->param->var;
+$var = &$brick->param->var;
 
-if (Abricos::$adress->dir[2] !== "go") {
+if (Abricos::$adress->dir[2] !== "go"){
     return;
 }
 
 $resa = array();
 
-for ($i = 0; $i < 10; $i++) {
+for ($i = 0; $i < 10; $i++){
 
     $uploadFile = FileManagerModule::$instance->GetManager()->CreateUploadByVar('image'.$i);
 
@@ -41,7 +41,7 @@ for ($i = 0; $i < 10; $i++) {
     $uploadFile->outUserProfile = true;
     $error = $uploadFile->Upload();
 
-    if ($i > 0 && $error == UploadError::FILE_NOT_FOUND) {
+    if ($i > 0 && $error == UploadError::FILE_NOT_FOUND){
         continue;
     }
 
@@ -52,7 +52,7 @@ for ($i = 0; $i < 10; $i++) {
 
     $resa[] = $res;
 
-    if ($error > 0) {
+    if ($error > 0){
         continue;
     }
 

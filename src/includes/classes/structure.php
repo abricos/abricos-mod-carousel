@@ -7,7 +7,7 @@ class Carousel extends AbricosItem {
     public $height;
     public $off;
 
-    public function __construct($d) {
+    public function __construct($d){
         parent::__construct($d);
 
         $this->name = strval($d['name']);
@@ -16,7 +16,7 @@ class Carousel extends AbricosItem {
         $this->off = intval($d['off']) === 1;
     }
 
-    public function ToAJAX() {
+    public function ToAJAX(){
         $ret = parent::ToAJAX();
         $ret->name = $this->name;
         $ret->width = $this->width;
@@ -36,12 +36,13 @@ class CarouselSlide extends AbricosItem {
 
     /**
      * HTML Code
+     *
      * @var string
      */
     public $code;
     public $filehash;
 
-    public function __construct($d) {
+    public function __construct($d){
         parent::__construct($d);
 
         $this->title = strval($d['title']);
@@ -51,7 +52,7 @@ class CarouselSlide extends AbricosItem {
         $this->ord = intval($d['ord']);
     }
 
-    public function ToAJAX() {
+    public function ToAJAX(){
         $ret = parent::ToAJAX();
         $ret->title = $this->title;
         $ret->url = $this->url;

@@ -22,25 +22,25 @@ class CarouselModuleManager extends Ab_ModuleManager {
 
     private $_carouselManager = null;
 
-    public function __construct(CarouselModule $module) {
+    public function __construct(CarouselModule $module){
         parent::__construct($module);
 
         CarouselModuleManager::$instance = $this;
     }
 
-    public function IsAdminRole() {
+    public function IsAdminRole(){
         return $this->IsRoleEnable(CarouselAction::ADMIN);
     }
 
-    public function IsWriteRole() {
-        if ($this->IsAdminRole()) {
+    public function IsWriteRole(){
+        if ($this->IsAdminRole()){
             return true;
         }
         return $this->IsRoleEnable(CarouselAction::WRITE);
     }
 
-    public function IsViewRole() {
-        if ($this->IsWriteRole()) {
+    public function IsViewRole(){
+        if ($this->IsWriteRole()){
             return true;
         }
         return $this->IsRoleEnable(CarouselAction::VIEW);
@@ -49,32 +49,32 @@ class CarouselModuleManager extends Ab_ModuleManager {
     /**
      * @return CarouselManager
      */
-    public function GetCarouselManager() {
-        if (empty($this->_carouselManager)) {
+    public function GetCarouselManager(){
+        if (empty($this->_carouselManager)){
             require_once 'classes/carousel.php';
             $this->_carouselManager = new CarouselManager($this);
         }
         return $this->_carouselManager;
     }
 
-    public function TreatResult($res) {
+    public function TreatResult($res){
         $ret = new stdClass();
         $ret->err = 0;
 
-        if (is_integer($res)) {
+        if (is_integer($res)){
             $ret->err = $res;
-        } else if (is_object($res)) {
+        } else if (is_object($res)){
             $ret = $res;
         }
-        $ret->err = intval($ret->err);
+        $ret->err = isset($ret->err) ? intval($ret->err) : null;
 
         return $ret;
     }
 
-    public function AJAX($d) {
+    public function AJAX($d){
         $ret = $this->GetCarouselManager()->AJAX($d);
 
-        if (empty($ret)) {
+        if (empty($ret)){
             $ret = new stdClass();
             $ret->err = 500;
         }
@@ -82,8 +82,8 @@ class CarouselModuleManager extends Ab_ModuleManager {
         return $ret;
     }
 
-    public function Bos_MenuData() {
-        if (!$this->IsAdminRole()) {
+    public function Bos_MenuData(){
+        if (!$this->IsAdminRole()){
             return null;
         }
         $lng = $this->module->GetI18n();
