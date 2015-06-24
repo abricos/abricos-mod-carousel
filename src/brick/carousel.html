@@ -1,5 +1,5 @@
 <!--[*]
-[script]brick_carousel.php[/script]
+[script]brick/carousel.php[/script]
 
 [p=carouselid][/p]
 [p=name][/p]
@@ -12,10 +12,15 @@
 
 [bkvar=slide]
     <div class="item {v#active}">
-        <a href="{v#url}" title="{v#title}">
-            <img src="/filemanager/i/{v#filehash}/image" alt="{v#title}" style="width: {v#imgwidth}; height: {v#imgheight}"/>
-        </a>
+        {v#body}
     </div>
+[/bkvar]
+
+[bkvar=slidebody]
+    <a href="{v#url}" title="{v#title}">
+        <img src="/filemanager/i/{v#filehash}/image" alt="{v#title}" style="width: {v#imgwidth}; height: {v#imgheight}"/>
+        {v#code}
+    </a>
 [/bkvar]
 
 [bkvar=wrap]

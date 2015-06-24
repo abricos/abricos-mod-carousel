@@ -38,14 +38,21 @@ for ($i = 0; $i < $slideList->Count(); $i++){
         "index" => $i,
         "active" => $i === 0 ? "active" : ""
     ));
-    $lstItem .= Brick::ReplaceVarByData($v['slide'], array(
+
+    $slideItemTemplate = $carousel->isCustomTemplate ? $carousel->customTemplate : $v['slidebody'];
+
+    $slideBody = Brick::ReplaceVarByData($slideItemTemplate, array(
         "code" => $slide->code,
-        "active" => $i === 0 ? "active" : "",
         "filehash" => $slide->filehash,
         "title" => $slide->title,
         "url" => empty($slide->url) ? "#" : $slide->url,
         "imgwidth" => empty($carousel->width) ? "auto" : $carousel->width."px",
         "imgheight" => empty($carousel->height) ? "auto" : $carousel->height."px"
+    ));
+
+    $lstItem .= Brick::ReplaceVarByData($v['slide'], array(
+        "active" => $i === 0 ? "active" : "",
+        "body" => $slideBody
     ));
 }
 

@@ -9,24 +9,16 @@ Component.requires = {
 };
 Component.entryPoint = function(NS){
 
-    var Y = Brick.YUI,
-        SYS = Brick.mod.sys;
+    var Y = Brick.YUI;
 
-    NS.Carousel = Y.Base.create('carousel', Y.Model, [ ], {
-    }, {
+    NS.Carousel = Y.Base.create('carousel', Y.Model, [], {}, {
         ATTRS: {
-            name: {
-                value: ''
-            },
-            width: {
-                value: 0
-            },
-            height: {
-                value: 0
-            },
-            off: {
-                value: false
-            }
+            name: {value: ''},
+            width: {value: 0},
+            height: {value: 0},
+            isCustomTemplate: {value: false},
+            customTemplate: {value: ''},
+            off: {value: false}
         }
     });
 
@@ -34,27 +26,14 @@ Component.entryPoint = function(NS){
         model: NS.Carousel
     });
 
-    NS.Slide = Y.Base.create('slide', Y.Model, [ ], {
-    }, {
+    NS.Slide = Y.Base.create('slide', Y.Model, [], {}, {
         ATTRS: {
-            id: {
-                value: 0
-            },
-            title: {
-                value: ''
-            },
-            url: {
-                value: ''
-            },
-            code: {
-                value: ''
-            },
-            ord: {
-                value: 0
-            },
-            filehash: {
-                value: null
-            }
+            id: {value: 0},
+            title: {value: ''},
+            url: {value: ''},
+            code: {value: ''},
+            ord: {value: 0},
+            filehash: {value: null}
         }
     });
 

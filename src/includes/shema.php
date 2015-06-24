@@ -25,6 +25,9 @@ if ($updateManager->isInstall()){
 			width int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'Width',
 			height int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'Height',
 
+		    isCustomTemplate tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '1 - Is Custom Template, 0 - Default Template',
+		    customTemplate TEXT NOT NULL  COMMENT 'Custom Template',
+
 			off tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'Отключено',
 
 			dateline int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'Дата создания',
@@ -67,6 +70,14 @@ if ($updateManager->isUpdate('0.1.1') && !$updateManager->isInstall()){
     $db->query_write("
 		ALTER TABLE ".$pfx."carousel_slide
 		ADD code TEXT NOT NULL  COMMENT 'HTML code'
+	");
+}
+
+if ($updateManager->isUpdate('0.1.2') && !$updateManager->isInstall()){
+    $db->query_write("
+		ALTER TABLE ".$pfx."carousel
+        ADD isCustomTemplate tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '1 - Is Custom Template, 0 - Default Template',
+        ADD customTemplate TEXT NOT NULL  COMMENT 'Custom Template'
 	");
 }
 

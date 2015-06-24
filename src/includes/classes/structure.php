@@ -7,6 +7,22 @@ class Carousel extends AbricosItem {
     public $height;
     public $off;
 
+    /**
+     * Is Use Custom Template for slide items
+     * @var bool
+     */
+    public $isCustomTemplate = false;
+
+    /**
+     * Custom Template for slide items
+     * @var string
+     */
+    public $customTemplate = '';
+
+    /**
+     * Constructor
+     * @param $d
+     */
     public function __construct($d){
         parent::__construct($d);
 
@@ -14,6 +30,8 @@ class Carousel extends AbricosItem {
         $this->width = intval($d['width']);
         $this->height = intval($d['height']);
         $this->off = intval($d['off']) === 1;
+        $this->isCustomTemplate = intval($d['isCustomTemplate']) === 1;
+        $this->customTemplate = strval($d['customTemplate']);
     }
 
     public function ToAJAX(){
@@ -22,6 +40,8 @@ class Carousel extends AbricosItem {
         $ret->width = $this->width;
         $ret->height = $this->height;
         $ret->off = $this->off;
+        $ret->isCustomTemplate = $this->isCustomTemplate;
+        $ret->customTemplate = $this->customTemplate;
         return $ret;
     }
 }
@@ -29,6 +49,9 @@ class Carousel extends AbricosItem {
 class CarouselList extends AbricosList {
 }
 
+/**
+ * Class CarouselSlide
+ */
 class CarouselSlide extends AbricosItem {
     public $title;
     public $url;
@@ -40,6 +63,12 @@ class CarouselSlide extends AbricosItem {
      * @var string
      */
     public $code;
+
+    /**
+     * ImageID in FileManager Module
+     *
+     * @var string
+     */
     public $filehash;
 
     public function __construct($d){

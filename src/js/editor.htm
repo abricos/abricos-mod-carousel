@@ -8,29 +8,57 @@
                 <h3 class="panel-title edit-isedit">Редактирование блока слайдов</h3>
             </div>
             <div class="panel-body">
-                <div class="form-group">
-                    <label for="{i#name}">Имя блока</label>
-                    <input id="{i#name}" name="name" type="text" class="form-control" data-wait="disable">
-                    <p class="help-block">Допустимы символы [a-zA-Z_-]</p>
-                </div>
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="{i#width}">Ширина блока, px</label>
-                            <input id="{i#width}" name="width" type="text" class="form-control" data-wait="disable">
-
-                            <p class="help-block">Если 0, то ширина auto</p>
-                        </div>
+                    <div class="form-group col-md-4">
+                        <label for="{i#name}">Имя блока</label>
+                        <input id="{i#name}" name="name" type="text" class="form-control" data-wait="disable">
+                        <p class="help-block">Допустимы символы [a-zA-Z_-]</p>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="{i#height}">Высота блока, px</label>
-                            <input id="{i#height}" name="height" type="text" class="form-control" data-wait="disable">
+                    <div class="form-group col-md-4">
+                        <label for="{i#width}">Ширина блока, px</label>
+                        <input id="{i#width}" name="width" type="text" class="form-control" data-wait="disable">
 
-                            <p class="help-block">Если 0, то высота auto</p>
-                        </div>
+                        <p class="help-block">Если 0, то ширина auto</p>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="{i#height}">Высота блока, px</label>
+                        <input id="{i#height}" name="height" type="text" class="form-control" data-wait="disable">
+
+                        <p class="help-block">Если 0, то высота auto</p>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label>Шаблон слайда</label>
+                    <textarea class="form-control" disabled rows="3">
+                            <a href="{v#url}" title="{v#title}"><img src="/filemanager/i/{v#filehash}/image" alt="{v#title}" style="width: {v#imgwidth}; height: {v#imgheight}"/>{v#code}</a>
+                    </textarea>
+                    <p class="help-block">
+                        Переменные шаблоны:
+                        <strong>{v#url}</strong> - ссылка,
+                        <strong>{v#filehash}</strong> - идентификатор картинки,
+                        <strong>{v#title}</strong> - заголовок,
+                        <strong>{v#imgwidth}</strong> - ширина картинки,
+                        <strong>{v#imgheight}</strong> - высота картинки,
+                        <strong>{v#code}</strong> - дополнительный HTML код.
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="isCustomTemplate" id="{i#isCustomTemplate}" data-form="isCustomTemplate" />
+                            Использовать персональный шаблон
+                        </label>
+                    </div>
+                    <textarea id="{i#customTemplate}" name="customTemplate" class="form-control" data-wait="disable" rows="5">
+                            <a href="{v#url}" title="{v#title}"><img src="/filemanager/i/{v#filehash}/image" alt="{v#title}" style="width: {v#imgwidth}; height: {v#imgheight}"/>{v#code}</a>
+                    </textarea>
+                    <p class="help-block">
+                        Если задействован персональный шаблон, то все слайды, при сборке, будут использовать его.<br />
+                    </p>
+                </div>
+
                 <div class="btn-toolbar text-right">
                     <span data-wait="show">
                         <img src="/images/loading.gif"/> Загрузка...

@@ -9,20 +9,11 @@ class CarouselQuery {
 
     const FILECLEARTIME = 86400;
 
-    const CAROUSEL_FIELDS = "
-        carouselid as id,
-        name,
-        width,
-        height,
-        off
-    ";
-
     public static function Carousel(Ab_Database $db, $carouselId){
         $sql = "
-            SELECT
-                ".CarouselQuery::CAROUSEL_FIELDS."
-            FROM ".$db->prefix."carousel
-            WHERE carouselid=".bkint($carouselId)."
+            SELECT carouselid as id, c.*
+            FROM ".$db->prefix."carousel c
+            WHERE c.carouselid=".bkint($carouselId)."
             LIMIT 1
         ";
         return $db->query_first($sql);
@@ -30,10 +21,9 @@ class CarouselQuery {
 
     public static function CarouselByName(Ab_Database $db, $name){
         $sql = "
-            SELECT
-                ".CarouselQuery::CAROUSEL_FIELDS."
-            FROM ".$db->prefix."carousel
-            WHERE name='".bkstr($name)."'
+            SELECT carouselid as id, c.*
+            FROM ".$db->prefix."carousel c
+            WHERE c.name='".bkstr($name)."'
             LIMIT 1
         ";
         return $db->query_first($sql);
@@ -41,10 +31,9 @@ class CarouselQuery {
 
     public static function CarouselList(Ab_Database $db){
         $sql = "
-            SELECT
-                ".CarouselQuery::CAROUSEL_FIELDS."
-            FROM ".$db->prefix."carousel
-            WHERE deldate=0
+            SELECT carouselid as id, c.*
+            FROM ".$db->prefix."carousel c
+            WHERE c.deldate=0
         ";
         return $db->query_read($sql);
     }
@@ -52,10 +41,12 @@ class CarouselQuery {
     public static function CarouselAppend(Ab_Database $db, $d){
         $sql = "
             INSERT INTO ".$db->prefix."carousel
-            (name, width, height, dateline) VALUES (
+            (name, width, height, isCustomTemplate, customTemplate, dateline) VALUES (
                 '".bkstr($d->name)."',
                 ".bkint($d->width).",
                 ".bkint($d->height).",
+                ".bkint($d->isCustomTemplate).",
+                '".bkstr($d->customTemplate)."',
                 ".TIMENOW."
             )
         ";
@@ -68,7 +59,9 @@ class CarouselQuery {
             UPDATE ".$db->prefix."carousel
             SET name='".bkstr($d->name)."',
                 width=".bkint($d->width).",
-                height=".bkint($d->height)."
+                height=".bkint($d->height).",
+                isCustomTemplate=".bkint($d->isCustomTemplate).",
+                customTemplate='".bkstr($d->customTemplate)."'
             WHERE carouselid=".bkint($d->id)."
             LIMIT 1
         ";
