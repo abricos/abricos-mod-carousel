@@ -17,7 +17,7 @@ Component.entryPoint = function(NS){
 
         SYS = Brick.mod.sys;
 
-    NS.SlideEditorWidget = Y.Base.create('slideEditorWidget', NS.AppWidget, [
+    NS.SlideEditorWidget = Y.Base.create('slideEditorWidget', SYS.AppWidget, [
         SYS.Form,
         SYS.FormAction
     ], {

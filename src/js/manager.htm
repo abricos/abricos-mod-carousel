@@ -1,27 +1,21 @@
 <!--{widget}-->
-<div id="{i#id}" class="manager">
+<div class="manager">
     <div class="panel panel-default">
-        <div class="panel-heading">
+        <div class="panel-heading text-center">
 
-            <div class="row">
-                <div class="col-md-7">
-                    <h3 class="panel-title">Слайды</h3>
+            <h3 class="panel-title pull-left">Слайды</h3>
 
-                </div>
-                <div class="col-md-5">
-                    <div class="btn-toolbar text-right">
-                        <span data-wait="show">
-                            <img src="/images/loading.gif"/> Загрузка...
-                        </span>
-
-                        <button type="button" class="btn btn-default" data-click="carousel-create" data-wait="disable">
-                            Добавить блок картинок
-                        </button>
-                    </div>
-                </div>
-
+            <div class="btn-toolbar pull-right">
+                <button type="button" class="btn btn-sm btn-default"
+                        data-click="carousel-create" data-wait="disable">
+                    Добавить блок картинок
+                </button>
             </div>
 
+            <span data-wait="show">
+                <img src="/images/loading.gif"/> Загрузка...
+            </span>
+            <div class="clearfix"></div>
         </div>
         <div class="panel-body">
             <div id="{i#list}"></div>
@@ -74,7 +68,8 @@
         {v#onoffbutton}
     </td>
     <td>
-        <button id="{i#delete}-{v#id}" type="button" class="btn btn-default btn-xs" data-click="carousel-delete-show" data-id="{v#id}">
+        <button id="{i#delete}-{v#id}" type="button" class="btn btn-default btn-xs" data-click="carousel-delete-show"
+                data-id="{v#id}">
             Удалить
         </button>
         <div id="{i#deletegroup}-{v#id}" style="display: none" class="btn-group">

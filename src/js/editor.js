@@ -17,7 +17,7 @@ Component.entryPoint = function(NS){
 
         SYS = Brick.mod.sys;
 
-    NS.EditorWidget = Y.Base.create('editorWidget', NS.AppWidget, [
+    NS.EditorWidget = Y.Base.create('editorWidget', SYS.AppWidget, [
         SYS.Form,
         SYS.FormAction
     ], {

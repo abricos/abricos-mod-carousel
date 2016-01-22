@@ -5,10 +5,13 @@
  * @author Alexander Kuzmin <roosit@abricos.org>
  */
 
-Abricos::GetModule('carousel')->GetManager();
-$modManager = CarouselModuleManager::$instance;
+/** @var CarouselManager $modManager */
+$modManager = Abricos::GetModule('carousel')->GetManager();
 
-if (!$modManager->IsViewRole()){
+$adr = Abricos::$adress;
+$carouselId = isset($adr->dir[2]) ? intval($adr->dir[2]) : 0;
+
+if (!$modManager->IsViewRole() || $carouselId === 0){
     $brick->content = "";
     return;
 }
@@ -16,8 +19,6 @@ if (!$modManager->IsViewRole()){
 $brick = Brick::$builder->brick;
 
 $v = &$brick->param->var;
-$adr = Abricos::$adress;
-$carouselId = $adr->dir[2];
 
 $carouselBrick = Brick::$builder->LoadBrickS('carousel', 'carousel', $brick, array(
     "p" => array(

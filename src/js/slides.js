@@ -15,7 +15,7 @@ Component.entryPoint = function(NS){
 
         COMPONENT = this;
 
-    NS.SlidesWidget = Y.Base.create('slidesWidget', NS.AppWidget, [
+    NS.SlidesWidget = Y.Base.create('slidesWidget', SYS.AppWidget, [
     ], {
         initializer: function(){
             this._currentSlideEditor = null;

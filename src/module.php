@@ -8,8 +8,6 @@
  */
 class CarouselModule extends Ab_Module {
 
-    private $_manager = null;
-
     public function __construct(){
 
         // Название модуля
@@ -18,31 +16,22 @@ class CarouselModule extends Ab_Module {
         $this->takelink = "carousel";
 
         // Версия модуля
-        $this->version = "0.1.2";
+        $this->version = "0.1.3";
 
         $this->permission = new CarouselPermission($this);
     }
 
-    /**
-     * @return CarouselManager
-     */
-    public function GetManager(){
-        if (empty($this->_manager)){
-            require_once 'includes/manager.php';
-            $this->_manager = new CarouselModuleManager($this);
-        }
-
-        return $this->_manager;
-    }
-
     public function GetContentName(){
-        $dir = Abricos::$adress->dir;
 
-        switch ($dir[1]){
-            case 'uploadimg':
-            case 'view':
-                return $dir[1];
+        $dir = Abricos::$adress->dir;
+        if (isset($dir[1])){
+            switch ($dir[1]){
+                case 'uploadimg':
+                case 'view':
+                    return $dir[1];
+            }
         }
+
         return '';
     }
 

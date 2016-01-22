@@ -1,114 +1,109 @@
 <?php
 
-class CarouselManager {
+/** CarouselManager $manager */
+class CarouselApp extends AbricosApplication {
 
-    /**
-     * @var CarouselModuleManager
-     */
-    public $manager;
-
-    /**
-     * @var Ab_Database
-     */
-    public $db;
-
-    public function __construct(CarouselModuleManager $manager){
-        $this->manager = $manager;
-        $this->db = $manager->db;
+    protected function GetClasses(){
+        return array(
+            'Carousel' => 'Carousel',
+            'CarouselList' => 'CarouselList',
+            'Slide' => 'CarouselSlide',
+            'SlideList' => 'CarouselSlideList'
+        );
     }
 
-    public function AJAX($d){
+    protected function GetStructures(){
+        return 'Carousel,Slide';
+    }
+
+    public function ResponseToJSON($d){
         switch ($d->do){
-            case "carousellist":
-                return $this->CarouselListToAJAX();
+            case "carouselList":
+                return $this->CarouselListToJSON();
             case "carouselsave":
-                return $this->CarouselSaveToAJAX($d->savedata);
+                return $this->CarouselSaveToJSON($d->savedata);
             case "carouseldisable":
-                return $this->CarouselDisableToAJAX($d->carouselid);
+                return $this->CarouselDisableToJSON($d->carouselid);
             case "carouselenable":
-                return $this->CarouselEnableToAJAX($d->carouselid);
+                return $this->CarouselEnableToJSON($d->carouselid);
             case "carouseldelete":
-                return $this->CarouselDeleteToAJAX($d->carouselid);
+                return $this->CarouselDeleteToJSON($d->carouselid);
             case "slidelist":
-                return $this->SlideListToAJAX($d->carouselid);
+                return $this->SlideListToJSON($d->carouselid);
             case "slidesave":
-                return $this->SlideSaveToAJAX($d->carouselid, $d->savedata);
+                return $this->SlideSaveToJSON($d->carouselid, $d->savedata);
             case "slidedelete":
-                return $this->SlideDeleteToAJAX($d->carouselid, $d->slideid);
+                return $this->SlideDeleteToJSON($d->carouselid, $d->slideid);
         }
         return null;
     }
 
-    public function CarouselSaveToAJAX($sd){
-        $res = $this->CarouselSave($sd);
-        $ret = $this->manager->TreatResult($res);
+    public function CarouselListToJSON(){
+        $ret = $this->CarouselList();
+        return $this->ResultToJSON('carouselList', $ret);
+    }
 
-        if ($ret->err === 0){
-            $ret = $this->CarouselListToAJAX($ret);
+    public function CarouselList(){
+        if (!$this->manager->IsViewRole()){
+            return AbricosResponse::ERR_FORBIDDEN;
         }
 
+        $list = $this->InstanceClass('CarouselList');
+        $rows = CarouselQuery::CarouselList($this->db);
+
+        while (($d = $this->db->fetch_array($rows))){
+            $list->Add($this->InstanceClass('Carousel', $d));
+        }
+        return $list;
+    }
+
+    public function CarouselSaveToJSON($sd){
+        $res = $this->CarouselSave($sd);
+        $ret = $this->ResultToJSON('carouselSave', $res);
+        if (!AbricosResponse::IsError($res)){
+            return $this->ImplodeJSON(array(
+                $this->CarouselListToJSON()
+            ), $ret);
+        }
         return $ret;
     }
 
-    /**
-     * Carousel Image Block Save
-     *
-     * Error Code:
-     *  403 - Forbidden
-     *  1   - Name is empty
-     *  2   - Name is exists
-     *
-     * @param Array|Object $d
-     *
-     * @return Object
-     */
     public function CarouselSave($d){
         if (!$this->manager->IsAdminRole()){
-            return 403;
+            return AbricosResponse::ERR_FORBIDDEN;
         }
 
         $utmf = Abricos::TextParser(true);
 
-        $d->id = isset($d->id) ? intval($d->id) : 0;
-        $d->name = $utmf->Parser($d->name);
-        $d->width = intval($d->width);
-        $d->height = intval($d->height);
+        /** @var Carousel $carousel */
+        $carousel = $this->InstanceClass('Carousel', $d);
+        $carousel->name = $utmf->Parser($carousel->name);
 
-        if (empty($d->name)){
-            return 1;
+        if (empty($carousel->name)){
+            return AbricosResponse::ERR_BAD_REQUEST;
         }
 
         //TODO: Check duplicates
 
-        if ($d->id === 0){
-            $d->id = CarouselQuery::CarouselAppend($this->db, $d);
+        if ($carousel->id === 0){
+            $carousel->id = CarouselQuery::CarouselAppend($this->db, $carousel);
         } else {
-            CarouselQuery::CarouselUpdate($this->db, $d);
+            CarouselQuery::CarouselUpdate($this->db, $carousel);
         }
 
         $ret = new stdClass();
-        $ret->carouselid = $d->id;
+        $ret->carouselid = $carousel->id;
 
         return $ret;
     }
 
-    public function CarouselListToAJAX($overResult = null){
-        $ret = !empty($overResult) ? $overResult : (new stdClass());
-        $ret->err = 0;
-
-        $result = $this->CarouselList();
-        $ret->carousels = $result->ToAJAX();
-
-        return $ret;
-    }
-
-    public function CarouselDisableToAJAX($carouselId){
+    public function CarouselDisableToJSON($carouselId){
         $res = $this->CarouselDisable($carouselId);
 
         $ret = $this->manager->TreatResult($res);
 
         if ($ret->err === 0){
-            $ret = $this->CarouselListToAJAX($ret);
+            $ret = $this->CarouselListToJSON($ret);
         }
 
         return $ret;
@@ -126,13 +121,13 @@ class CarouselManager {
         return $ret;
     }
 
-    public function CarouselEnableToAJAX($carouselId){
+    public function CarouselEnableToJSON($carouselId){
         $res = $this->CarouselEnable($carouselId);
 
         $ret = $this->manager->TreatResult($res);
 
         if ($ret->err === 0){
-            $ret = $this->CarouselListToAJAX($ret);
+            $ret = $this->CarouselListToJSON($ret);
         }
 
         return $ret;
@@ -150,13 +145,13 @@ class CarouselManager {
         return $ret;
     }
 
-    public function CarouselDeleteToAJAX($carouselId){
+    public function CarouselDeleteToJSON($carouselId){
         $res = $this->CarouselDelete($carouselId);
 
         $ret = $this->manager->TreatResult($res);
 
         if ($ret->err === 0){
-            $ret = $this->CarouselListToAJAX($ret);
+            $ret = $this->CarouselListToJSON($ret);
         }
 
         return $ret;
@@ -174,27 +169,6 @@ class CarouselManager {
         return $ret;
     }
 
-    /**
-     * @return CarouselList|null
-     */
-    public function CarouselList(){
-        if (!$this->manager->IsViewRole()){
-            return null;
-        }
-
-        $list = new CarouselList();
-        $rows = CarouselQuery::CarouselList($this->db);
-
-        while (($d = $this->db->fetch_array($rows))){
-            $list->Add(new Carousel($d));
-        }
-        return $list;
-    }
-
-    /**
-     * @param $carouselId
-     * @return Carousel|null
-     */
     public function Carousel($carouselId){
         if (!$this->manager->IsViewRole()){
             return null;
@@ -221,7 +195,7 @@ class CarouselManager {
         return new Carousel($row);
     }
 
-    public function SlideListToAJAX($carouselId, $overResult = null){
+    public function SlideListToJSON($carouselId, $overResult = null){
         $ret = !empty($overResult) ? $overResult : (new stdClass());
         $ret->err = 0;
 
@@ -229,17 +203,13 @@ class CarouselManager {
         if (is_integer($result)){
             $ret->err = $result;
         } else {
-            $ret->slides = $result->ToAJAX();
+            $ret->slides = $result->ToJSON();
             $ret->slides->carouselid = $carouselId;
         }
 
         return $ret;
     }
 
-    /**
-     * @param $carouselId
-     * @return CarouselSlideList|int
-     */
     public function SlideList($carouselId){
         if (!$this->manager->IsViewRole()){
             return 403;
@@ -253,12 +223,12 @@ class CarouselManager {
         return $list;
     }
 
-    public function SlideSaveToAJAX($carouselId, $sd){
+    public function SlideSaveToJSON($carouselId, $sd){
         $res = $this->SlideSave($carouselId, $sd);
         $ret = $this->manager->TreatResult($res);
 
         if ($ret->err === 0){
-            $ret = $this->SlideListToAJAX($carouselId, $ret);
+            $ret = $this->SlideListToJSON($carouselId, $ret);
         }
         return $ret;
     }
@@ -309,12 +279,12 @@ class CarouselManager {
         return $ret;
     }
 
-    public function SlideDeleteToAJAX($carouselId, $slideId){
+    public function SlideDeleteToJSON($carouselId, $slideId){
         $res = $this->SlideDelete($carouselId, $slideId);
         $ret = $this->manager->TreatResult($res);
 
         if ($ret->err === 0){
-            $ret = $this->SlideListToAJAX($carouselId, $ret);
+            $ret = $this->SlideListToJSON($carouselId, $ret);
         }
         return $ret;
     }

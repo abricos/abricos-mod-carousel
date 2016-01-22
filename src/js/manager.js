@@ -1,8 +1,3 @@
-/*
- @package Abricos
- @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- */
-
 var Component = new Brick.Component();
 Component.requires = {
     mod: [
@@ -12,14 +7,10 @@ Component.requires = {
 Component.entryPoint = function(NS){
 
     var Y = Brick.YUI,
-
         COMPONENT = this,
-        BOUNDING_BOX = 'boundingBox',
-
         SYS = Brick.mod.sys;
 
-    NS.ManagerWidget = Y.Base.create('managerWidget', NS.AppWidget, [
-    ], {
+    NS.ManagerWidget = Y.Base.create('managerWidget', SYS.AppWidget, [], {
         initializer: function(){
             this.publish('carouselCreate', {
                 defaultFn: this._defCarouselCreate
@@ -35,13 +26,13 @@ Component.entryPoint = function(NS){
             this.renderCarouselList();
         },
         renderCarouselList: function(){
-            var carouselList = this.get('appInstance').get('carouselList');
-
-            var tp = this.template, lst = "";
+            var carouselList = this.get('appInstance').get('carouselList'),
+                tp = this.template,
+                lst = "";
 
             carouselList.each(function(carousel){
-                var attrs = carousel.toJSON();
-
+                console.log(carousel);
+                var attrs = carousel.toJSON(true);
                 lst += tp.replace('row', [
                     {
                         onoffbutton: attrs.off ?
@@ -76,7 +67,7 @@ Component.entryPoint = function(NS){
             if (hide){
                 elDShow.show();
                 elDelete.hide();
-            }else{
+            } else {
                 elDShow.hide();
                 elDelete.show();
             }

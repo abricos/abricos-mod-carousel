@@ -1,0 +1,29 @@
+{
+  "version": "0.1.0",
+  "type": "model",
+  "fields": {
+    "id": {
+      "type": "int",
+      "dbField": "slideid"
+    },
+    "title": {
+      "type": "string",
+      "json": "tl"
+    },
+    "url": {
+      "type": "string",
+      "json": "url"
+    },
+    "ord": {
+      "type": "int",
+      "json": "ord"
+    },
+    "code": {
+      "type": "string"
+    },
+    "filehash": {
+      "type": "string",
+      "json": "fh"
+    }
+  }
+}

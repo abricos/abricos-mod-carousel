@@ -9,18 +9,18 @@ $brick = Brick::$builder->brick;
 $v = &$brick->param->var;
 $p = &$brick->param->param;
 
-Abricos::GetModule('carousel')->GetManager();
-$modManager = CarouselModuleManager::$instance;
-$man = $modManager->GetCarouselManager();
+/** @var CarouselManager $modManager */
+$modManager = Abricos::GetModule('carousel')->GetManager();
+$app = $modManager->GetApp();
 
 $carouselId = $p['carouselid'];
 $name = $p['name'];
 
 $carousel = null;
 if ($carouselId > 0){
-    $carousel = $man->Carousel($carouselId);
+    $carousel = $app->Carousel($carouselId);
 } else if (!empty($name)){
-    $carousel = $man->CarouselByName($name);
+    $carousel = $app->CarouselByName($name);
 }
 
 if (empty($carousel) || ($carousel->off && empty($p['ignoreoff']))){
@@ -28,7 +28,7 @@ if (empty($carousel) || ($carousel->off && empty($p['ignoreoff']))){
     return;
 }
 
-$slideList = $man->SlideList($carousel->id);
+$slideList = $app->SlideList($carousel->id);
 $lstIndicator = "";
 $lstItem = "";
 for ($i = 0; $i < $slideList->Count(); $i++){

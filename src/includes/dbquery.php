@@ -31,22 +31,22 @@ class CarouselQuery {
 
     public static function CarouselList(Ab_Database $db){
         $sql = "
-            SELECT carouselid as id, c.*
+            SELECT c.*
             FROM ".$db->prefix."carousel c
             WHERE c.deldate=0
         ";
         return $db->query_read($sql);
     }
 
-    public static function CarouselAppend(Ab_Database $db, $d){
+    public static function CarouselAppend(Ab_Database $db, Carousel $carousel){
         $sql = "
             INSERT INTO ".$db->prefix."carousel
             (name, width, height, isCustomTemplate, customTemplate, dateline) VALUES (
-                '".bkstr($d->name)."',
-                ".bkint($d->width).",
-                ".bkint($d->height).",
-                ".bkint($d->isCustomTemplate).",
-                '".bkstr($d->customTemplate)."',
+                '".bkstr($carousel->name)."',
+                ".bkint($carousel->width).",
+                ".bkint($carousel->height).",
+                ".bkint($carousel->isCustomTemplate).",
+                '".bkstr($carousel->customTemplate)."',
                 ".TIMENOW."
             )
         ";
@@ -54,15 +54,15 @@ class CarouselQuery {
         return $db->insert_id();
     }
 
-    public static function CarouselUpdate(Ab_Database $db, $d){
+    public static function CarouselUpdate(Ab_Database $db, Carousel $carousel){
         $sql = "
             UPDATE ".$db->prefix."carousel
-            SET name='".bkstr($d->name)."',
-                width=".bkint($d->width).",
-                height=".bkint($d->height).",
-                isCustomTemplate=".bkint($d->isCustomTemplate).",
-                customTemplate='".bkstr($d->customTemplate)."'
-            WHERE carouselid=".bkint($d->id)."
+            SET name='".bkstr($carousel->name)."',
+                width=".bkint($carousel->width).",
+                height=".bkint($carousel->height).",
+                isCustomTemplate=".bkint($carousel->isCustomTemplate).",
+                customTemplate='".bkstr($carousel->customTemplate)."'
+            WHERE carouselid=".bkint($carousel->id)."
             LIMIT 1
         ";
         $db->query_write($sql);

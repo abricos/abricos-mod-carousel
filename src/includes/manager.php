@@ -7,26 +7,10 @@
  */
 
 
-require_once 'classes/structure.php';
-require_once 'dbquery.php';
-
 /**
- * Class CarouselModuleManager
+ * Class CarouselManager
  */
-class CarouselModuleManager extends Ab_ModuleManager {
-
-    /**
-     * @var CarouselModuleManager
-     */
-    public static $instance = null;
-
-    private $_carouselManager = null;
-
-    public function __construct(CarouselModule $module){
-        parent::__construct($module);
-
-        CarouselModuleManager::$instance = $this;
-    }
+class CarouselManager extends Ab_ModuleManager {
 
     public function IsAdminRole(){
         return $this->IsRoleEnable(CarouselAction::ADMIN);
@@ -46,51 +30,36 @@ class CarouselModuleManager extends Ab_ModuleManager {
         return $this->IsRoleEnable(CarouselAction::VIEW);
     }
 
+    private $_app = null;
+
     /**
-     * @return CarouselManager
+     * @return CarouselApp
      */
-    public function GetCarouselManager(){
-        if (empty($this->_carouselManager)){
-            require_once 'classes/carousel.php';
-            $this->_carouselManager = new CarouselManager($this);
+    public function GetApp(){
+        if (!is_null($this->_app)){
+            return $this->_app;
         }
-        return $this->_carouselManager;
-    }
-
-    public function TreatResult($res){
-        $ret = new stdClass();
-        $ret->err = 0;
-
-        if (is_integer($res)){
-            $ret->err = $res;
-        } else if (is_object($res)){
-            $ret = $res;
-        }
-        $ret->err = isset($ret->err) ? intval($ret->err) : null;
-
-        return $ret;
+        $this->module->ScriptRequireOnce(array(
+            'includes/models.php',
+            'includes/dbquery.php',
+            'includes/app.php'
+        ));
+        return $this->_app = new CarouselApp($this);
     }
 
     public function AJAX($d){
-        $ret = $this->GetCarouselManager()->AJAX($d);
-
-        if (empty($ret)){
-            $ret = new stdClass();
-            $ret->err = 500;
-        }
-
-        return $ret;
+        return $this->GetApp()->AJAX($d);
     }
 
     public function Bos_MenuData(){
         if (!$this->IsAdminRole()){
             return null;
         }
-        $lng = $this->module->GetI18n();
+        $i18n = $this->module->I18n();
         return array(
             array(
                 "name" => "carousel",
-                "title" => $lng['bosmenu']['carousel'],
+                "title" => $i18n->Translate('bosmenu.carousel'),
                 "icon" => "/modules/carousel/img/logo-48x48.png",
                 "url" => "carousel/wspace/ws",
                 "parent" => "controlPanel"

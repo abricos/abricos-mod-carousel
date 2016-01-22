@@ -1,0 +1,34 @@
+{
+  "version": "0.1.0",
+  "type": "model",
+  "fields": {
+    "id": {
+      "type": "int",
+      "dbField": "carouselid"
+    },
+    "name": {
+      "type": "string",
+      "json": "nm"
+    },
+    "width": {
+      "type": "int",
+      "json": "w"
+    },
+    "height": {
+      "type": "int",
+      "json": "h"
+    },
+    "off": {
+      "type": "bool",
+      "json": "off"
+    },
+    "isCustomTemplate": {
+      "type": "bool",
+      "json": "isCT"
+    },
+    "customTemplate": {
+      "type": "string",
+      "json": "cTPL"
+    }
+  }
+}

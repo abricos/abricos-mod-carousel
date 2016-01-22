@@ -1,14 +1,8 @@
-/*!
- * Copyright 2014 Alexander Kuzmin <roosit@abricos.org>
- * Licensed under the MIT license
- */
-
 var Component = new Brick.Component();
 Component.requires = {
     yui: ['base'],
     mod: [
-        {name: 'sys', files: ['application.js', 'widget.js', 'form.js']},
-        {name: 'widget', files: ['notice.js', 'lib.js']},
+        {name: 'sys', files: ['application.js']},
         {name: '{C#MODNAME}', files: ['model.js']}
     ]
 };
@@ -21,105 +15,55 @@ Component.entryPoint = function(NS){
     });
 
     var Y = Brick.YUI,
-
-        WAITING = 'waiting',
-        BOUNDING_BOX = 'boundingBox',
-
         COMPONENT = this,
-
         SYS = Brick.mod.sys;
 
-    NS.URL = {
-        ws: "#app={C#MODNAMEURI}/wspace/ws/",
-        manager: {
-            view: function(){
-                return NS.URL.ws + 'manager/ManagerWidget/'
-            }
-        },
-        editor: {
-            create: function(){
-                return NS.URL.ws + 'editor/EditorWidget/'
-            },
-            edit: function(carouselId){
-                return NS.URL.ws + 'editor/EditorWidget/' + carouselId + '/'
-            },
-            slides: function(carouselId){
-                return NS.URL.ws + 'slides/SlidesWidget/' + carouselId + '/'
-            }
-        }
-    };
 
-    NS.AppWidget = Y.Base.create('appWidget', Y.Widget, [
-        SYS.Language,
-        SYS.Template,
-        SYS.WidgetClick,
-        SYS.WidgetWaiting
-    ], {
+    SYS.Application.build(COMPONENT, {}, {
         initializer: function(){
-            this._appWidgetArguments = Y.Array(arguments);
-
-            Y.after(this._syncUIAppWidget, this, 'syncUI');
-        },
-        _syncUIAppWidget: function(){
-            var args = this._appWidgetArguments,
-                tData = {};
-
-            if (Y.Lang.isFunction(this.buildTData)){
-                tData = this.buildTData.apply(this, args);
-            }
-
-            var bBox = this.get(BOUNDING_BOX),
-                defTName = this.template.cfg.defTName;
-
-            bBox.setHTML(this.template.replace(defTName, tData));
-
-            this.set(WAITING, true);
-
-            var instance = this;
-            NS.initApp({
-                initCallback: function(err, appInstance){
-                    instance._initAppWidget(err, appInstance);
-                }
-            });
-        },
-        _initAppWidget: function(err, appInstance){
-            this.set('appInstance', appInstance);
-            this.set(WAITING, false);
-            var args = this._appWidgetArguments
-            this.onInitAppWidget.apply(this, [err, appInstance, {
-                arguments: args
-            }]);
-        },
-        onInitAppWidget: function(){
+            NS.roles.load(function(){
+                this.carouselList(function(){
+                    this.initCallbackFire();
+                }, this);
+            }, this);
         }
-    }, {
+    }, [], {
         ATTRS: {
-            render: {
-                value: true
+            isLoadAppStructure: {value: true},
+            Carousel: {value: NS.Carousel},
+            CarouselList: {value: NS.CarouselList},
+            Slide: {value: NS.Slide},
+            SlideList: {value: NS.SlideList},
+        },
+        REQS: {
+            carouselList: {
+                attribute: true,
+                type: 'modelList:CarouselList'
+            }
+        },
+        URLS: {
+            ws: "#app={C#MODNAMEURI}/wspace/ws/",
+            manager: {
+                view: function(){
+                    return this.getURL('ws') + 'manager/ManagerWidget/'
+                }
             },
-            appInstance: {
-                values: null
+            editor: {
+                create: function(){
+                    return this.getURL('ws') + 'editor/EditorWidget/'
+                },
+                edit: function(carouselId){
+                    return this.getURL('ws') + 'editor/EditorWidget/' + carouselId + '/'
+                },
+                slides: function(carouselId){
+                    return this.getURL('ws') + 'slides/SlidesWidget/' + carouselId + '/'
+                }
             }
         }
     });
 
-    var AppBase = function(){
-    };
-    AppBase.ATTRS = {
-        carouselListClass: {
-            value: NS.CarouselList
-        },
-        carouselList: {
-            value: null
-        },
-        slideListClass: {
-            value: NS.SlideList
-        },
-        initCallback: {
-            value: function(){
-            }
-        }
-    };
+    return; ///////// TODO: remove old functions
+
     AppBase.prototype = {
         initializer: function(){
             this.cacheClear();
@@ -240,41 +184,5 @@ Component.entryPoint = function(NS){
     };
     NS.AppBase = AppBase;
 
-    var App = Y.Base.create('carouselApp', Y.Base, [
-        SYS.AJAX,
-        SYS.Language,
-        NS.AppBase
-    ], {
-        initializer: function(){
-            NS.appInstance = this;
-        }
-    }, {
-        ATTRS: {
-            component: {
-                value: COMPONENT
-            },
-            initCallback: {
-                value: null
-            },
-            moduleName: {
-                value: '{C#MODNAME}'
-            }
-        }
-    });
-    NS.App = App;
 
-    NS.appInstance = null;
-    NS.initApp = function(options){
-        options = Y.merge({
-            initCallback: function(){
-            }
-        }, options || {});
-
-        if (NS.appInstance){
-            return options.initCallback(null, NS.appInstance);
-        }
-        new NS.App(options);
-    };
-
-}
-;
+};

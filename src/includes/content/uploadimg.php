@@ -6,15 +6,12 @@
  */
 
 
-Abricos::GetModule('carousel')->GetManager();
-
-$modManager = CarouselModuleManager::$instance;
+/** @var CarouselManager $modManager */
+$modManager = Abricos::GetModule('carousel')->GetManager();
 
 if (!$modManager->IsWriteRole()){
     return;
 }
-// print_r('ok'); exit;
-
 
 $modFM = Abricos::GetModule('filemanager');
 if (empty($modFM)){
@@ -56,7 +53,7 @@ for ($i = 0; $i < 10; $i++){
         continue;
     }
 
-    $modManager->GetCarouselManager()->FotoAddToBuffer($res->fhash);
+    $modManager->GetCarouselApp()->FotoAddToBuffer($res->fhash);
 }
 
 $brick->param->var['result'] = json_encode($resa);
