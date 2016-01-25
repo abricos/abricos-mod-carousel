@@ -30,15 +30,15 @@ Component.entryPoint = function(NS){
             });
         },
         buildTData: function(){
-            var slideId = this.get('slideId') | 0
+            var slideid = this.get('slideid') | 0
             return {
-                'status': slideId > 0 ? 'edit-isedit' : 'edit-isnew'
+                'status': slideid > 0 ? 'edit-isedit' : 'edit-isnew'
             };
         },
         onInitAppWidget: function(err, appInstance){
             var carouselList = appInstance.get('carouselList'),
                 carouselid = this.get('carouselid') | 0,
-                slideId = this.get('slideId') | 0,
+                slideid = this.get('slideid') | 0,
                 carousel = carouselList.getById(carouselid);
 
             if (!carousel){
@@ -60,13 +60,13 @@ Component.entryPoint = function(NS){
             this.set('waiting', false);
 
             var appInstance = this.get('appInstance'),
-                slideId = this.get('slideId') | 0,
+                slideid = this.get('slideid') | 0,
                 slide;
 
-            if (slideId === 0){
+            if (slideid === 0){
                 slide = new (slideList.model)();
             } else {
-                slide = slideList.getById(slideId);
+                slide = slideList.getById(slideid);
             }
             this.set('model', slide);
         },
@@ -146,7 +146,7 @@ Component.entryPoint = function(NS){
             carouselid: {
                 value: 0
             },
-            slideId: {
+            slideid: {
                 value: 0
             }
         }

@@ -172,11 +172,11 @@ Component.entryPoint = function(NS){
                 arguments: {callback: callback, context: context}
             });
         },
-        slideDelete: function(carouselid, slideId, callback, context){
+        slideDelete: function(carouselid, slideid, callback, context){
             this.ajax({
                 'do': 'slidedelete',
                 'carouselid': carouselid,
-                'slideid': slideId
+                'slideid': slideid
             }, this._onCarouselListLoad, {
                 arguments: {callback: callback, context: context}
             });

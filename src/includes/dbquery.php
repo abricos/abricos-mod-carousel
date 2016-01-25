@@ -139,10 +139,10 @@ class CarouselQuery {
         $db->query_write($sql);
     }
 
-    public static function SlideDelete(Ab_Database $db, $carouselid, $slideId){
+    public static function SlideDelete(Ab_Database $db, $carouselid, $slideid){
         $sql = "
             DELETE FROM ".$db->prefix."carousel_slide
-            WHERE carouselid=".bkint($carouselid)." AND  slideid=".bkint($slideId)."
+            WHERE carouselid=".bkint($carouselid)." AND  slideid=".bkint($slideid)."
             LIMIT 1
         ";
 

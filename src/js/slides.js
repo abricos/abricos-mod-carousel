@@ -78,10 +78,10 @@ Component.entryPoint = function(NS){
                 'rows': lst
             });
         },
-        slideDeleteShow: function(slideId, hide){
+        slideDeleteShow: function(slideid, hide){
             var tp = this.template,
-                elDShow = Y.one(document.getElementById(tp.gelid('row.delete') + '-' + slideId)),
-                elDelete = Y.one(document.getElementById(tp.gelid('row.deletegroup') + '-' + slideId));
+                elDShow = Y.one(document.getElementById(tp.gelid('row.delete') + '-' + slideid)),
+                elDelete = Y.one(document.getElementById(tp.gelid('row.deletegroup') + '-' + slideid));
             if (hide){
                 elDShow.show();
                 elDelete.hide();
@@ -90,11 +90,11 @@ Component.entryPoint = function(NS){
                 elDelete.show();
             }
         },
-        slideDelete: function(slideId){
+        slideDelete: function(slideid){
             var carouselid = this.get('carouselid') | 0;
 
             this.set('waiting', true);
-            this.get('appInstance').slideDelete(carouselid, slideId, function(err, result){
+            this.get('appInstance').slideDelete(carouselid, slideid, function(err, result){
                 this.set('waiting', false);
                 this.reloadSlideList();
             }, this);
@@ -109,27 +109,27 @@ Component.entryPoint = function(NS){
                     return true;
             }
 
-            var slideId = e.target.getData('id') | 0;
-            if (slideId === 0){
+            var slideid = e.target.getData('id') | 0;
+            if (slideid === 0){
                 return;
             }
 
             switch (e.dataClick) {
                 case 'slide-edit':
-                    this.showSlideEditor(slideId);
+                    this.showSlideEditor(slideid);
                     return true;
                 case 'slide-delete-show':
-                    this.slideDeleteShow(slideId);
+                    this.slideDeleteShow(slideid);
                     return true;
                 case 'slide-delete-cancel':
-                    this.slideDeleteShow(slideId, true);
+                    this.slideDeleteShow(slideid, true);
                     return true;
                 case 'slide-delete':
-                    this.slideDelete(slideId);
+                    this.slideDelete(slideid);
                     return true;
             }
         },
-        showSlideEditor: function(slideId){
+        showSlideEditor: function(slideid){
             this.closeSlideEditor();
 
             var tp = this.template;
@@ -142,7 +142,7 @@ Component.entryPoint = function(NS){
             var widget = new NS.SlideEditorWidget({
                 boundingBox: boundingBox,
                 carouselid: this.get('carouselid'),
-                slideId: slideId
+                slideid: slideid
             });
             var instance = this;
             widget.on('editorCancel', function(){

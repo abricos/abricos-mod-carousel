@@ -253,26 +253,24 @@ class CarouselApp extends AbricosApplication {
         return $ret;
     }
 
-    public function SlideDeleteToJSON($carouselid, $slideId){
-        $res = $this->SlideDelete($carouselid, $slideId);
-        $ret = $this->manager->TreatResult($res);
-
-        if ($ret->err === 0){
-            $ret = $this->SlideListToJSON($carouselid, $ret);
-        }
-        return $ret;
+    public function SlideDeleteToJSON($carouselid, $slideid){
+        $res = $this->SlideDelete($carouselid, $slideid);
+        return $this->ImplodeJSON(
+            $this->ResultToJSON('slideDelete', $res),
+            $this->SlideListToJSON($carouselid)
+        );
     }
 
-    public function SlideDelete($carouselid, $slideId){
+    public function SlideDelete($carouselid, $slideid){
         if (!$this->manager->IsWriteRole()){
             return AbricosResponse::ERR_FORBIDDEN;
         }
 
-        CarouselQuery::SlideDelete($this->db, $carouselid, $slideId);
+        CarouselQuery::SlideDelete($this->db, $carouselid, $slideid);
 
         $ret = new stdClass();
         $ret->carouselid = $carouselid;
-        $ret->slideid = $slideId;
+        $ret->slideid = $slideid;
 
         return $ret;
     }
