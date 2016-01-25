@@ -20,19 +20,19 @@ class CarouselApp extends AbricosApplication {
         switch ($d->do){
             case "carouselList":
                 return $this->CarouselListToJSON();
-            case "carouselsave":
+            case "carouselSave":
                 return $this->CarouselSaveToJSON($d->savedata);
-            case "carouseldisable":
+            case "carouselDisable":
                 return $this->CarouselDisableToJSON($d->carouselid);
-            case "carouselenable":
+            case "carouselEnable":
                 return $this->CarouselEnableToJSON($d->carouselid);
-            case "carouseldelete":
+            case "carouselDelete":
                 return $this->CarouselDeleteToJSON($d->carouselid);
-            case "slidelist":
+            case "slideList":
                 return $this->SlideListToJSON($d->carouselid);
-            case "slidesave":
+            case "slideSave":
                 return $this->SlideSaveToJSON($d->carouselid, $d->savedata);
-            case "slidedelete":
+            case "slideDelete":
                 return $this->SlideDeleteToJSON($d->carouselid, $d->slideid);
         }
         return null;
@@ -60,12 +60,12 @@ class CarouselApp extends AbricosApplication {
     public function CarouselSaveToJSON($sd){
         $res = $this->CarouselSave($sd);
         $ret = $this->ResultToJSON('carouselSave', $res);
-        if (!AbricosResponse::IsError($res)){
-            return $this->ImplodeJSON(array(
-                $this->CarouselListToJSON()
-            ), $ret);
+        if (AbricosResponse::IsError($res)){
+            return $ret;
         }
-        return $ret;
+        return $this->ImplodeJSON(array(
+            $this->CarouselListToJSON()
+        ), $ret);
     }
 
     public function CarouselSave($d){
@@ -97,91 +97,86 @@ class CarouselApp extends AbricosApplication {
         return $ret;
     }
 
-    public function CarouselDisableToJSON($carouselId){
-        $res = $this->CarouselDisable($carouselId);
-
-        $ret = $this->manager->TreatResult($res);
-
-        if ($ret->err === 0){
-            $ret = $this->CarouselListToJSON($ret);
-        }
-
-        return $ret;
+    public function CarouselDisableToJSON($carouselid){
+        $res = $this->CarouselDisable($carouselid);
+        return $this->ImplodeJSON(
+            $this->ResultToJSON('carouselDisable', $res),
+            $this->CarouselListToJSON()
+        );
     }
 
-    public function CarouselDisable($carouselId){
+    public function CarouselDisable($carouselid){
         if (!$this->manager->IsAdminRole()){
-            return 403;
+            return AbricosResponse::ERR_FORBIDDEN;
         }
-        CarouselQuery::CarouselDisable($this->db, $carouselId);
+        CarouselQuery::CarouselDisable($this->db, $carouselid);
 
         $ret = new stdClass();
-        $ret->carouselid = $carouselId;
+        $ret->carouselid = $carouselid;
 
         return $ret;
     }
 
-    public function CarouselEnableToJSON($carouselId){
-        $res = $this->CarouselEnable($carouselId);
-
-        $ret = $this->manager->TreatResult($res);
-
-        if ($ret->err === 0){
-            $ret = $this->CarouselListToJSON($ret);
-        }
-
-        return $ret;
+    public function CarouselEnableToJSON($carouselid){
+        $res = $this->CarouselEnable($carouselid);
+        return $this->ImplodeJSON(
+            $this->ResultToJSON('carouselEnable', $res),
+            $this->CarouselListToJSON()
+        );
     }
 
-    public function CarouselEnable($carouselId){
+    public function CarouselEnable($carouselid){
         if (!$this->manager->IsAdminRole()){
-            return 403;
+            return AbricosResponse::ERR_FORBIDDEN;
         }
-        CarouselQuery::CarouselEnable($this->db, $carouselId);
+        CarouselQuery::CarouselEnable($this->db, $carouselid);
 
         $ret = new stdClass();
-        $ret->carouselid = $carouselId;
-
+        $ret->carouselid = $carouselid;
         return $ret;
     }
 
-    public function CarouselDeleteToJSON($carouselId){
-        $res = $this->CarouselDelete($carouselId);
-
-        $ret = $this->manager->TreatResult($res);
-
-        if ($ret->err === 0){
-            $ret = $this->CarouselListToJSON($ret);
-        }
-
-        return $ret;
+    public function CarouselDeleteToJSON($carouselid){
+        $res = $this->CarouselDelete($carouselid);
+        return $this->ImplodeJSON(
+            $this->ResultToJSON('carouselDelete', $res),
+            $this->CarouselListToJSON()
+        );
     }
 
-    public function CarouselDelete($carouselId){
+    public function CarouselDelete($carouselid){
         if (!$this->manager->IsAdminRole()){
-            return 403;
+            return AbricosResponse::ERR_FORBIDDEN;
         }
-        CarouselQuery::CarouselDelete($this->db, $carouselId);
+        CarouselQuery::CarouselDelete($this->db, $carouselid);
 
         $ret = new stdClass();
-        $ret->carouselid = $carouselId;
+        $ret->carouselid = $carouselid;
 
         return $ret;
     }
 
-    public function Carousel($carouselId){
+    /**
+     * @param $carouselid
+     * @return Carousel
+     */
+    public function Carousel($carouselid){
         if (!$this->manager->IsViewRole()){
             return null;
         }
 
-        $row = CarouselQuery::Carousel($this->db, $carouselId);
+        $row = CarouselQuery::Carousel($this->db, $carouselid);
         if (empty($row)){
             return null;
         }
 
-        return new Carousel($row);
+        return $this->InstanceClass('Carousel', $row);
     }
 
+    /**
+     * @param $name
+     * @return Carousel
+     */
     public function CarouselByName($name){
         if (!$this->manager->IsViewRole()){
             return null;
@@ -192,68 +187,47 @@ class CarouselApp extends AbricosApplication {
             return null;
         }
 
-        return new Carousel($row);
+        return $this->InstanceClass('Carousel', $row);
     }
 
-    public function SlideListToJSON($carouselId, $overResult = null){
-        $ret = !empty($overResult) ? $overResult : (new stdClass());
-        $ret->err = 0;
-
-        $result = $this->SlideList($carouselId);
-        if (is_integer($result)){
-            $ret->err = $result;
-        } else {
-            $ret->slides = $result->ToJSON();
-            $ret->slides->carouselid = $carouselId;
-        }
-
-        return $ret;
+    public function SlideListToJSON($carouselid){
+        $ret = $this->SlideList($carouselid);
+        return $this->ResultToJSON('slideList', $ret);
     }
 
-    public function SlideList($carouselId){
+    public function SlideList($carouselid){
         if (!$this->manager->IsViewRole()){
-            return 403;
+            return AbricosResponse::ERR_FORBIDDEN;
         }
 
-        $list = new CarouselSlideList();
-        $rows = CarouselQuery::SlideList($this->db, $carouselId);
+        $list = $this->InstanceClass('SlideList');
+        $rows = CarouselQuery::SlideList($this->db, $carouselid);
         while (($d = $this->db->fetch_array($rows))){
-            $list->Add(new CarouselSlide($d));
+            $list->Add($this->InstanceClass('Slide', $d));
         }
         return $list;
     }
 
-    public function SlideSaveToJSON($carouselId, $sd){
-        $res = $this->SlideSave($carouselId, $sd);
-        $ret = $this->manager->TreatResult($res);
-
-        if ($ret->err === 0){
-            $ret = $this->SlideListToJSON($carouselId, $ret);
+    public function SlideSaveToJSON($carouselid, $sd){
+        $res = $this->SlideSave($carouselid, $sd);
+        $ret = $this->ResultToJSON('slideSave', $res);
+        if (AbricosResponse::IsError($res)){
+            return $ret;
         }
-        return $ret;
+        return $this->ImplodeJSON(
+            $this->SlideListToJSON($carouselid), $ret
+        );
     }
 
-    /**
-     * Slide Save
-     *
-     * Error Code:
-     *  403 - Forbidden
-     *  1 - carousel not found
-     *
-     * @param $carouselId
-     * @param $d Array|Object
-     *
-     * @return Object
-     */
-    public function SlideSave($carouselId, $d){
+    public function SlideSave($carouselid, $d){
         if (!$this->manager->IsWriteRole()){
-            return 403;
+            return AbricosResponse::ERR_FORBIDDEN;
         }
 
-        $carousel = $this->Carousel($carouselId);
+        $carousel = $this->Carousel($carouselid);
 
         if (empty($carousel)){
-            return 1;
+            return AbricosResponse::ERR_BAD_REQUEST;
         }
 
         $utmf = Abricos::TextParser(true);
@@ -265,13 +239,13 @@ class CarouselApp extends AbricosApplication {
         $d->ord = intval($d->ord);
 
         if ($d->id === 0){
-            $d->id = CarouselQuery::SlideAppend($this->db, $carouselId, $d);
+            $d->id = CarouselQuery::SlideAppend($this->db, $carouselid, $d);
         } else {
-            CarouselQuery::SlideUpdate($this->db, $carouselId, $d);
+            CarouselQuery::SlideUpdate($this->db, $carouselid, $d);
         }
 
         $ret = new stdClass();
-        $ret->carouselid = $carouselId;
+        $ret->carouselid = $carouselid;
         $ret->slideid = $d->id;
 
         CarouselQuery::FotoRemoveFromBuffer($this->db, $d->filehash);
@@ -279,25 +253,25 @@ class CarouselApp extends AbricosApplication {
         return $ret;
     }
 
-    public function SlideDeleteToJSON($carouselId, $slideId){
-        $res = $this->SlideDelete($carouselId, $slideId);
+    public function SlideDeleteToJSON($carouselid, $slideId){
+        $res = $this->SlideDelete($carouselid, $slideId);
         $ret = $this->manager->TreatResult($res);
 
         if ($ret->err === 0){
-            $ret = $this->SlideListToJSON($carouselId, $ret);
+            $ret = $this->SlideListToJSON($carouselid, $ret);
         }
         return $ret;
     }
 
-    public function SlideDelete($carouselId, $slideId){
+    public function SlideDelete($carouselid, $slideId){
         if (!$this->manager->IsWriteRole()){
-            return 403;
+            return AbricosResponse::ERR_FORBIDDEN;
         }
 
-        CarouselQuery::SlideDelete($this->db, $carouselId, $slideId);
+        CarouselQuery::SlideDelete($this->db, $carouselid, $slideId);
 
         $ret = new stdClass();
-        $ret->carouselid = $carouselId;
+        $ret->carouselid = $carouselid;
         $ret->slideid = $slideId;
 
         return $ret;

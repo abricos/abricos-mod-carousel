@@ -30,20 +30,20 @@ Component.entryPoint = function(NS){
             });
         },
         buildTData: function(){
-            var carouselId = this.get('carouselId')|0
+            var carouselid = this.get('carouselid')|0
             return {
-                'status': carouselId >0 ? 'edit-isedit' : 'edit-isnew'
+                'status': carouselid >0 ? 'edit-isedit' : 'edit-isnew'
             };
         },
         onInitAppWidget: function(){
             var carouselList = this.get('appInstance').get('carouselList'),
-                carouselId = this.get('carouselId')|0,
+                carouselid = this.get('carouselid')|0,
                 carousel;
 
-            if (carouselId === 0){
+            if (carouselid === 0){
                 carousel = new (carouselList.model)();
             } else {
-                carousel = carouselList.getById(carouselId);
+                carousel = carouselList.getById(carouselid);
             }
 
             this.set('model', carousel);
@@ -82,7 +82,7 @@ Component.entryPoint = function(NS){
             templateBlockName: {
                 value: 'widget'
             },
-            carouselId: {
+            carouselid: {
                 value: 0
             }
         }
@@ -94,7 +94,7 @@ Component.entryPoint = function(NS){
         }, args || {});
 
         return {
-            carouselId: args.p1
+            carouselid: args.p1
         };
     };
 };

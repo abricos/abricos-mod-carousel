@@ -52,11 +52,11 @@ Component.entryPoint = function(NS){
                 create: function(){
                     return this.getURL('ws') + 'editor/EditorWidget/'
                 },
-                edit: function(carouselId){
-                    return this.getURL('ws') + 'editor/EditorWidget/' + carouselId + '/'
+                edit: function(carouselid){
+                    return this.getURL('ws') + 'editor/EditorWidget/' + carouselid + '/'
                 },
-                slides: function(carouselId){
-                    return this.getURL('ws') + 'slides/SlidesWidget/' + carouselId + '/'
+                slides: function(carouselid){
+                    return this.getURL('ws') + 'slides/SlidesWidget/' + carouselid + '/'
                 }
             }
         }
@@ -89,7 +89,7 @@ Component.entryPoint = function(NS){
             if (data.slides){
                 var slideListClass = this.get('slideListClass');
                 ret.slideList = new slideListClass({
-                    carouselId: data.slides.carouselid,
+                    carouselid: data.slides.carouselid,
                     items: data.slides.list
                 });
                 this._cacheSlideList[data.slides.carouselid] = ret.slideList;
@@ -120,32 +120,32 @@ Component.entryPoint = function(NS){
                 arguments: {callback: callback, context: context}
             });
         },
-        carouselDisable: function(carouselId, callback, context){
+        carouselDisable: function(carouselid, callback, context){
             this.ajax({
                 'do': 'carouseldisable',
-                'carouselid': carouselId
+                'carouselid': carouselid
             }, this._onCarouselListLoad, {
                 arguments: {callback: callback, context: context}
             });
         },
-        carouselEnable: function(carouselId, callback, context){
+        carouselEnable: function(carouselid, callback, context){
             this.ajax({
                 'do': 'carouselenable',
-                'carouselid': carouselId
+                'carouselid': carouselid
             }, this._onCarouselListLoad, {
                 arguments: {callback: callback, context: context}
             });
         },
-        carouselDelete: function(carouselId, callback, context){
+        carouselDelete: function(carouselid, callback, context){
             this.ajax({
                 'do': 'carouseldelete',
-                'carouselid': carouselId
+                'carouselid': carouselid
             }, this._onCarouselListLoad, {
                 arguments: {callback: callback, context: context}
             });
         },
-        slideListLoad: function(carouselId, callback, context){
-            var cacheSlideList = this._cacheSlideList[carouselId];
+        slideListLoad: function(carouselid, callback, context){
+            var cacheSlideList = this._cacheSlideList[carouselid];
 
             if (cacheSlideList){
                 callback.apply(context, [null, cacheSlideList]);
@@ -154,7 +154,7 @@ Component.entryPoint = function(NS){
 
             this.ajax({
                 'do': 'slidelist',
-                'carouselid': carouselId
+                'carouselid': carouselid
             }, this._onSlideListLoad, {
                 arguments: {callback: callback, context: context}
             });
@@ -163,19 +163,19 @@ Component.entryPoint = function(NS){
             var tRes = this._treatAJAXResult(res.data);
             details.callback.apply(details.context, [err, tRes.slideList]);
         },
-        slideSave: function(carouselId, slide, callback, context){
+        slideSave: function(carouselid, slide, callback, context){
             this.ajax({
                 'do': 'slidesave',
-                'carouselid': carouselId,
+                'carouselid': carouselid,
                 'savedata': slide.toJSON()
             }, this._onCarouselListLoad, {
                 arguments: {callback: callback, context: context}
             });
         },
-        slideDelete: function(carouselId, slideId, callback, context){
+        slideDelete: function(carouselid, slideId, callback, context){
             this.ajax({
                 'do': 'slidedelete',
-                'carouselid': carouselId,
+                'carouselid': carouselid,
                 'slideid': slideId
             }, this._onCarouselListLoad, {
                 arguments: {callback: callback, context: context}

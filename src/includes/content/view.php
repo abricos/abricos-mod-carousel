@@ -9,9 +9,9 @@
 $modManager = Abricos::GetModule('carousel')->GetManager();
 
 $adr = Abricos::$adress;
-$carouselId = isset($adr->dir[2]) ? intval($adr->dir[2]) : 0;
+$carouselid = isset($adr->dir[2]) ? intval($adr->dir[2]) : 0;
 
-if (!$modManager->IsViewRole() || $carouselId === 0){
+if (!$modManager->IsViewRole() || $carouselid === 0){
     $brick->content = "";
     return;
 }
@@ -22,7 +22,7 @@ $v = &$brick->param->var;
 
 $carouselBrick = Brick::$builder->LoadBrickS('carousel', 'carousel', $brick, array(
     "p" => array(
-        "carouselid" => $carouselId,
+        "carouselid" => $carouselid,
         "ignoreoff" => true
     )
 ));

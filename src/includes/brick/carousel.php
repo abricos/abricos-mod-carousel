@@ -13,12 +13,12 @@ $p = &$brick->param->param;
 $modManager = Abricos::GetModule('carousel')->GetManager();
 $app = $modManager->GetApp();
 
-$carouselId = $p['carouselid'];
+$carouselid = $p['carouselid'];
 $name = $p['name'];
 
 $carousel = null;
-if ($carouselId > 0){
-    $carousel = $app->Carousel($carouselId);
+if ($carouselid > 0){
+    $carousel = $app->Carousel($carouselid);
 } else if (!empty($name)){
     $carousel = $app->CarouselByName($name);
 }

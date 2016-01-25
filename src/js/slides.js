@@ -24,15 +24,15 @@ Component.entryPoint = function(NS){
             });
         },
         buildTData: function(){
-            var carouselId = this.get('carouselId') | 0
+            var carouselid = this.get('carouselid') | 0
             return {
-                carouselid: carouselId
+                carouselid: carouselid
             };
         },
         onInitAppWidget: function(err, appInstance){
             var carouselList = appInstance.get('carouselList'),
-                carouselId = this.get('carouselId') | 0,
-                carousel = carouselList.getById(carouselId);
+                carouselid = this.get('carouselid') | 0,
+                carousel = carouselList.getById(carouselid);
 
             if (!carousel){
                 return; // TODO: necessary to implement error
@@ -44,10 +44,10 @@ Component.entryPoint = function(NS){
             this.reloadSlideList();
         },
         reloadSlideList: function(){
-            var carouselId = this.get('carouselId') | 0;
+            var carouselid = this.get('carouselid') | 0;
             this.set('waiting', true);
 
-            this.get('appInstance').slideListLoad(carouselId, function(err, slideList){
+            this.get('appInstance').slideListLoad(carouselid, function(err, slideList){
                 this.set('waiting', false);
                 if (!err){
                     this.set('slideList', slideList);
@@ -91,10 +91,10 @@ Component.entryPoint = function(NS){
             }
         },
         slideDelete: function(slideId){
-            var carouselId = this.get('carouselId') | 0;
+            var carouselid = this.get('carouselid') | 0;
 
             this.set('waiting', true);
-            this.get('appInstance').slideDelete(carouselId, slideId, function(err, result){
+            this.get('appInstance').slideDelete(carouselid, slideId, function(err, result){
                 this.set('waiting', false);
                 this.reloadSlideList();
             }, this);
@@ -141,7 +141,7 @@ Component.entryPoint = function(NS){
 
             var widget = new NS.SlideEditorWidget({
                 boundingBox: boundingBox,
-                carouselId: this.get('carouselId'),
+                carouselid: this.get('carouselid'),
                 slideId: slideId
             });
             var instance = this;
@@ -179,7 +179,7 @@ Component.entryPoint = function(NS){
             templateBlockName: {
                 value: 'widget,list,row,image,url'
             },
-            carouselId: {
+            carouselid: {
                 value: 0
             },
             slideList: {
@@ -194,7 +194,7 @@ Component.entryPoint = function(NS){
         }, args || {});
 
         return {
-            carouselId: args.p1
+            carouselid: args.p1
         };
     };
 

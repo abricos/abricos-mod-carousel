@@ -46,24 +46,24 @@ Component.entryPoint = function(NS){
                 'rows': lst
             });
         },
-        carouselEnable: function(carouselId){
+        carouselEnable: function(carouselid){
             this.set('waiting', true);
-            this.get('appInstance').carouselEnable(carouselId, function(err, result){
+            this.get('appInstance').carouselEnable(carouselid, function(err, result){
                 this.set('waiting', false);
                 this.renderCarouselList();
             }, this);
         },
-        carouselDisable: function(carouselId){
+        carouselDisable: function(carouselid){
             this.set('waiting', true);
-            this.get('appInstance').carouselDisable(carouselId, function(err, result){
+            this.get('appInstance').carouselDisable(carouselid, function(err, result){
                 this.set('waiting', false);
                 this.renderCarouselList();
             }, this);
         },
-        carouselDeleteShow: function(carouselId, hide){
+        carouselDeleteShow: function(carouselid, hide){
             var tp = this.template,
-                elDShow = Y.one(document.getElementById(tp.gelid('row.delete') + '-' + carouselId)),
-                elDelete = Y.one(document.getElementById(tp.gelid('row.deletegroup') + '-' + carouselId));
+                elDShow = Y.one(document.getElementById(tp.gelid('row.delete') + '-' + carouselid)),
+                elDelete = Y.one(document.getElementById(tp.gelid('row.deletegroup') + '-' + carouselid));
             if (hide){
                 elDShow.show();
                 elDelete.hide();
@@ -72,9 +72,9 @@ Component.entryPoint = function(NS){
                 elDelete.show();
             }
         },
-        carouselDelete: function(carouselId){
+        carouselDelete: function(carouselid){
             this.set('waiting', true);
-            this.get('appInstance').carouselDelete(carouselId, function(err, result){
+            this.get('appInstance').carouselDelete(carouselid, function(err, result){
                 this.set('waiting', false);
                 this.renderCarouselList();
             }, this);
@@ -84,43 +84,43 @@ Component.entryPoint = function(NS){
                 this.fire('carouselCreate');
                 return true;
             }
-            var carouselId = e.target.getData('id') | 0;
-            if (carouselId === 0){
+            var carouselid = e.target.getData('id') | 0;
+            if (carouselid === 0){
                 return;
             }
 
             switch (e.dataClick) {
                 case 'carousel-edit':
-                    this.fire('carouselEdit', carouselId);
+                    this.fire('carouselEdit', carouselid);
                     return true;
                 case 'carousel-slides':
-                    this.fire('carouselSlides', carouselId);
+                    this.fire('carouselSlides', carouselid);
                     return true;
                 case 'carousel-enable':
-                    this.carouselEnable(carouselId);
+                    this.carouselEnable(carouselid);
                     return true;
                 case 'carousel-disable':
-                    this.carouselDisable(carouselId);
+                    this.carouselDisable(carouselid);
                     return true;
                 case 'carousel-delete-show':
-                    this.carouselDeleteShow(carouselId);
+                    this.carouselDeleteShow(carouselid);
                     return true;
                 case 'carousel-delete-cancel':
-                    this.carouselDeleteShow(carouselId, true);
+                    this.carouselDeleteShow(carouselid, true);
                     return true;
                 case 'carousel-delete':
-                    this.carouselDelete(carouselId);
+                    this.carouselDelete(carouselid);
                     return true;
             }
         },
         _defCarouselCreate: function(){
             Brick.Page.reload(NS.URL.editor.create());
         },
-        _defCarouselEdit: function(e, carouselId){
-            Brick.Page.reload(NS.URL.editor.edit(carouselId));
+        _defCarouselEdit: function(e, carouselid){
+            Brick.Page.reload(NS.URL.editor.edit(carouselid));
         },
-        _defCarouselSlides: function(e, carouselId){
-            Brick.Page.reload(NS.URL.editor.slides(carouselId));
+        _defCarouselSlides: function(e, carouselid){
+            Brick.Page.reload(NS.URL.editor.slides(carouselid));
         }
     }, {
         ATTRS: {

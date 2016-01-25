@@ -37,9 +37,9 @@ Component.entryPoint = function(NS){
         },
         onInitAppWidget: function(err, appInstance){
             var carouselList = appInstance.get('carouselList'),
-                carouselId = this.get('carouselId') | 0,
+                carouselid = this.get('carouselid') | 0,
                 slideId = this.get('slideId') | 0,
-                carousel = carouselList.getById(carouselId);
+                carousel = carouselList.getById(carouselid);
 
             if (!carousel){
                 return; // TODO: necessary to implement error
@@ -51,7 +51,7 @@ Component.entryPoint = function(NS){
 
             this.set('waiting', true);
 
-            appInstance.slideListLoad(carouselId, this.onSlideListLoad, this);
+            appInstance.slideListLoad(carouselid, this.onSlideListLoad, this);
         },
         onSlideListLoad: function(err, slideList){
             if (err){
@@ -88,7 +88,7 @@ Component.entryPoint = function(NS){
             var model = this.get('model'),
                 instance = this;
 
-            this.get('appInstance').slideSave(this.get('carouselId'), model, function(err, result){
+            this.get('appInstance').slideSave(this.get('carouselid'), model, function(err, result){
                 instance.set('waiting', false);
                 if (!err){
                     instance.fire('editorSaved');
@@ -143,7 +143,7 @@ Component.entryPoint = function(NS){
             templateBlockName: {
                 value: 'widget,imagebutton,image'
             },
-            carouselId: {
+            carouselid: {
                 value: 0
             },
             slideId: {

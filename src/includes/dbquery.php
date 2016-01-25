@@ -9,11 +9,11 @@ class CarouselQuery {
 
     const FILECLEARTIME = 86400;
 
-    public static function Carousel(Ab_Database $db, $carouselId){
+    public static function Carousel(Ab_Database $db, $carouselid){
         $sql = "
             SELECT carouselid as id, c.*
             FROM ".$db->prefix."carousel c
-            WHERE c.carouselid=".bkint($carouselId)."
+            WHERE c.carouselid=".bkint($carouselid)."
             LIMIT 1
         ";
         return $db->query_first($sql);
@@ -68,53 +68,53 @@ class CarouselQuery {
         $db->query_write($sql);
     }
 
-    public static function CarouselDisable(Ab_Database $db, $carouselId){
+    public static function CarouselDisable(Ab_Database $db, $carouselid){
         $sql = "
             UPDATE ".$db->prefix."carousel
             SET off=".bkint(1)."
-            WHERE carouselid=".bkint($carouselId)."
+            WHERE carouselid=".bkint($carouselid)."
             LIMIT 1
         ";
         $db->query_write($sql);
     }
 
-    public static function CarouselEnable(Ab_Database $db, $carouselId){
+    public static function CarouselEnable(Ab_Database $db, $carouselid){
         $sql = "
             UPDATE ".$db->prefix."carousel
             SET off=".bkint(0)."
-            WHERE carouselid=".bkint($carouselId)."
+            WHERE carouselid=".bkint($carouselid)."
             LIMIT 1
         ";
         $db->query_write($sql);
     }
 
-    public static function CarouselDelete(Ab_Database $db, $carouselId){
+    public static function CarouselDelete(Ab_Database $db, $carouselid){
         $sql = "
             UPDATE ".$db->prefix."carousel
             SET deldate=".TIMENOW."
-            WHERE carouselid=".bkint($carouselId)."
+            WHERE carouselid=".bkint($carouselid)."
             LIMIT 1
         ";
         $db->query_write($sql);
     }
 
-    public static function SlideList(Ab_Database $db, $carouselId){
+    public static function SlideList(Ab_Database $db, $carouselid){
         $sql = "
             SELECT
                 slideid as id,
                 title, url, ord, code, filehash
             FROM ".$db->prefix."carousel_slide
-            WHERE carouselid=".bkint($carouselId)."
+            WHERE carouselid=".bkint($carouselid)."
             ORDER BY ord DESC
         ";
         return $db->query_read($sql);
     }
 
-    public static function SlideAppend(Ab_Database $db, $carouselId, $d){
+    public static function SlideAppend(Ab_Database $db, $carouselid, $d){
         $sql = "
             INSERT INTO ".$db->prefix."carousel_slide
             (carouselid, title, url, filehash, code, ord) VALUES (
-                ".bkint($carouselId).",
+                ".bkint($carouselid).",
                 '".bkstr($d->title)."',
                 '".bkstr($d->url)."',
                 '".bkstr($d->filehash)."',
@@ -126,7 +126,7 @@ class CarouselQuery {
         return $db->insert_id();
     }
 
-    public static function SlideUpdate(Ab_Database $db, $carouselId, $d){
+    public static function SlideUpdate(Ab_Database $db, $carouselid, $d){
         $sql = "
             UPDATE ".$db->prefix."carousel_slide
             SET title='".bkstr($d->title)."',
@@ -134,15 +134,15 @@ class CarouselQuery {
                 filehash='".bkstr($d->filehash)."',
                 code='".bkstr($d->code)."',
                 ord=".bkint($d->ord)."
-            WHERE carouselid=".bkint($carouselId)." AND slideid=".bkint($d->id)."
+            WHERE carouselid=".bkint($carouselid)." AND slideid=".bkint($d->id)."
         ";
         $db->query_write($sql);
     }
 
-    public static function SlideDelete(Ab_Database $db, $carouselId, $slideId){
+    public static function SlideDelete(Ab_Database $db, $carouselid, $slideId){
         $sql = "
             DELETE FROM ".$db->prefix."carousel_slide
-            WHERE carouselid=".bkint($carouselId)." AND  slideid=".bkint($slideId)."
+            WHERE carouselid=".bkint($carouselid)." AND  slideid=".bkint($slideId)."
             LIMIT 1
         ";
 
