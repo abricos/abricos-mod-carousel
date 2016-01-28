@@ -12,9 +12,7 @@ Component.requires = {
 Component.entryPoint = function(NS){
 
     var Y = Brick.YUI,
-
         COMPONENT = this,
-
         SYS = Brick.mod.sys;
 
     NS.EditorWidget = Y.Base.create('editorWidget', SYS.AppWidget, [
@@ -30,18 +28,21 @@ Component.entryPoint = function(NS){
             });
         },
         buildTData: function(){
-            var carouselid = this.get('carouselid')|0
+            var carouselid = this.get('carouselid') | 0
             return {
-                'status': carouselid >0 ? 'edit-isedit' : 'edit-isnew'
+                'status': carouselid > 0 ? 'edit-isedit' : 'edit-isnew'
             };
         },
         onInitAppWidget: function(){
-            var carouselList = this.get('appInstance').get('carouselList'),
-                carouselid = this.get('carouselid')|0,
+            var appInstance = this.get('appInstance'),
+                carouselList = appInstance.get('carouselList'),
+                carouselid = this.get('carouselid') | 0,
                 carousel;
 
             if (carouselid === 0){
-                carousel = new (carouselList.model)();
+                carousel = new (appInstance.get('Carousel'))({
+                    appInstance: appInstance
+                });
             } else {
                 carousel = carouselList.getById(carouselid);
             }
@@ -69,32 +70,23 @@ Component.entryPoint = function(NS){
             }
         },
         _defEditorSaved: function(){
-            Brick.Page.reload(NS.URL.manager.view());
+            this.go('manager.view');
         },
         _defEditorCancel: function(){
-            Brick.Page.reload(NS.URL.manager.view());
+            this.go('manager.view');
         }
     }, {
         ATTRS: {
-            component: {
-                value: COMPONENT
-            },
-            templateBlockName: {
-                value: 'widget'
-            },
-            carouselid: {
-                value: 0
-            }
+            component: {value: COMPONENT},
+            templateBlockName: {value: 'widget'},
+            carouselid: {value: 0}
+        },
+        parseURLParam: function(args){
+            return {
+                carouselid: args[0] | 0
+            };
+
         }
     });
 
-    NS.EditorWidget.parseURLParam = function(args){
-        args = Y.merge({
-            p1: 0
-        }, args || {});
-
-        return {
-            carouselid: args.p1
-        };
-    };
 };

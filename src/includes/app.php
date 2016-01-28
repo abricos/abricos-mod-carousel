@@ -21,7 +21,7 @@ class CarouselApp extends AbricosApplication {
             case "carouselList":
                 return $this->CarouselListToJSON();
             case "carouselSave":
-                return $this->CarouselSaveToJSON($d->savedata);
+                return $this->CarouselSaveToJSON($d->carousel);
             case "carouselDisable":
                 return $this->CarouselDisableToJSON($d->carouselid);
             case "carouselEnable":
@@ -31,7 +31,7 @@ class CarouselApp extends AbricosApplication {
             case "slideList":
                 return $this->SlideListToJSON($d->carouselid);
             case "slideSave":
-                return $this->SlideSaveToJSON($d->carouselid, $d->savedata);
+                return $this->SlideSaveToJSON($d->carouselid, $d->slide);
             case "slideDelete":
                 return $this->SlideDeleteToJSON($d->carouselid, $d->slideid);
         }

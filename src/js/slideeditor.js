@@ -12,9 +12,7 @@ Component.requires = {
 Component.entryPoint = function(NS){
 
     var Y = Brick.YUI,
-
         COMPONENT = this,
-
         SYS = Brick.mod.sys;
 
     NS.SlideEditorWidget = Y.Base.create('slideEditorWidget', SYS.AppWidget, [
@@ -51,20 +49,23 @@ Component.entryPoint = function(NS){
 
             this.set('waiting', true);
 
-            appInstance.slideListLoad(carouselid, this.onSlideListLoad, this);
+            appInstance.slideList(carouselid, this.onSlideListLoad, this);
         },
-        onSlideListLoad: function(err, slideList){
+        onSlideListLoad: function(err, result){
             if (err){
                 return; // TODO: necessary to implement error
             }
             this.set('waiting', false);
 
             var appInstance = this.get('appInstance'),
+                slideList = appInstance.get('slideList'),
                 slideid = this.get('slideid') | 0,
                 slide;
 
             if (slideid === 0){
-                slide = new (slideList.model)();
+                slide = new (appInstance.get('Slide'))({
+                    appInstance: appInstance
+                });
             } else {
                 slide = slideList.getById(slideid);
             }

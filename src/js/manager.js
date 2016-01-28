@@ -31,7 +31,6 @@ Component.entryPoint = function(NS){
                 lst = "";
 
             carouselList.each(function(carousel){
-                console.log(carousel);
                 var attrs = carousel.toJSON(true);
                 lst += tp.replace('row', [
                     {
@@ -114,13 +113,13 @@ Component.entryPoint = function(NS){
             }
         },
         _defCarouselCreate: function(){
-            Brick.Page.reload(NS.URL.editor.create());
+            this.go('editor.create');
         },
         _defCarouselEdit: function(e, carouselid){
-            Brick.Page.reload(NS.URL.editor.edit(carouselid));
+            this.go('editor.edit', carouselid);
         },
         _defCarouselSlides: function(e, carouselid){
-            Brick.Page.reload(NS.URL.editor.slides(carouselid));
+            this.go('editor.slides', carouselid);
         }
     }, {
         ATTRS: {

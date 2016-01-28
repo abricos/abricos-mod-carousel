@@ -21,7 +21,9 @@ if (empty($modFM)){
 $brick = Brick::$builder->brick;
 $var = &$brick->param->var;
 
-if (Abricos::$adress->dir[2] !== "go"){
+$dir = Abricos::$adress->dir;
+
+if (!isset($dir[2]) || $dir[2] !== "go"){
     return;
 }
 
@@ -52,8 +54,7 @@ for ($i = 0; $i < 10; $i++){
     if ($error > 0){
         continue;
     }
-
-    $modManager->GetCarouselApp()->FotoAddToBuffer($res->fhash);
+    $modManager->GetApp()->FotoAddToBuffer($res->fhash);
 }
 
 $brick->param->var['result'] = json_encode($resa);

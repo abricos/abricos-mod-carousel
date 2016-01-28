@@ -12,11 +12,10 @@ Component.requires = {
 Component.entryPoint = function(NS){
 
     var Y = Brick.YUI,
+        COMPONENT = this,
+        SYS = Brick.mod.sys;
 
-        COMPONENT = this;
-
-    NS.SlidesWidget = Y.Base.create('slidesWidget', SYS.AppWidget, [
-    ], {
+    NS.SlidesWidget = Y.Base.create('slidesWidget', SYS.AppWidget, [], {
         initializer: function(){
             this._currentSlideEditor = null;
             this.publish('carouselListClick', {
@@ -24,9 +23,8 @@ Component.entryPoint = function(NS){
             });
         },
         buildTData: function(){
-            var carouselid = this.get('carouselid') | 0
             return {
-                carouselid: carouselid
+                carouselid: this.get('carouselid') | 0
             };
         },
         onInitAppWidget: function(err, appInstance){
@@ -38,21 +36,19 @@ Component.entryPoint = function(NS){
                 return; // TODO: necessary to implement error
             }
 
-            var tp = this.template;
+            this.template.setHTML('name', carousel.get('name'));
 
-            tp.gel('name').innerHTML = carousel.get('name');
             this.reloadSlideList();
         },
         reloadSlideList: function(){
             var carouselid = this.get('carouselid') | 0;
             this.set('waiting', true);
 
-            this.get('appInstance').slideListLoad(carouselid, function(err, slideList){
+            this.get('appInstance').slideList(carouselid, function(err, result){
                 this.set('waiting', false);
                 if (!err){
-                    this.set('slideList', slideList);
+                    this.renderSlideList();
                 }
-                this.renderSlideList();
             }, this);
         },
         renderSlideList: function(){
@@ -85,7 +81,7 @@ Component.entryPoint = function(NS){
             if (hide){
                 elDShow.show();
                 elDelete.hide();
-            }else{
+            } else {
                 elDShow.hide();
                 elDelete.show();
             }
@@ -133,8 +129,7 @@ Component.entryPoint = function(NS){
             this.closeSlideEditor();
 
             var tp = this.template;
-            Y.one(tp.gel('list')).hide();
-            Y.one(tp.gel('editor')).show();
+            tp.toggleView(false, 'list', 'editor');
 
             var boundingBox = Y.Node.create('<div />');
             Y.one(tp.gel('editor')).appendChild(boundingBox);
@@ -159,8 +154,7 @@ Component.entryPoint = function(NS){
             }
 
             var tp = this.template;
-            Y.one(tp.gel('list')).show();
-            Y.one(tp.gel('editor')).hide();
+            tp.toggleView(true, 'list', 'editor');
 
             this._currentSlideEditor.destroy();
             this._currentSlideEditor = null;
@@ -169,33 +163,24 @@ Component.entryPoint = function(NS){
             }
         },
         _defCarouselListClick: function(){
-            Brick.Page.reload(NS.URL.manager.view());
+            this.go('manager.view');
         }
     }, {
         ATTRS: {
-            component: {
-                value: COMPONENT
-            },
-            templateBlockName: {
-                value: 'widget,list,row,image,url'
-            },
-            carouselid: {
-                value: 0
-            },
+            component: {value: COMPONENT},
+            templateBlockName: {value: 'widget,list,row,image,url'},
+            carouselid: {value: 0},
             slideList: {
-                value: null
+                readOnly: true,
+                getter: function(){
+                    return this.get('appInstance').get('slideList');
+                }
             }
+        },
+        parseURLParam: function(args){
+            return {
+                carouselid: args[0] | 0
+            };
         }
     });
-
-    NS.SlidesWidget.parseURLParam = function(args){
-        args = Y.merge({
-            p1: 0
-        }, args || {});
-
-        return {
-            carouselid: args.p1
-        };
-    };
-
 };
