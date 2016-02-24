@@ -38,6 +38,10 @@ class CarouselModule extends Ab_Module {
     public function Bos_IsMenu(){
         return true;
     }
+
+    public function Bos_IsSummary(){
+        return true;
+    }
 }
 
 class CarouselAction {

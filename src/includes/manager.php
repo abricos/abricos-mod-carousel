@@ -67,6 +67,22 @@ class CarouselManager extends Ab_ModuleManager {
         );
     }
 
+    public function Bos_SummaryData(){
+        if (!$this->IsAdminRole()){
+            return;
+        }
+
+        $i18n = $this->module->I18n();
+        return array(
+            array(
+                "module" => "carousel",
+                "component" => "summary",
+                "widget" => "SummaryWidget",
+                "title" => $i18n->Translate('bosmenu.carousel'),
+            )
+        );
+    }
+
 }
 
 ?>
