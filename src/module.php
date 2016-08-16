@@ -52,7 +52,7 @@ class CarouselAction {
 
 class CarouselPermission extends Ab_UserPermission {
 
-    public function CarouselPermission(CarouselModule $module){
+    public function __construct(CarouselModule $module){
         $defRoles = array(
             new Ab_UserRole(CarouselAction::VIEW, Ab_UserGroup::GUEST),
             new Ab_UserRole(CarouselAction::VIEW, Ab_UserGroup::REGISTERED),
@@ -75,5 +75,3 @@ class CarouselPermission extends Ab_UserPermission {
 }
 
 Abricos::ModuleRegister(new CarouselModule());
-
-?>

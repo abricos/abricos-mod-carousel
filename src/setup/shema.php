@@ -80,5 +80,3 @@ if ($updateManager->isUpdate('0.1.2') && !$updateManager->isInstall()){
         ADD customTemplate TEXT NOT NULL  COMMENT 'Custom Template'
 	");
 }
-
-?>

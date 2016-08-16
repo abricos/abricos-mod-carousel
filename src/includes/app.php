@@ -303,5 +303,3 @@ class CarouselApp extends AbricosApplication {
         CarouselQuery::FotoFreeListClear($this->db);
     }
 }
-
-?>

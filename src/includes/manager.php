@@ -84,5 +84,3 @@ class CarouselManager extends Ab_ModuleManager {
     }
 
 }
-
-?>

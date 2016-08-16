@@ -69,5 +69,3 @@ if (empty($p['nowrap'])){
         "content" => $brick->content
     ));
 }
-
-?>

@@ -30,6 +30,3 @@ $carouselBrick = Brick::$builder->LoadBrickS('carousel', 'carousel', $brick, arr
 $brick->content = Brick::ReplaceVarByData($brick->content, array(
     "result" => $carouselBrick->content
 ));
-
-
-?>

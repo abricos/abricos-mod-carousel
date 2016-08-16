@@ -10,4 +10,3 @@ return array(
         "carousel" => "Карусель"
     )
 );
-?>

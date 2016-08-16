@@ -185,8 +185,4 @@ class CarouselQuery {
 		";
         $db->query_write($sql);
     }
-
-
 }
-
-?>

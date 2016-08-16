@@ -47,5 +47,3 @@ class CarouselSlide extends AbricosModel {
  */
 class CarouselSlideList extends AbricosModelList {
 }
-
-?>
